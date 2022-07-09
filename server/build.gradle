@@ -1,0 +1,65 @@
+//都2021年了還在用gradle 4.9和kotlin 1.3.72
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+apply plugin: "kotlin"
+apply plugin: "java"
+apply plugin: "idea"
+
+group = "cn.Hanabi"
+
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+    options.encoding = 'UTF-8'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+configurations {
+    jarLibs
+}
+
+dependencies {
+    jarLibs("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion") {
+        exclude module: 'kotlin-stdlib-common'
+        exclude module: 'annotations'
+    }
+    jarLibs("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion") {
+        exclude module: 'kotlin-stdlib-common'
+        exclude module: 'annotations'
+    }
+    jarLibs("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion") {
+        exclude module: 'kotlin-stdlib-common'
+        exclude module: 'annotations'
+    }
+
+    implementation configurations.jarLibs
+
+}
+
+jar {
+    manifest.attributes(
+            'Manifest-Version': 1.0,
+            "Main-Class": "MainKt"
+    )
+
+    from {
+        configurations.jarLibs.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}

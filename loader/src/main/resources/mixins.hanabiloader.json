@@ -1,0 +1,6 @@
+{
+  "plugin": "cn.hanabi.loader.MixinReInject",
+  "required": true,
+  "package": "cn.hanabi.injection.mixins",
+  "compatibilityLevel": "JAVA_8"
+}
