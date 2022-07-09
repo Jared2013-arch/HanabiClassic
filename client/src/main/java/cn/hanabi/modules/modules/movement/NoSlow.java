@@ -42,9 +42,6 @@ public class NoSlow extends Mod {
     @EventTarget
     public void onPost(EventPostMotion e) {
         if (!mc.thePlayer.isUsingItem()) return;
-        if (mode.isCurrentMode("NCP")) {
-            mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getCurrentItem()));
-        }
     }
 
     @EventTarget
