@@ -225,7 +225,7 @@ public class Scaffold extends Mod {
     @EventTarget
     private void onPre(EventPreMotion event) {
         if (slowTicks <= 3 && mc.thePlayer.onGround) {
-            final double[] xz = MoveUtils.yawPos(PlayerUtil.getDirection(), MoveUtils.getBaseMoveSpeed() / 2);
+            final double[] xz = MoveUtils.yawPos(PlayerUtil.getDirection(), MoveUtils.getBaseMoveSpeed() / 3);
             mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX - xz[0], mc.thePlayer.posY, mc.thePlayer.posZ - xz[1], true));
             slowTicks--;
         }

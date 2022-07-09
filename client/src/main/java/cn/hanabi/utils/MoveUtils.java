@@ -132,6 +132,14 @@ public class MoveUtils {
         }
     }
 
+    public static double getRandomHypixelValues() {
+        SecureRandom secureRandom = new SecureRandom();
+        double value = secureRandom.nextDouble() * (1.0 / System.currentTimeMillis());
+        for (int i = 0; i < MathUtil.randomInt(MathUtil.randomInt(4, 6), MathUtil.randomInt(8, 20)); i++)
+            value *= (1.0 / System.currentTimeMillis());
+        return value;
+    }
+
     public static float getRandomHypixelValuesFloat() {
         SecureRandom secureRandom = new SecureRandom();
         float value = secureRandom.nextFloat() * (1f / System.currentTimeMillis());
@@ -242,6 +250,10 @@ public class MoveUtils {
     public static boolean isOnGround(double height) {
         return !mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer,
                 mc.thePlayer.getEntityBoundingBox().offset(0.0D, -height, 0.0D)).isEmpty();
+    }
+
+    public static boolean isOnGround() {
+        return mc.thePlayer.onGround && mc.thePlayer.isCollidedVertically;
     }
 
     public static int getJumpEffect() {

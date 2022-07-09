@@ -33,6 +33,7 @@ public abstract class MixinEntity implements IEntity {
     @Shadow
     public float rotationPitch;
 
+    public Entity entity;
 
     @Shadow
     public float height;
@@ -105,7 +106,5 @@ public abstract class MixinEntity implements IEntity {
                 new Vec3(this.posX, this.posY + (double) height * 0.85, this.posZ),
                 new Vec3(entityIn.posX, entityIn.posY, entityIn.posZ)) == null;
     }
-
-
 
 }

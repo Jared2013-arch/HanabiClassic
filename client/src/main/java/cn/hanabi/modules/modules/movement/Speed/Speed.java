@@ -118,6 +118,13 @@ public class Speed extends Mod {
     }
 
     @EventTarget
+    public void onStrafe(EventStrafe em) {
+        if (mode.isCurrentMode("Hypixel")) {
+            modeGlobalHypixel.onStrafe(em);
+        }
+    }
+
+    @EventTarget
     public void onMove(EventMove em) {
         /*
          * if (mode.isCurrentMode("HypixelGlobal")) { setDisplayName("HypixelGlobal");
