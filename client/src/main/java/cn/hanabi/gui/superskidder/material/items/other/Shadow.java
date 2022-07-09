@@ -1,7 +1,6 @@
 package cn.hanabi.gui.superskidder.material.items.other;
 
 import cn.hanabi.gui.superskidder.material.clickgui.AnimationUtils;
-import cn.hanabi.utils.RenderUtil;
 
 public class Shadow {
     public double alpha;

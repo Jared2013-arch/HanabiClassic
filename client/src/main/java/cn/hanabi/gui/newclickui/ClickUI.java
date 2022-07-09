@@ -1,7 +1,6 @@
 package cn.hanabi.gui.newclickui;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.gui.font.compat.WrappedVertexFontRenderer;
 import cn.hanabi.gui.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.gui.newclickui.impl.BoolValue;
 import cn.hanabi.gui.newclickui.impl.DoubleValue;
@@ -16,7 +15,6 @@ import cn.hanabi.utils.TimeHelper;
 import cn.hanabi.utils.TranslateUtil;
 import cn.hanabi.utils.fontmanager.HanabiFonts;
 import cn.hanabi.value.Value;
-import me.yarukon.font.GlyphPageFontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;

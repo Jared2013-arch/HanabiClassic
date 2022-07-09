@@ -23,7 +23,6 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
 
-import javax.swing.text.html.HTMLDocument;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;

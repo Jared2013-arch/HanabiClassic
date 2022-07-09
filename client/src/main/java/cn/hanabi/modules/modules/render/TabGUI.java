@@ -10,7 +10,6 @@ import cn.hanabi.modules.ModManager;
 import cn.hanabi.utils.RenderUtil;
 import cn.hanabi.utils.TimeHelper;
 import cn.hanabi.utils.fontmanager.HanabiFonts;
-import cn.hanabi.gui.font.compat.WrappedVertexFontRenderer;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import com.mojang.realmsclient.gui.ChatFormatting;

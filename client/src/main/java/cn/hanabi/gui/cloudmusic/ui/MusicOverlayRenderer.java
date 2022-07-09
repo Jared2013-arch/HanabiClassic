@@ -9,8 +9,6 @@ import cn.hanabi.utils.ClientUtil;
 import cn.hanabi.utils.Colors;
 import cn.hanabi.utils.RenderUtil;
 import cn.hanabi.utils.TimeHelper;
-import cn.hanabi.gui.font.compat.WrappedVertexFontRenderer;
-import me.yarukon.font.GlyphPageFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;

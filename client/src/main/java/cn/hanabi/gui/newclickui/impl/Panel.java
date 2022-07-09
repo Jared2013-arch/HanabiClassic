@@ -10,7 +10,6 @@ import cn.hanabi.utils.RenderUtil;
 import cn.hanabi.utils.TimeHelper;
 import cn.hanabi.utils.TranslateUtil;
 import cn.hanabi.utils.fontmanager.HanabiFonts;
-import cn.hanabi.gui.font.compat.WrappedVertexFontRenderer;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 

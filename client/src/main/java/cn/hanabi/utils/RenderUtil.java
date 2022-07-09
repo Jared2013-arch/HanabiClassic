@@ -127,6 +127,11 @@ public class RenderUtil {
         return Color.getHSBColor(hue, saturation, brightness).getRGB();
     }
 
+    public static Color getRainbow(int offset, int speed, float saturation, float brightness) {
+        float hue = ((System.currentTimeMillis() + offset) % speed) / (float) speed;
+        return Color.getHSBColor(hue, saturation, brightness);
+    }
+
     public static Color fade(long offset, float fade) {
         float hue = (float) (System.nanoTime() + offset) / 1.0E10F % 1.0F;
         long color = Long.parseLong(Integer.toHexString(Color.HSBtoRGB(hue, 1.0f, 1.0F)),

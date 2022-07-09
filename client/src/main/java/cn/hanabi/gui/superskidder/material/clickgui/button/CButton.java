@@ -1,6 +1,5 @@
 package cn.hanabi.gui.superskidder.material.clickgui.button;
 
-import cn.hanabi.gui.superskidder.material.clickgui.AnimationUtils;
 import cn.hanabi.gui.superskidder.material.items.impl.CircleButton;
 import cn.hanabi.utils.RenderUtil;
 import net.minecraft.client.gui.Gui;

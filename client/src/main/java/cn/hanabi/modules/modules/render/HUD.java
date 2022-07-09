@@ -7,7 +7,6 @@ import cn.hanabi.events.EventRender2D;
 import cn.hanabi.events.EventText;
 import cn.hanabi.events.EventWorldChange;
 import cn.hanabi.gui.cloudmusic.ui.MusicOverlayRenderer;
-import cn.hanabi.gui.font.noway.ttfr.FontLoaders;
 import cn.hanabi.gui.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.gui.tabgui.SubTab;
 import cn.hanabi.gui.tabgui.Tab;
@@ -18,12 +17,10 @@ import cn.hanabi.modules.modules.world.Scaffold;
 import cn.hanabi.utils.*;
 import cn.hanabi.utils.animation.SmoothAnimation;
 import cn.hanabi.utils.fontmanager.HanabiFonts;
-import cn.hanabi.gui.font.compat.WrappedVertexFontRenderer;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.Priority;
 import me.yarukon.YRenderUtil;
-import me.yarukon.font.GlyphPageFontRenderer;
 import me.yarukon.palette.ColorValue;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -41,7 +38,6 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -57,8 +53,7 @@ public class HUD extends Mod {
             70d, 0d, 400d, 1d);
     public static Value<Double> musicPosY = new
             Value<>("HUD", "MusicPlayerY", 5d, 0d, 200d, 1d);
-    public static
-    Value<Double> musicPosYlyr = new Value<>("HUD", "MusicPlayerLyricY", 120d,
+    public static Value<Double> musicPosYlyr = new Value<>("HUD", "MusicPlayerLyricY", 120d,
             0d, 200d, 1d);
     public static Value hudMode = new Value("HUD", "HudMode", 0);
     private final HashMap<Integer, Integer> potionMaxDurations = new HashMap<>();

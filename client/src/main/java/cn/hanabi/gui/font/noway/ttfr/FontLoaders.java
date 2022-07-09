@@ -2,13 +2,9 @@
  * Decompiled with CFR 0_132.
  */
 package cn.hanabi.gui.font.noway.ttfr;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 import java.io.InputStream;
-import java.util.HashMap;
 
 public class FontLoaders {
 

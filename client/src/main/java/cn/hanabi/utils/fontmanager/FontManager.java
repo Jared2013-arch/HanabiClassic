@@ -2,8 +2,6 @@ package cn.hanabi.utils.fontmanager;
 
 import cn.hanabi.gui.font.VertexFontRenderer;
 import cn.hanabi.gui.font.compat.WrappedVertexFontRenderer;
-import me.yarukon.font.FontUtils;
-import me.yarukon.font.GlyphPageFontRenderer;
 
 import java.awt.*;
 import java.io.InputStream;

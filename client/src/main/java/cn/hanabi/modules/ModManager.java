@@ -160,6 +160,8 @@ public class ModManager {
         addModule(new ESP());
         addModule(new Projectiles());
         addModule(new BedESP());
+        addModule(new Nazi());
+        addModule(new Trail());
         addModule(new ChestESP());
         addModule(new HitAnimation());
         addModule(new CaveFinder());

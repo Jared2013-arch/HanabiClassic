@@ -1,13 +1,11 @@
 package cn.hanabi.gui.newclickui.impl;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.gui.font.compat.WrappedVertexFontRenderer;
 import cn.hanabi.gui.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.gui.newclickui.ClickUI;
 import cn.hanabi.utils.RenderUtil;
 import cn.hanabi.utils.TranslateUtil;
 import cn.hanabi.value.Value;
-import me.yarukon.font.GlyphPageFontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;

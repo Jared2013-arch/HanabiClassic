@@ -5,9 +5,6 @@ import com.mojang.authlib.Agent;
 import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
-//import me.ratsiel.auth.model.mojang.MinecraftAuthenticator;
-//import me.ratsiel.auth.model.mojang.MinecraftToken;
-//import me.ratsiel.auth.model.mojang.profile.MinecraftProfile;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.net.Proxy;

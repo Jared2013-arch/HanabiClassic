@@ -34,6 +34,7 @@
     "MixinItemTools",
     "MixinKeyBinding",
     "MixinMinecraft",
+    "MixinModelBiped",
     "MixinMovementInput",
     "MixinMovementInputFromOptions",
     "MixinNetHandlerPlayClient",
