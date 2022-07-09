@@ -29,6 +29,26 @@ public class TimeHelper {
         this.lastMs = System.currentTimeMillis();
     }
 
+    public boolean hasTimeElapsed(long time, boolean reset) {
+
+        if (lastMs > System.currentTimeMillis()) {
+            lastMs = System.currentTimeMillis();
+        }
+
+        if (System.currentTimeMillis() - lastMs > time) {
+
+            if (reset)
+                reset();
+
+            return true;
+
+
+        }else {
+            return false;
+        }
+
+    }
+
     public long getLastMs() {
         return this.lastMs;
     }

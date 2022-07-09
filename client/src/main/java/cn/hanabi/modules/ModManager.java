@@ -13,6 +13,7 @@ import cn.hanabi.modules.modules.movement.Speed.Speed;
 import cn.hanabi.modules.modules.player.*;
 import cn.hanabi.modules.modules.render.*;
 import cn.hanabi.modules.modules.world.*;
+import cn.hanabi.modules.modules.world.Disabler.Disabler;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import org.jetbrains.annotations.NotNull;
@@ -199,7 +200,7 @@ public class ModManager {
         addModule(new MurderMystery());
         addModule(new VClip());
         addModule(new AntiAtlas());
-
+        addModule(new Disabler());
         // GHOST
         addModule(new AutoClicker());
         addModule(new LegitVelocity());

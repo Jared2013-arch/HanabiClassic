@@ -36,6 +36,7 @@
     "MixinMinecraft",
     "MixinMovementInput",
     "MixinMovementInputFromOptions",
+    "MixinNetHandlerPlayClient",
     "MixinNetworkManager",
     "MixinNetworkManagerChInit",
     "MixinPlayerControllerMP",
