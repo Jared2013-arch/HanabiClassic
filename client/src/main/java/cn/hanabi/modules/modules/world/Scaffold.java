@@ -2,31 +2,43 @@ package cn.hanabi.modules.modules.world;
 
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
+import cn.hanabi.injection.interfaces.IEntityPlayerSP;
 import cn.hanabi.injection.interfaces.IKeyBinding;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.BlockUtils;
-import cn.hanabi.utils.MoveUtils;
-import cn.hanabi.utils.PlayerUtil;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.*;
+import cn.hanabi.utils.rotation.RotationUtil;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockSnow;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.network.play.client.C0APacketAnimation;
+import net.minecraft.network.play.client.C0BPacketEntityAction;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.*;
+import org.apache.commons.lang3.RandomUtils;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static cn.hanabi.Wrapper.sendPacketNoEvent;
 
 public class Scaffold extends Mod {
 
@@ -64,12 +76,23 @@ public class Scaffold extends Mod {
     private final Value<Double> turnspeed = new Value<>("Scaffold", "Rotation Speed", 6.0, 1.0, 6.0, 0.5);
     float curYaw, curPitch;
     Vec3i rotate = null;
+    public float[] angles;
+    private static final EnumFacing[] FACINGS = new EnumFacing[]{
+            EnumFacing.EAST,
+            EnumFacing.WEST,
+            EnumFacing.SOUTH,
+            EnumFacing.NORTH};
+    private double startPosY;
     //Sneak
     int sneakCount;
 
     //Slot
     int slot;
 
+    //Other
+    private BlockData lastPlacement;
+    private BlockData data;
+    private int slowTicks;
 
     //Facing
     EnumFacing enumFacing;
@@ -200,11 +223,59 @@ public class Scaffold extends Mod {
     }
 
     @EventTarget
-    private void onPre(EventPreMotion e) {
-        if (rotate != null) {
-//            e.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
-//            e.setPitch(curPitch);
+    private void onPre(EventPreMotion event) {
+        if (slowTicks <= 3 && mc.thePlayer.onGround) {
+            final double[] xz = MoveUtils.yawPos(PlayerUtil.getDirection(), MoveUtils.getBaseMoveSpeed() / 2);
+            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX - xz[0], mc.thePlayer.posY, mc.thePlayer.posZ - xz[1], true));
+            slowTicks--;
         }
+        final PotionEffect speed = mc.thePlayer.getActivePotionEffect(Potion.moveSpeed);
+        final int moveSpeedAmp = speed == null ? 0 : speed.getAmplifier() + 1;
+        if (moveSpeedAmp > 0) {
+            final double multiplier = 1.0 + 0.2 * moveSpeedAmp + 0.1;
+            // Reduce motionX/Z based on speed amplifier
+            mc.thePlayer.motionX /= multiplier;
+            mc.thePlayer.motionZ /= multiplier;
+        }
+        final BlockPos blockUnder = getBlockUnder();
+        data = getBlockData(blockUnder);
+
+        if (data == null) data = getBlockData(blockUnder.offset(EnumFacing.DOWN));
+
+        if (data != null) {
+            // If ray trace fails hit vec will be null
+            if (validateReplaceable(data) && data.hitVec != null) {
+                // Calculate rotations to hit vec
+                angles = RotationUtil.getRotations(new float[]{((IEntityPlayerSP) mc.thePlayer).getLastReportedYaw(), ((IEntityPlayerSP) mc.thePlayer).getLastReportedPitch()},
+                        15.5f, RotationUtil.getHitOrigin(mc.thePlayer), data.hitVec);
+            }
+        }
+        if (rotate != null) {
+            if (angles == null || lastPlacement == null) {
+                // Get the last rotations (EntityPlayerSP#rotationYaw/rotationPitch)
+                final float[] lastAngles = this.angles != null ? this.angles : new float[]{event.getYaw(), event.getPitch()};
+                // Get the opposite direct that you are moving
+                final float moveDir = MoveUtils.getMovementDirection();
+                // Desired rotations
+                final float[] dstRotations = new float[]{moveDir + MathUtil.randomFloat(178, 180), 87.5f + MoveUtils.getRandomHypixelValuesFloat()};
+                // Smooth to opposite
+                RotationUtil.applySmoothing(lastAngles, 15.5f, dstRotations);
+                // Apply GCD fix (just for fun)
+                // RotationUtil.applyGCD(dstRotations, lastAngles);
+                angles = dstRotations;
+            }
+
+            // Set rotations to persistent rotations
+            event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
+            event.setPitch(angles[1]);
+        }
+    }
+
+    private boolean validateReplaceable(final BlockData data) {
+        final BlockPos pos = data.pos.offset(data.face);
+        return mc.theWorld.getBlockState(pos)
+                .getBlock()
+                .isReplaceable(mc.theWorld, pos);
     }
 
     @EventTarget
@@ -213,6 +284,26 @@ public class Scaffold extends Mod {
             final C09PacketHeldItemChange C09 = (C09PacketHeldItemChange) e.getPacket();
             if (slot != C09.getSlotId())
                 slot = C09.getSlotId();
+        }
+    }
+
+    public boolean isAirBlock(Block block) {
+        if (block.getMaterial().isReplaceable()) {
+            return !(block instanceof BlockSnow) || !(block.getBlockBoundsMaxY() > 0.125);
+        }
+
+        return false;
+    }
+
+    private BlockPos getBlockUnder() {
+        if (!Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+            boolean air = isAirBlock(mc.theWorld.getBlockState(new BlockPos(mc.thePlayer.posX, Math.min(startPosY, mc.thePlayer.posY) - 1, mc.thePlayer.posZ)).getBlock());
+            return new BlockPos(mc.thePlayer.posX, Math.min(startPosY, mc.thePlayer.posY) - 1, air ? mc.thePlayer.posZ : mc.thePlayer.posZ);
+        } else {
+            startPosY = mc.thePlayer.posY;
+
+            boolean air1 = isAirBlock(mc.theWorld.getBlockState(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ)).getBlock());
+            return new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ);
         }
     }
 
@@ -252,13 +343,13 @@ public class Scaffold extends Mod {
             else if (sneakCount < sneakAfter.getValue())
                 ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
 
+//            mc.thePlayer.rotationYaw = rotation[0];
+//            mc.thePlayer.rotationPitch = rotation[1];
             float[] rotation = hypixel.getValue() ? getRotation(rotate, curYaw, curPitch, turnspeed.getValue().floatValue() * 30)
                     : faceBlock(blockPos, (float) (mc.theWorld.getBlockState(blockPos).getBlock().getBlockBoundsMaxY() - mc.theWorld.getBlockState(blockPos).getBlock().getBlockBoundsMinY()) + 0.5F, curYaw, curPitch, turnspeed.getValue().floatValue() * 30);
 
             curYaw = rotation[0];
             curPitch = rotation[1];
-//            mc.thePlayer.rotationYaw = rotation[0];
-//            mc.thePlayer.rotationPitch = rotation[1];
 
             MovingObjectPosition ray = PlayerUtil.rayCastedBlock(curYaw, curPitch);
 
@@ -267,6 +358,7 @@ public class Scaffold extends Mod {
                 Vec3 hitVec = hypixel.getValue() ? new Vec3(rotate.getX(), rotate.getY(), rotate.getZ()) : ray != null ? ray.hitVec : new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
                 if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemStack, blockPos, enumFacing, hitVec)) {
                     sneakCount++;
+                    slowTicks = 3;
                     if (sneakCount > sneakAfter.getValue())
                         sneakCount = 0;
 
@@ -327,6 +419,8 @@ public class Scaffold extends Mod {
         curYaw = mc.thePlayer.rotationYaw;
         curPitch = mc.thePlayer.rotationPitch;
         slot = mc.thePlayer.inventory.currentItem;
+        if (mc.thePlayer != null) startPosY = mc.thePlayer.posY;
+        if(mc.thePlayer != null) sendPacketNoEvent(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.START_SNEAKING));
     }
 
     @Override
@@ -336,6 +430,9 @@ public class Scaffold extends Mod {
 
         if (Wrapper.getTimer().timerSpeed != 1)
             Wrapper.getTimer().timerSpeed = 1.0f;
+        angles = null;
+        if(mc.thePlayer != null) sendPacketNoEvent(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.STOP_SNEAKING));
+
     }
 
     private BlockPos getBlockPosToPlaceOn(BlockPos pos) {
@@ -497,6 +594,61 @@ public class Scaffold extends Mod {
         mc.thePlayer.triggerAchievement(StatList.jumpStat);
     }
 
+    private BlockData getBlockData(final BlockPos pos) {
+        final EnumFacing[] facings = FACINGS;
+
+        // 1 of the 4 directions around player
+        for (EnumFacing facing : facings) {
+            final BlockPos blockPos = pos.add(facing.getOpposite().getDirectionVec());
+            if (PlayerUtil.validateBlock(mc.theWorld.getBlockState(blockPos).getBlock(), PlayerUtil.BlockAction.PLACE_ON)) {
+                final BlockData data = new BlockData(blockPos, facing);
+                if (validateBlockRange(data))
+                    return data;
+            }
+        }
+
+        // 2 Blocks Under e.g. When jumping
+        final BlockPos posBelow = pos.add(0, -1, 0);
+        if (PlayerUtil.validateBlock(mc.theWorld.getBlockState(posBelow).getBlock(), PlayerUtil.BlockAction.PLACE_ON)) {
+            final BlockData data = new BlockData(posBelow, EnumFacing.UP);
+            if (validateBlockRange(data))
+                return data;
+        }
+
+        // 2 Block extension & diagonal
+        for (EnumFacing facing : facings) {
+            final BlockPos blockPos = pos.add(facing.getOpposite().getDirectionVec());
+            for (EnumFacing facing1 : facings) {
+                final BlockPos blockPos1 = blockPos.add(facing1.getOpposite().getDirectionVec());
+                if (PlayerUtil.validateBlock(mc.theWorld.getBlockState(blockPos1).getBlock(), PlayerUtil.BlockAction.PLACE_ON)) {
+                    final BlockData data = new BlockData(blockPos1, facing1);
+                    if (validateBlockRange(data))
+                        return data;
+                }
+            }
+        }
+
+        return null;
+
+    }
+
+    private boolean validateBlockRange(final BlockData data) {
+        final Vec3 pos = data.hitVec;
+
+        if (pos == null)
+            return false;
+
+        final EntityPlayerSP player = mc.thePlayer;
+
+        final double x = (pos.xCoord - player.posX);
+        final double y = (pos.yCoord - (player.posY + player.getEyeHeight()));
+        final double z = (pos.zCoord - player.posZ);
+
+        final float reach = mc.playerController.getBlockReachDistance();
+
+        return Math.sqrt(x * x + y * y + z * z) <= reach;
+    }
+
     private int getBlockSlot() {
 
         int slot = -1;
@@ -517,5 +669,101 @@ public class Scaffold extends Mod {
         }
 
         return slot;
+    }
+    private static class BlockData {
+
+        private final BlockPos pos;
+        private final EnumFacing face;
+        private final Vec3 hitVec;
+
+        public BlockData(BlockPos pos, EnumFacing face) {
+            this.pos = pos;
+            this.face = face;
+            hitVec = calculateBlockData();
+        }
+
+        private Vec3 calculateBlockData() {
+            final Vec3i directionVec = face.getDirectionVec();
+            final Minecraft mc = Minecraft.getMinecraft();
+
+            double x;
+            double z;
+
+            switch (face.getAxis()) {
+                case Z:
+                    final double absX = Math.abs(mc.thePlayer.posX);
+                    double xOffset = absX - (int) absX;
+
+                    if (mc.thePlayer.posX < 0) {
+                        xOffset = 1.0F - xOffset;
+                    }
+
+                    x = directionVec.getX() * xOffset;
+                    z = directionVec.getZ() * xOffset;
+                    break;
+                case X:
+                    final double absZ = Math.abs(mc.thePlayer.posZ);
+                    double zOffset = absZ - (int) absZ;
+
+                    if (mc.thePlayer.posZ < 0) {
+                        zOffset = 1.0F - zOffset;
+                    }
+
+                    x = directionVec.getX() * zOffset;
+                    z = directionVec.getZ() * zOffset;
+                    break;
+                default:
+                    x = 0.25;
+                    z = 0.25;
+                    break;
+            }
+
+            if (face.getAxisDirection() == EnumFacing.AxisDirection.NEGATIVE) {
+                x = -x;
+                z = -z;
+            }
+
+            final Vec3 hitVec = new Vec3(pos).addVector(x + z, directionVec.getY() * 0.5, x + z);
+
+            final Vec3 src = mc.thePlayer.getPositionEyes(1.0F);
+            final MovingObjectPosition obj = mc.theWorld.rayTraceBlocks(src,
+                    hitVec,
+                    false,
+                    false,
+                    true);
+
+            if (obj == null || obj.hitVec == null || obj.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK)
+                return null;
+
+            switch (face.getAxis()) {
+                case Z:
+                    obj.hitVec = new Vec3(obj.hitVec.xCoord, obj.hitVec.yCoord, Math.round(obj.hitVec.zCoord));
+                    break;
+                case X:
+                    obj.hitVec = new Vec3(Math.round(obj.hitVec.xCoord), obj.hitVec.yCoord, obj.hitVec.zCoord);
+                    break;
+            }
+
+            if (face != EnumFacing.DOWN && face != EnumFacing.UP) {
+                final IBlockState blockState = mc.theWorld.getBlockState(obj.getBlockPos());
+                final Block blockAtPos = blockState.getBlock();
+
+                double blockFaceOffset;
+
+                blockFaceOffset = RandomUtils.nextDouble(0.1, 0.3);
+
+                if (blockAtPos instanceof BlockSlab && !((BlockSlab) blockAtPos).isDouble()) {
+                    final BlockSlab.EnumBlockHalf half = blockState.getValue(BlockSlab.HALF);
+
+                    if (half != BlockSlab.EnumBlockHalf.TOP) {
+                        blockFaceOffset += 0.5;
+                    }
+                }
+
+                obj.hitVec = obj.hitVec.addVector(0.0D, -blockFaceOffset, 0.0D);
+            }
+
+            return obj.hitVec;
+        }
     }
 }

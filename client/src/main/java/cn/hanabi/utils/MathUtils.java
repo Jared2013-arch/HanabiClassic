@@ -18,6 +18,11 @@ public class MathUtils {
         return value > maximum ? maximum : Math.max(value, minimum);
     }
 
+    public static float roundToFloat(double d)
+    {
+        return (float)((double)Math.round(d * 1.0E8D) / 1.0E8D);
+    }
+
     public static int random(int min, int max) {
         int range = max - min;
         return min + random.nextInt(range + 1);

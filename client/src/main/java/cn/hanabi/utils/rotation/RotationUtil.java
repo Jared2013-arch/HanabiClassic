@@ -14,11 +14,16 @@ import org.apache.commons.lang3.RandomUtils;
 
 public class RotationUtil {
 
+    private static final double RAD_TO_DEG = 180.0 / Math.PI;
     private static final Minecraft mc = Minecraft.getMinecraft();
     public static float[] prevRotations = new float[2];
 
     public static boolean isFaced(final Entity targetEntity, double blockReachDistance, Rotation rotation) {
         return RaycastUtils.raycastEntity(blockReachDistance, rotation, entity -> entity == targetEntity) != null;
+    }
+
+    public static Vec3 getHitOrigin(final Entity entity) {
+        return new Vec3(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
     }
 
     public static float[] getRotationToLocation(final Vec3 loc) {
@@ -32,6 +37,20 @@ public class RotationUtil {
         float pitch = (float) (-(Math.atan2(yDiff, distance) * 180.0D / Math.PI));
 
         return new float[]{yaw, pitch};
+    }
+
+    public static void applySmoothing(final float[] lastRotations,
+                                      final float smoothing,
+                                      final float[] dstRotation) {
+        if (smoothing > 0.0F) {
+            final float yawChange = MathHelper.wrapAngleTo180_float(dstRotation[0] - lastRotations[0]);
+            final float pitchChange = MathHelper.wrapAngleTo180_float(dstRotation[1] - lastRotations[1]);
+
+            final float smoothingFactor = Math.max(1.0F, smoothing / 10.0F);
+
+            dstRotation[0] = lastRotations[0] + yawChange / smoothingFactor;
+            dstRotation[1] = Math.max(Math.min(112, lastRotations[1] + pitchChange / smoothingFactor), -90.0F);
+        }
     }
 
     public static float[] getRotationToEntity(Entity entity) {
@@ -184,6 +203,30 @@ public class RotationUtil {
         return getRotationFromEyeHasPrev(vec.xCoord, vec.yCoord, vec.zCoord);
     }
 
+    public static float[] getRotations(final Vec3 start,
+                                       final Vec3 dst) {
+        final double xDif = dst.xCoord - start.xCoord;
+        final double yDif = dst.yCoord - start.yCoord;
+        final double zDif = dst.zCoord - start.zCoord;
+
+        final double distXZ = Math.sqrt(xDif * xDif + zDif * zDif);
+
+        return new float[]{
+                (float) (Math.atan2(zDif, xDif) * RAD_TO_DEG) - 90.0F,
+                (float) (-(Math.atan2(yDif, distXZ) * RAD_TO_DEG))
+        };
+    }
+
+    public static float[] getRotations(final float[] lastRotations,
+                                       final float smoothing,
+                                       final Vec3 start,
+                                       final Vec3 dst) {
+        // Get rotations from start - dst
+        final float[] rotations = getRotations(start, dst);
+        // Apply smoothing to them
+        applySmoothing(lastRotations, smoothing, rotations);
+        return rotations;
+    }
 
     public static float[] getRotations(double posX, double posY, double posZ, double eyeHeight, final BlockPos blockPos, final EnumFacing enumFacing) {
         double n = blockPos.getX() + 0.5 - posX + enumFacing.getFrontOffsetX() / 2.0;

@@ -227,7 +227,7 @@ public class HUD extends Mod {
 
             } else {
                 Hanabi.INSTANCE.fontManager.usans50.drawStringWithShadow("Hanabi", 10, 20, new Color(255, 255, 255, PaletteUtil.fade(new Color(Colors.WHITE.c), 1, 5).getRed()).getRGB(), 100);
-                Hanabi.INSTANCE.fontManager.usans20.drawStringWithShadow("Build 3.1", 12, 35, new Color(255, 255, 255, PaletteUtil.fade(new Color(Colors.WHITE.c), 1, 5).getRed()).getRGB(), 100);
+                Hanabi.INSTANCE.fontManager.usans20.drawStringWithShadow("Build 4.0", 12, 35, new Color(255, 255, 255, PaletteUtil.fade(new Color(Colors.WHITE.c), 1, 5).getRed()).getRGB(), 100);
             }
         }
 

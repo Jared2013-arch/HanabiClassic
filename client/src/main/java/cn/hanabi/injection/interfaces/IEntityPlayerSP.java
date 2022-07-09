@@ -18,4 +18,8 @@ public interface IEntityPlayerSP {
     float getDirection();
 
     void setLastReportedPosY(double f);
+
+    float getLastReportedYaw();
+
+    float getLastReportedPitch();
 }

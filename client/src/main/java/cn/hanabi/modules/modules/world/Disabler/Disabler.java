@@ -158,7 +158,7 @@ public class Disabler extends Mod {
             }
             if (cancel) {
                 if (!timer2.hasTimeElapsed(600, false)) {
-                    if (!ModManager.getModule("Disabler").isEnabled()) {
+                    if (!ModManager.getModule("Scaffold").isEnabled()) {
                         e.setCancelled(true);
                         packets.add(e.getPacket());
                     }

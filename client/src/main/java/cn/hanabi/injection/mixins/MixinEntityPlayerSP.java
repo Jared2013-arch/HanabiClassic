@@ -61,6 +61,7 @@ public class MixinEntityPlayerSP extends AbstractClientPlayer implements IEntity
     private final int cacheSprintToggleTimer = 0;
     private final float cacheYaw = 0.0F;
     private final float cachePitch = 0.0F;
+
     @Shadow
     public MovementInput movementInput;
     @Shadow
@@ -915,5 +916,13 @@ public class MixinEntityPlayerSP extends AbstractClientPlayer implements IEntity
 
     }
 
+    @Override
+    public float getLastReportedYaw() {
+        return lastReportedYaw;
+    }
 
+    @Override
+    public float getLastReportedPitch(){
+        return lastReportedPitch;
+    }
 }

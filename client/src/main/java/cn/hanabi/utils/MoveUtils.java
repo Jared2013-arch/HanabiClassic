@@ -4,6 +4,8 @@ import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventMove;
 import cn.hanabi.events.EventPreMotion;
+import cn.hanabi.modules.ModManager;
+import cn.hanabi.modules.modules.world.Scaffold;
 import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -11,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +31,7 @@ public class MoveUtils {
     public static final double MAX_DIST = 2.15 - MIN_DIF;
     public static final double WALK_SPEED = 0.221;
     public static final double SWIM_MOD = 0.115D / WALK_SPEED;
+    public static final float deg2Rad = MathUtils.roundToFloat(0.017453292519943295D);
 
     private static final Minecraft mc = Minecraft.getMinecraft();
     private static final Minecraft MC = Minecraft.getMinecraft();
@@ -55,6 +59,25 @@ public class MoveUtils {
                 return baseJumpHeight + (Wrapper.getPlayer().getActivePotionEffect(Potion.jump).getAmplifier() + 1.0F) * 0.1F;
             }
         return baseJumpHeight;
+    }
+
+    public static float getMovementDirection() {
+        return getMovementDirection(mc.thePlayer.rotationYaw);
+    }
+
+    public static float getMovementDirection(final float yaw) {
+        final float forward = mc.thePlayer.moveForward;
+        final float strafe = mc.thePlayer.moveStrafing;
+        final boolean forwards = forward > 0;
+        final boolean backwards = forward < 0;
+        final boolean right = strafe > 0;
+        final boolean left = strafe < 0;
+        float direction = 0;
+        if(backwards)
+            direction += 180;
+        direction += forwards ? (right ? -45 : left ? 45 : 0) : backwards ? (right ? 45 : left ? -45 : 0) : (right ? -90 : left ? 90 : 0);
+        direction += yaw;
+        return MathHelper.wrapAngleTo180_float(direction);
     }
 
     public static double getBaseSpeed(double v1, double v3) {
@@ -109,6 +132,13 @@ public class MoveUtils {
         }
     }
 
+    public static float getRandomHypixelValuesFloat() {
+        SecureRandom secureRandom = new SecureRandom();
+        float value = secureRandom.nextFloat() * (1f / System.currentTimeMillis());
+        for (int i = 0; i < MathUtil.randomInt(MathUtil.randomInt(4, 6), MathUtil.randomInt(8, 20)); i++)
+            value *= (1.0f / System.currentTimeMillis());
+        return value;
+    }
 
     public static boolean isBlockNearBy(double distance) {
         double smallX = Math.min(mc.thePlayer.posX - distance, mc.thePlayer.posX + distance);
@@ -337,7 +367,15 @@ public class MoveUtils {
         strafe(e , getSpeed());
     }
 
-
+    public static boolean canSprint() {
+        return (mc.thePlayer.movementInput.moveForward >= 0.8F) &&
+                !mc.thePlayer.isCollidedHorizontally &&
+                (mc.thePlayer.getFoodStats().getFoodLevel() > 6 ||
+                        mc.thePlayer.capabilities.allowFlying) && (ModManager.getModule("Scaffold").isEnabled() || !ModManager.getModule("Scaffold").isEnabled()) &&
+                !mc.thePlayer.isSneaking() &&
+                (!mc.thePlayer.isUsingItem() || ModManager.getModule("NoSlow").isEnabled()) &&
+                !mc.thePlayer.isPotionActive(Potion.moveSlowdown.id);
+    }
 
     public static boolean isMoving() {
         return mc.thePlayer != null
@@ -490,7 +528,26 @@ public class MoveUtils {
         }
         return baseSpeed;
     }
+    public static double getBaseMoveSpeed() {
+        return getBaseMoveSpeed(true);
+    }
 
+    public static double[] yawPos(double value) {
+        return yawPos(mc.thePlayer.rotationYaw * deg2Rad, value);
+    }
+
+    public static double[] yawPos(float yaw, double value) {
+        return new double[]{-MathHelper.sin(yaw) * value, MathHelper.cos(yaw) * value};
+    }
+
+    public static double getBaseMoveSpeed(boolean sprint) {
+        double baseSpeed = (canSprint() || sprint) ? 0.2873 : 0.22;
+        if ((mc.thePlayer != null && mc.thePlayer.isPotionActive(Potion.moveSpeed)) && sprint) {
+            int amplifier = mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier();
+            baseSpeed *= 1.0 + 0.2 * (amplifier + 1);
+        }
+        return baseSpeed;
+    }
 
     public static boolean isOverVoid() {
         for (int i = (int)(mc.thePlayer.posY - 1.0); i > 0; --i) {

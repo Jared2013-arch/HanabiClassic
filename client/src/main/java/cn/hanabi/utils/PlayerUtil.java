@@ -6,9 +6,7 @@ import cn.hanabi.events.EventMove;
 import cn.hanabi.injection.interfaces.IKeyBinding;
 import cn.hanabi.modules.ModManager;
 import com.google.common.collect.Multimap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -25,6 +23,7 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
 
+import javax.swing.text.html.HTMLDocument;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +36,26 @@ public class PlayerUtil {
 
     static {
         PlayerUtil.mc = Minecraft.getMinecraft();
+    }
+
+    public static boolean validateBlock(final Block block, final BlockAction action) {
+        if (block instanceof BlockContainer) return false;
+        final Material material = block.getMaterial();
+
+        switch (action) {
+            case PLACE:
+                return !(block instanceof BlockFalling) && block.isFullBlock() && block.isFullCube();
+            case REPLACE:
+                return material.isReplaceable();
+            case PLACE_ON:
+                return !(block instanceof BlockAir);
+        }
+
+        return true;
+    }
+
+    public enum BlockAction {
+        PLACE, REPLACE, PLACE_ON
     }
 
     public static boolean isAirUnder(Entity ent) {
