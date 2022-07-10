@@ -2,8 +2,8 @@ package cn.hanabi.utils.fileSystem;
 
 import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.Hanabi;
-import cn.hanabi.altmanager.GuiAltManager;
-import cn.hanabi.gui.notifications.Notification;
+import cn.hanabi.gui.classic.altmanager.GuiAltManager;
+import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;

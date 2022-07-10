@@ -4,7 +4,7 @@ import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.events.EventMove;
 import cn.hanabi.events.EventPostMotion;
 import cn.hanabi.events.EventPreMotion;
-import cn.hanabi.gui.notifications.Notification;
+import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.utils.ClientUtil;
 import cn.hanabi.utils.MoveUtils;

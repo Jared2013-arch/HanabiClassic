@@ -1,7 +1,7 @@
 package cn.hanabi.modules.modules.render;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.gui.cloudmusic.ui.MusicPlayerUI;
+import cn.hanabi.gui.common.cloudmusic.ui.MusicPlayerUI;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 

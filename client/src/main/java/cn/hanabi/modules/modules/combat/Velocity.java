@@ -5,7 +5,7 @@ import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventJump;
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.events.EventPreMotion;
-import cn.hanabi.gui.notifications.Notification;
+import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.injection.interfaces.IS12PacketEntityVelocity;
 import cn.hanabi.injection.interfaces.IS27PacketExplosion;
 import cn.hanabi.modules.Category;

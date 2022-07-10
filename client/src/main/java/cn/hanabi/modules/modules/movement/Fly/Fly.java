@@ -1,7 +1,7 @@
 package cn.hanabi.modules.modules.movement.Fly;
 
 import cn.hanabi.events.*;
-import cn.hanabi.gui.notifications.Notification;
+import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.utils.ClientUtil;

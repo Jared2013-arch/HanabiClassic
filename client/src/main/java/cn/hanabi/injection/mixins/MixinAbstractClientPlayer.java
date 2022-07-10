@@ -25,11 +25,7 @@ public abstract class MixinAbstractClientPlayer extends MixinEntityPlayer {
     @Inject(method = "getLocationCape", at = @At("HEAD"), cancellable = true)
     private void getCape(CallbackInfoReturnable<ResourceLocation> callbackInfoReturnable) {
         ResourceLocation location;
-        if (Client.onDebug) {
-            if (ModManager.getModule(ClickGUIModule.class).theme.isCurrentMode("Dark"))
-                location = new ResourceLocation("Client/capes/darkhanabi.png");
-            else location = new ResourceLocation("Client/capes/lighthanabi.png");
-        } else location = new ResourceLocation("Client/capes/darkhanabi.png");
+        location = new ResourceLocation("Client/capes/darkhanabi.png");
         callbackInfoReturnable.setReturnValue(getUniqueID().equals(Minecraft.getMinecraft().thePlayer.getUniqueID()) ? location : null);
     }
 

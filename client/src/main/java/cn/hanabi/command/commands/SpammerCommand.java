@@ -1,7 +1,7 @@
 package cn.hanabi.command.commands;
 
 import cn.hanabi.command.Command;
-import cn.hanabi.gui.notifications.Notification;
+import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.modules.modules.player.Spammer;
 import cn.hanabi.utils.ClientUtil;
 import net.minecraft.client.Minecraft;

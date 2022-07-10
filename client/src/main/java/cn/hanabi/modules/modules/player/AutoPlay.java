@@ -3,7 +3,7 @@ package cn.hanabi.modules.modules.player;
 import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.events.EventChat;
 import cn.hanabi.events.EventWorldChange;
-import cn.hanabi.gui.notifications.Notification;
+import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.utils.ClientUtil;

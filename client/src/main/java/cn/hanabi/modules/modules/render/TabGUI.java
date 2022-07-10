@@ -3,7 +3,7 @@ package cn.hanabi.modules.modules.render;
 import cn.hanabi.Hanabi;
 import cn.hanabi.events.EventKey;
 import cn.hanabi.events.EventRender2D;
-import cn.hanabi.gui.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;

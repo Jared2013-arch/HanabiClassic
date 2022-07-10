@@ -1940,6 +1940,12 @@ public class RenderUtil {
         return mouseX > xLeft && mouseX < xRight && mouseY > yUp && mouseY < yBottom;
     }
 
+    public static boolean isHoveringAppend(int mouseX, int mouseY, float xLeft, float yUp, float xRight, float yBottom) {
+        xRight = xLeft + xRight;
+        yBottom = yUp + yBottom;
+        return mouseX > xLeft && mouseX < xRight && mouseY > yUp && mouseY < yBottom;
+    }
+
     public static void doGlScissor(float x, float y, float width, float height) {
         Minecraft mc = Minecraft.getMinecraft();
         int scaleFactor = 1;
@@ -1954,6 +1960,7 @@ public class RenderUtil {
         GL11.glScissor((int) (x * scaleFactor), (int) (mc.displayHeight - (y + height) * scaleFactor),
                 (int) (width * scaleFactor), (int) (height * scaleFactor));
     }
+
 
     private void drawLine(double[] color, double x, double y, double z, double playerX, double playerY, double playerZ) {
         GlStateManager.color(255, 255, 255, 255);
@@ -2109,12 +2116,13 @@ public class RenderUtil {
 
     /**
      * 在LWJGL中渲染AWT图形
-     * @param shape 准备渲染的图形
+     *
+     * @param shape   准备渲染的图形
      * @param epsilon 图形精细度，传0不做处理
      */
     public static void drawAWTShape(Shape shape, double epsilon) {
-        PathIterator path=shape.getPathIterator(new AffineTransform());
-        Double[] cp=new Double[2]; // 记录上次操作的点用于计算曲线
+        PathIterator path = shape.getPathIterator(new AffineTransform());
+        Double[] cp = new Double[2]; // 记录上次操作的点用于计算曲线
 
         GLUtessellator tess = GLU.gluNewTess(); // 创建GLUtessellator用于渲染凹多边形（GL_POLYGON只能渲染凸多边形）
 
@@ -2123,12 +2131,12 @@ public class RenderUtil {
         tess.gluTessCallback(GLU.GLU_TESS_VERTEX, TessCallback.INSTANCE);
         tess.gluTessCallback(GLU.GLU_TESS_COMBINE, TessCallback.INSTANCE);
 
-        switch (path.getWindingRule()){
-            case PathIterator.WIND_EVEN_ODD:{
+        switch (path.getWindingRule()) {
+            case PathIterator.WIND_EVEN_ODD: {
                 tess.gluTessProperty(GLU.GLU_TESS_WINDING_RULE, GLU.GLU_TESS_WINDING_ODD);
                 break;
             }
-            case PathIterator.WIND_NON_ZERO:{
+            case PathIterator.WIND_NON_ZERO: {
                 tess.gluTessProperty(GLU.GLU_TESS_WINDING_RULE, GLU.GLU_TESS_WINDING_NONZERO);
                 break;
             }
@@ -2139,41 +2147,41 @@ public class RenderUtil {
 
         tess.gluTessBeginPolygon(null);
 
-        while (!path.isDone()){
-            double[] segment=new double[6];
-            int type=path.currentSegment(segment);
-            switch (type){
-                case PathIterator.SEG_MOVETO:{
+        while (!path.isDone()) {
+            double[] segment = new double[6];
+            int type = path.currentSegment(segment);
+            switch (type) {
+                case PathIterator.SEG_MOVETO: {
                     tess.gluTessBeginContour();
-                    pointsCache.add(new Double[] {segment[0], segment[1]});
+                    pointsCache.add(new Double[]{segment[0], segment[1]});
                     cp[0] = segment[0];
                     cp[1] = segment[1];
                     break;
                 }
-                case PathIterator.SEG_LINETO:{
-                    pointsCache.add(new Double[] {segment[0], segment[1]});
+                case PathIterator.SEG_LINETO: {
+                    pointsCache.add(new Double[]{segment[0], segment[1]});
                     cp[0] = segment[0];
                     cp[1] = segment[1];
                     break;
                 }
-                case PathIterator.SEG_QUADTO:{
-                    Double[][] points=MathUtils.getPointsOnCurve(new Double[][]{new Double[]{cp[0], cp[1]}, new Double[]{segment[0], segment[1]}, new Double[]{segment[2], segment[3]}}, 10);
+                case PathIterator.SEG_QUADTO: {
+                    Double[][] points = MathUtils.getPointsOnCurve(new Double[][]{new Double[]{cp[0], cp[1]}, new Double[]{segment[0], segment[1]}, new Double[]{segment[2], segment[3]}}, 10);
                     pointsCache.addAll(Arrays.asList(points));
                     cp[0] = segment[2];
                     cp[1] = segment[3];
                     break;
                 }
-                case PathIterator.SEG_CUBICTO:{
-                    Double[][] points=MathUtils.getPointsOnCurve(new Double[][]{new Double[]{cp[0], cp[1]}, new Double[]{segment[0], segment[1]}, new Double[]{segment[2], segment[3]}, new Double[]{segment[4], segment[5]}}, 10);
+                case PathIterator.SEG_CUBICTO: {
+                    Double[][] points = MathUtils.getPointsOnCurve(new Double[][]{new Double[]{cp[0], cp[1]}, new Double[]{segment[0], segment[1]}, new Double[]{segment[2], segment[3]}, new Double[]{segment[4], segment[5]}}, 10);
                     pointsCache.addAll(Arrays.asList(points));
                     cp[0] = segment[4];
                     cp[1] = segment[5];
                     break;
                 }
-                case PathIterator.SEG_CLOSE:{
+                case PathIterator.SEG_CLOSE: {
                     // 精简路径上的点
-                    for(Double[] point : MathUtils.simplifyPoints(pointsCache.toArray(new Double[0][0]), epsilon)){
-                        tessVertex(tess, new double[] {point[0], point[1], 0.0, 0.0, 0.0, 0.0});
+                    for (Double[] point : MathUtils.simplifyPoints(pointsCache.toArray(new Double[0][0]), epsilon)) {
+                        tessVertex(tess, new double[]{point[0], point[1], 0.0, 0.0, 0.0, 0.0});
                     }
                     // 清除缓存以便画下一个图形
                     pointsCache.clear();

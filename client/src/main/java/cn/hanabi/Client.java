@@ -50,10 +50,6 @@ public class Client {
     }
 
     public static void doLogin() {
-//        Login login = new Login();
-//        login.doLogin();
-        username = "";
-        rank = "";
         new Hanabi();
     }
 }

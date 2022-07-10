@@ -4,7 +4,7 @@ import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventRender;
 import cn.hanabi.events.EventRender2D;
-import cn.hanabi.gui.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.injection.interfaces.IEntityRenderer;
 import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.modules.Category;

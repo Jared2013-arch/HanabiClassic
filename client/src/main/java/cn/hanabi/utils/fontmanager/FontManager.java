@@ -1,7 +1,7 @@
 package cn.hanabi.utils.fontmanager;
 
-import cn.hanabi.gui.font.VertexFontRenderer;
-import cn.hanabi.gui.font.compat.WrappedVertexFontRenderer;
+import cn.hanabi.gui.common.font.VertexFontRenderer;
+import cn.hanabi.gui.common.font.compat.WrappedVertexFontRenderer;
 
 import java.awt.*;
 import java.io.InputStream;

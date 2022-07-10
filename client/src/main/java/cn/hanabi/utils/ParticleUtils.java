@@ -1,6 +1,6 @@
 package cn.hanabi.utils;
 
-import cn.hanabi.gui.particles.ParticleGenerator;
+import cn.hanabi.gui.common.particles.ParticleGenerator;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 

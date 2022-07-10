@@ -1,7 +1,7 @@
 package cn.hanabi.utils;
 
-import cn.hanabi.gui.notifications.Notification;
-import cn.hanabi.gui.notifications.Notification.Type;
+import cn.hanabi.gui.classic.notifications.Notification;
+import cn.hanabi.gui.classic.notifications.Notification.Type;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockVine;

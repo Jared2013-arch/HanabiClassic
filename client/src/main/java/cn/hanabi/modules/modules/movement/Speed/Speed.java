@@ -3,10 +3,14 @@ package cn.hanabi.modules.modules.movement.Speed;
 import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
-import cn.hanabi.gui.notifications.Notification;
+import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
+import cn.hanabi.modules.ModManager;
+import cn.hanabi.modules.modules.combat.KillAura;
+import cn.hanabi.modules.modules.combat.TargetStrafe;
 import cn.hanabi.utils.ClientUtil;
+import cn.hanabi.utils.MoveUtils;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import io.netty.util.internal.ThreadLocalRandom;
@@ -64,21 +68,14 @@ public class Speed extends Mod {
 
         if (mode.isCurrentMode("GudHop")) {
             modeGudHop.onPre(e);
-        } else
-            if (mode.isCurrentMode("Hypixel")) {
-                modeGlobalHypixel.onPre(e);
-                //        }else if (mode.isCurrentMode("Test")) {
-//            return;
-            } else
-                if (mode.isCurrentMode("AAC")) {
-                    modeAAC.onPre(e);
-                } else
-                    if (mode.isCurrentMode("Mineplex")) {
-                        modeMineplex.onUpdate();
-                    }
-        /*
-         * if (mode.isCurrentMode("Hypixel")) { Hypixel.onPre(e); return; }
-         */
+        } else if (mode.isCurrentMode("Hypixel")) {
+            modeGlobalHypixel.onPre(e);
+        } else if (mode.isCurrentMode("AAC")) {
+            modeAAC.onPre(e);
+        } else if (mode.isCurrentMode("Mineplex")) {
+            modeMineplex.onUpdate();
+        }
+
     }
 
     @EventTarget
@@ -111,7 +108,7 @@ public class Speed extends Mod {
     }
 
     @EventTarget
-    public void onLoop(EventLoop e){
+    public void onLoop(EventLoop e) {
         if (mode.isCurrentMode("Hypixel")) {
             modeGlobalHypixel.onLoop(e);
         }
@@ -126,25 +123,13 @@ public class Speed extends Mod {
 
     @EventTarget
     public void onMove(EventMove em) {
-        /*
-         * if (mode.isCurrentMode("HypixelGlobal")) { setDisplayName("HypixelGlobal");
-         * GlobalHypixel.onMove(em); return; }
-         */
-
         if (mode.isCurrentMode("Hypixel")) {
             modeGlobalHypixel.onMove(em);
-        }else if(mode.isCurrentMode("Verus")){
+        } else if (mode.isCurrentMode("Verus")) {
             modeVerus.onMove(em);
         }
-//        if (mode.isCurrentMode("Test")) {
-//            return;
-//        }
-        /*
-         * if (mode.isCurrentMode("Hypixel")) { setDisplayName("Hypixel");
-         * Hypixel.onMove(em); return; }
-         */
 
-
+        ((TargetStrafe) ModManager.getModule(TargetStrafe.class)).isStrafing(em, KillAura.target, MoveUtils.getBaseMoveSpeed());
     }
 
     @Override
@@ -152,23 +137,20 @@ public class Speed extends Mod {
         Wrapper.getTimer().timerSpeed = 1.0f;
 
         if (mode.isCurrentMode("Test")) {
-        } else
-            if (mode.isCurrentMode("Hypixel")) {
-                modeGlobalHypixel.onDisable();
-            } else
-                if (mode.isCurrentMode("AAC")) {
-                    modeAAC.onDisable();
-                }
+        } else if (mode.isCurrentMode("Hypixel")) {
+            modeGlobalHypixel.onDisable();
+        } else if (mode.isCurrentMode("AAC")) {
+            modeAAC.onDisable();
+        }
     }
 
     @Override
     public void onEnable() {
         if (mode.isCurrentMode("Hypixel")) {
             modeGlobalHypixel.onEnable();
-        } else
-            if (mode.isCurrentMode("AAC")) {
-                modeAAC.onEnable();
-            }
+        } else if (mode.isCurrentMode("AAC")) {
+            modeAAC.onEnable();
+        }
     }
 
 

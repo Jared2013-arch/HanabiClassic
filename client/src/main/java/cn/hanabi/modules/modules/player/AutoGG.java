@@ -2,7 +2,7 @@ package cn.hanabi.modules.modules.player;
 
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.events.EventUpdate;
-import cn.hanabi.gui.notifications.Notification;
+import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;

@@ -1,12 +1,12 @@
 package cn.hanabi;
 
-import cn.hanabi.altmanager.AltFileManager;
+import cn.hanabi.gui.classic.altmanager.AltFileManager;
 import cn.hanabi.command.CommandManager;
 import cn.hanabi.events.EventLoop;
 import cn.hanabi.events.EventPacket;
-import cn.hanabi.gui.cloudmusic.MusicManager;
-import cn.hanabi.gui.cloudmusic.ui.MusicPlayerUI;
-import cn.hanabi.gui.font.noway.ttfr.FontLoaders;
+import cn.hanabi.gui.common.cloudmusic.MusicManager;
+import cn.hanabi.gui.common.cloudmusic.ui.MusicPlayerUI;
+import cn.hanabi.gui.common.font.noway.ttfr.FontLoaders;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.utils.ClientUtil;
 import cn.hanabi.utils.DebugUtil;
@@ -92,13 +92,15 @@ public class Hanabi {
     public boolean hasOptifine = false;
     public Field ofFastRenderField;
 
-
-    //Auth
-
     //Crasher
     public Queue<Packet<?>> packetQueue;
     TimeHelper ms = new TimeHelper();
     public long timing;
+
+    //Theme
+    public boolean newStyle = false;
+    public boolean selected = false;
+
 
     public Hanabi() {
         INSTANCE = this;
