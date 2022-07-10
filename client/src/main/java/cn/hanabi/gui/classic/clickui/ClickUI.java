@@ -1,12 +1,12 @@
-package cn.hanabi.gui.classic.newclickui;
+package cn.hanabi.gui.classic.clickui;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.gui.classic.newclickui.impl.BoolValue;
+import cn.hanabi.gui.classic.clickui.impl.BoolValue;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
-import cn.hanabi.gui.classic.newclickui.impl.DoubleValue;
-import cn.hanabi.gui.classic.newclickui.impl.ModeValue;
-import cn.hanabi.gui.classic.newclickui.impl.Panel;
-import cn.hanabi.gui.classic.newclickui.misc.ClickEffect;
+import cn.hanabi.gui.classic.clickui.impl.DoubleValue;
+import cn.hanabi.gui.classic.clickui.impl.ModeValue;
+import cn.hanabi.gui.classic.clickui.impl.Panel;
+import cn.hanabi.gui.classic.clickui.misc.ClickEffect;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.utils.BlurUtil;

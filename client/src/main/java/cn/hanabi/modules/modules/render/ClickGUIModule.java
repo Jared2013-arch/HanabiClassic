@@ -1,7 +1,7 @@
 package cn.hanabi.modules.modules.render;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.gui.classic.newclickui.ClickUI;
+import cn.hanabi.gui.classic.clickui.ClickUI;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;

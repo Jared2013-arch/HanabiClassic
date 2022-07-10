@@ -3,6 +3,7 @@ package cn.hanabi.modules;
 import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.Hanabi;
 import cn.hanabi.events.EventKey;
+import cn.hanabi.modules.modules.render.HUD;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.modules.modules.combat.*;
 import cn.hanabi.modules.modules.ghost.*;
@@ -20,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 @ObfuscationClass
@@ -58,7 +58,7 @@ public class ModManager {
     }
 
     public static ArrayList<Mod> getEnabledModListHUD() {
-        HFontRenderer font = HUD.hudMode.isCurrentMode("Classic") ? Hanabi.INSTANCE.fontManager.raleway17 : Hanabi.INSTANCE.fontManager.usans18;
+        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
 
         ArrayList<Mod> enabledModList = new ArrayList<>(getModules());
         enabledModList.sort((o1, o2) -> (int) (((o2.getDisplayName() != null) ? font.getStringWidth(o2.getDisplayName()) + 3 + font.getStringWidth(o2.getName()) : o2.namewidth) - (((o1.getDisplayName() != null) ? font.getStringWidth(o1.getDisplayName()) + 3 + font.getStringWidth(o1.getName()) : o1.namewidth))));
@@ -145,7 +145,8 @@ public class ModManager {
         addModule(new AutoTools());
         addModule(new AutoGG());
         addModule(new AutoPlay());
-        addModule(new Mod("NoCommand", Category.PLAYER) {});
+        addModule(new Mod("NoCommand", Category.PLAYER) {
+        });
         addModule(new TeleportBedFucker());
         addModule(new Spammer());
         addModule(new AimBot());
@@ -163,6 +164,7 @@ public class ModManager {
         addModule(new Nazi());
         addModule(new Trail());
         addModule(new ChestESP());
+        addModule(new HUD());
         addModule(new HitAnimation());
         addModule(new CaveFinder());
         addModule(new Chams());
@@ -189,7 +191,6 @@ public class ModManager {
         addModule(new AutoL());
         addModule(new HideAndSeek());
         addModule(new Eagle());
-        addModule(new HUD());
         addModule(new SpeedMine());
         addModule(new UhcHelper());
         addModule(new AntiSpammer());

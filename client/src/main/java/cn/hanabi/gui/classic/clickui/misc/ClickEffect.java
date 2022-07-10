@@ -1,4 +1,4 @@
-package cn.hanabi.gui.classic.newclickui.misc;
+package cn.hanabi.gui.classic.clickui.misc;
 
 import cn.hanabi.utils.RenderUtil;
 import cn.hanabi.utils.TranslateUtil;

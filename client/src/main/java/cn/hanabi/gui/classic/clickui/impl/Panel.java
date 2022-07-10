@@ -1,7 +1,7 @@
-package cn.hanabi.gui.classic.newclickui.impl;
+package cn.hanabi.gui.classic.clickui.impl;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.gui.classic.newclickui.ClickUI;
+import cn.hanabi.gui.classic.clickui.ClickUI;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;

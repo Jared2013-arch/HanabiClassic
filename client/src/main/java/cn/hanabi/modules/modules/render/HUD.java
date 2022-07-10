@@ -5,7 +5,6 @@ import cn.hanabi.Hanabi;
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.events.EventRender2D;
 import cn.hanabi.events.EventText;
-import cn.hanabi.events.EventWorldChange;
 import cn.hanabi.gui.common.cloudmusic.ui.MusicOverlayRenderer;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.gui.classic.tabgui.SubTab;
@@ -20,6 +19,7 @@ import cn.hanabi.utils.fontmanager.HanabiFonts;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.Priority;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.yarukon.YRenderUtil;
 import me.yarukon.palette.ColorValue;
 import net.minecraft.block.material.Material;
@@ -56,7 +56,6 @@ public class HUD extends Mod {
     public static
     Value<Double> musicPosYlyr = new Value<>("HUD", "MusicPlayerLyricY", 120d,
             0d, 200d, 1d);
-    public static Value hudMode = new Value("HUD", "HudMode", 0);
     private final HashMap<Integer, Integer> potionMaxDurations = new HashMap<>();
     private final WaitTimer tpsTimer = new WaitTimer();
     public Value<Boolean> arraylist = new Value<>("HUD", "ArrayList", true);
@@ -85,7 +84,6 @@ public class HUD extends Mod {
             Value<>("HUD", "RainBow Offset", 2d, 1d, 6d, 1d);
 
 
-
     public static Value<Double> fade = new
             Value<>("HUD", "Fade Offset", 14d, 1d, 20d, 1d);
 
@@ -105,7 +103,6 @@ public class HUD extends Mod {
         super("HUD", Category.RENDER, true, false, Keyboard.KEY_NONE);
         sound.LoadValue(new String[]{"Custom2", "Minecraft", "Custom1"});
         hitsound.LoadValue(new String[]{"Minecraft", "Ding", "Crack"});
-        hudMode.LoadValue(new String[]{"Classic", "Simple"});
         compasslol = new CompassUtil(325, 325, 1, 2, true);
         setState(true);
 
@@ -147,20 +144,6 @@ public class HUD extends Mod {
 
     }
 
-    @EventTarget
-    public void onReload(EventWorldChange e) {
-        /*HUD hud = (HUD) ModManager.getModule("HUD");
-
-        new Thread(() -> {
-            hud.set(false);
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            }
-            hud.set(true);
-        }).start();*/
-    }
 
     public void color(int color) {
         float f = (float) (color >> 24 & 255) / 255.0f;
@@ -204,7 +187,10 @@ public class HUD extends Mod {
         }
 
         if (arraylist.getValueState()) {
-            renderArray(sr);
+            if (Hanabi.INSTANCE.newStyle)
+                renderClassicArray(sr);
+            else
+                renderNewArray(sr);
         }
 
         if (noti.getValueState()) {
@@ -215,29 +201,37 @@ public class HUD extends Mod {
         }
 
         if (music.getValueState())
-            MusicOverlayRenderer.INSTANCE.renderOverlay();
+            if (Hanabi.INSTANCE.newStyle) {
+                MusicOverlayRenderer.INSTANCE.renderNewOverlay();
+            } else {
+                MusicOverlayRenderer.INSTANCE.renderOverlay();
+            }
 
         if (logo.getValueState()) {
-            if (hudMode.isCurrentMode("Classic")) {
-                Hanabi.INSTANCE.fontManager.icon130.drawStringWithShadow(HanabiFonts.ICON_HANABI_LOGO, 15, 60, array.isCurrentMode("Rainbow") ? new Color(47, 100, 253).getRGB() : design.getColor(), 120);
-
+            if (Hanabi.INSTANCE.newStyle) {
+                RenderUtil.drawImage(new ResourceLocation("Client/new/hud/logo.png"), 20, 20, 215 / 2f, 79 / 2f);
             } else {
-                Hanabi.INSTANCE.fontManager.usans50.drawStringWithShadow("Hanabi", 10, 20, new Color(255, 255, 255, PaletteUtil.fade(new Color(Colors.WHITE.c), 1, 5).getRed()).getRGB(), 100);
-                Hanabi.INSTANCE.fontManager.usans20.drawStringWithShadow("Build 4.0", 12, 35, new Color(255, 255, 255, PaletteUtil.fade(new Color(Colors.WHITE.c), 1, 5).getRed()).getRGB(), 100);
+                Hanabi.INSTANCE.fontManager.icon130.drawStringWithShadow(HanabiFonts.ICON_HANABI_LOGO, 15, 60, array.isCurrentMode("Rainbow") ? new Color(47, 100, 253).getRGB() : design.getColor(), 120);
             }
         }
 
         if (posDisplay.getValueState()) {
-            String pos = "";
+            if (Hanabi.INSTANCE.newStyle) {
+                String pos = "";
+                if (mc.thePlayer != null) {
+                    BlockPos blockPos = mc.thePlayer.getPosition();
+                    pos = "X:" + blockPos.getX() + "   Y:" + blockPos.getY() + "   Z:" + blockPos.getZ();
 
-            if (mc.thePlayer != null) {
-                BlockPos blockPos = mc.thePlayer.getPosition();
-                pos = "X:" + blockPos.getX() + "   Y:" + blockPos.getY() + "   Z:" + blockPos.getZ();
-
-                Hanabi.INSTANCE.fontManager.wqy18.drawCenteredString(pos, sr.getScaledWidth() / 2f, 50, new Color(255, 255, 255, 180).getRGB());
+                    Hanabi.INSTANCE.fontManager.wqy18.drawCenteredString(pos, 4, sr.getScaledWidth() - 16, new Color(255, 255, 255, 180).getRGB());
+                } else {
+                    if (mc.thePlayer != null) {
+                        BlockPos blockPos = mc.thePlayer.getPosition();
+                        pos = "X:" + blockPos.getX() + "   Y:" + blockPos.getY() + "   Z:" + blockPos.getZ();
+                        Hanabi.INSTANCE.fontManager.wqy18.drawCenteredString(pos, sr.getScaledWidth() / 2f, 50, new Color(255, 255, 255, 180).getRGB());
+                    }
+                }
             }
         }
-
         if (hotbar.getValueState() && mc.getRenderViewEntity() instanceof EntityPlayer && !mc.gameSettings.hideGUI) {
             HFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
 
@@ -248,7 +242,9 @@ public class HUD extends Mod {
 
             long ping = (mc.getCurrentServerData() != null) ? mc.getCurrentServerData().pingToServer : -1;
 
-            font.drawString("PING:" + ((ping <= 0) ? "N/A" : ping) + "ms     FPS:" + Minecraft.getDebugFPS(), 16f, height - 16f, -1);
+            if (!Hanabi.INSTANCE.newStyle) {
+                font.drawString("PING:" + ((ping <= 0) ? "N/A" : ping) + "ms     FPS:" + Minecraft.getDebugFPS(), 16f, height - 16f, -1);
+            }
 
             String ez = "Hanabi Build " + Hanabi.CLIENT_VERSION + " - " + Client.username;
             Hanabi.INSTANCE.fontManager.wqy18.drawString(ez, sr.getScaledWidth() - font.getStringWidth(ez) - 5,
@@ -258,17 +254,6 @@ public class HUD extends Mod {
             float hbx = width / 2 - 91 + ((float) hotbarAnimation.get());
             RenderUtil.drawRect(hbx, height - 2, hbx + 21, height,
                     design.getColor());
-//            if (mc.thePlayer.inventory.currentItem == 0) {
-//                RenderUtil.drawRect(width / 2 - 91, height - 2, (width / 2 + 90) - 20 * 8, height,
-//                        design.getColor());
-//
-//            } else {
-//                RenderUtil.drawRect((width / 2) - 91 + mc.thePlayer.inventory.currentItem * 20, height - 2,
-//                        (width / 2) + 90 - 20 * (8 - mc.thePlayer.inventory.currentItem), height,
-//                        design.getColor());
-//            }
-//            Hanabi.INSTANCE.fontManager.wqy13.drawString("2716UGDHSADGTYD672",100,100,-1);
-
 
             RenderHelper.enableGUIStandardItemLighting();
             for (int j = 0; j < 9; ++j) {
@@ -287,7 +272,6 @@ public class HUD extends Mod {
 
             GL11.glColor4f(1, 1, 1, 1);
             renderBlockCount(sr.getScaledWidth(), sr.getScaledHeight() / 2f);
-
         }
 
 
@@ -330,15 +314,26 @@ public class HUD extends Mod {
         }
     }
 
-    private void renderArray(ScaledResolution sr) {
+    private void renderNewArray(ScaledResolution sr) {
+        float arrayListY = 5;
         ArrayList<Mod> mods = new ArrayList<>(ModManager.getEnabledModListHUD());
-        float nextY = (/*arraylistoutline.getValueState() ? 4f : */ 3f) + (hudMode.isCurrentMode("Simple") ? 6f : 0f);
-        int lastX = 0;
         HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
-        HFontRenderer newfont = Hanabi.INSTANCE.fontManager.usans18;
+        for (Mod m : mods) {
+            if (!m.isEnabled())
+                continue;
+            String name = m.getName() + " " + ChatFormatting.GRAY + m.getDisplayName();
+            int stringWidth = font.getStringWidth(name);
+            int posX = sr.getScaledWidth() - stringWidth - 4;
+            RenderUtil.drawImage(new ResourceLocation("Client/new/hud/arraylistshadow.png"), posX + stringWidth / 2f - 87 / 4f, arrayListY - 37 / 4f, 87 / 2f, 37 / 2f);
+            font.drawString(name, posX, arrayListY, -1);
+            arrayListY += 14;
+        }
+    }
 
-        boolean simple = !hudMode.isCurrentMode("Classic");
-        boolean first = true;
+    private void renderClassicArray(ScaledResolution sr) {
+        ArrayList<Mod> mods = new ArrayList<>(ModManager.getEnabledModListHUD());
+        float nextY = 0f;
+        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
         int base;
         int color;
 
@@ -355,22 +350,14 @@ public class HUD extends Mod {
             }
 
             if (arraylistfade.getValueState()) {
-                if (simple)
-                    color = PaletteUtil
-                            .fade(new Color(RenderUtil.reAlpha(Colors.WHITE.c, 0.75F)),
-                                    (int) ((nextY + 11) / 11), fade.getValue().intValue())
-                            .getRGB();
-                else
-                    color = PaletteUtil
-                            .fade(new Color(base),
-                                    (int) ((nextY + 11) / 11), fade.getValue().intValue())
-                            .getRGB();
+
+                color = PaletteUtil
+                        .fade(new Color(base),
+                                (int) ((nextY + 11) / 11), fade.getValue().intValue())
+                        .getRGB();
             } else {
-                if (simple)
-                    color = new Color(RenderUtil.reAlpha(Colors.WHITE.c, 0.75F)).getRGB();
-                else {
-                    color = base;
-                }
+                color = base;
+
             }
             module.onRenderArray();
             //不渲染渲染类
@@ -386,46 +373,13 @@ public class HUD extends Mod {
             String displayName = module.getDisplayName();
             float modwidth = module.posX;
 
-            // 画背景
-            if (!simple) {
-                //FullRect
-                int x = (int) (sr.getScaledWidth() - modwidth - 3f);
-         /*       if (arraylistoutline.getValueState()) {
-                    if (first) {
-                        RenderUtil.drawRect(x - 4, 0, x + font.getStringWidth(modName + " " + displayName) + 7, 1, color);
-                    }
-                    final int i = (lastX - 3 - 1) - (lastX - 3 - 1 - (x - 3 - 1)) + 2;
-                    boolean Del = (lastX - 3 - 1) > i;
+            font.drawStringWithShadow(modName, sr.getScaledWidth() - modwidth - 11, nextY + module.posYRend + 1, color, 100);
 
-                    if (!first) {
-                        RenderUtil.drawRect(lastX - 3 - 1 + (Del ? 2 : 0), nextY + module.posYRend - 6 + (2), i - 1 + (Del ? -2 : 0), nextY + module.posYRend - 5 + (2), color);
-                    }
-                }
-
-          */
-            }
-
-
-            // 画字体
-            if (simple)
-                newfont.drawStringWithShadow(modName, sr.getScaledWidth() - modwidth - 11, nextY + module.posYRend - 1.5f, color, 80);
-            else
-                font.drawStringWithShadow(modName, sr.getScaledWidth() - modwidth - 11, nextY + module.posYRend + 1, color, 100);
-
-            first = false;
-            lastX = (int) (sr.getScaledWidth() - modwidth - 3);
             if (displayName != null)
-                if (simple)
-                    newfont.drawStringWithShadow(displayName, sr.getScaledWidth() - modwidth + newfont.getStringWidth(modName) - 8,
-                            nextY + module.posYRend - 1.5f, new Color(159, 159, 159).getRGB(), 80);
-                else
-                    font.drawStringWithShadow(displayName, sr.getScaledWidth() - 8 - modwidth + font.getStringWidth(modName),
-                            nextY + module.posYRend + 1, new Color(159, 159, 159).getRGB(), 200);
+                font.drawStringWithShadow(displayName, sr.getScaledWidth() - 8 - modwidth + font.getStringWidth(modName),
+                        nextY + module.posYRend + 1, new Color(159, 159, 159).getRGB(), 200);
 
-            if (simple)
-                nextY += 13;
-            else
-                nextY += font.FONT_HEIGHT;
+            nextY += font.FONT_HEIGHT;
         }
     }
 

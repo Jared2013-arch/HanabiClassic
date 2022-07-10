@@ -33,14 +33,11 @@ public abstract class Mod {
     public float displaywidth;
     public float namewidth;
     public int valueSize = 0;
-    public int valueSize1 = 0;
-    public Button modButton;
     public Translate translate = new Translate(0.0F, 0.0F);
     public boolean keepReg = false;
     public boolean isReg = false;
     protected boolean state;
     private int keybind;
-    private boolean isHidden;
     private CheckboxMenuItem checkboxMenuItem;
     private int color;
 
@@ -59,9 +56,13 @@ public abstract class Mod {
         this.setColor(RenderUtil.createGermanColor());
     }
 
-    public int getColor() {return color;}
+    public int getColor() {
+        return color;
+    }
 
-    public void setColor(int color) {this.color = color;}
+    public void setColor(int color) {
+        this.color = color;
+    }
 
     public long getCurrentMS() {
         return System.nanoTime() / 1000000L;
@@ -116,9 +117,9 @@ public abstract class Mod {
     }
 
     public void set(boolean state, boolean noti) {
-        if(noti) {
+        if (noti) {
             this.setState(state);
-        }else{
+        } else {
             try {
                 if (mc.thePlayer != null && saveTimer.isDelayComplete(10000)) {
                     Hanabi.INSTANCE.fileManager.save();
@@ -180,7 +181,7 @@ public abstract class Mod {
     }
 
     public void onRenderArray() {
-        HFontRenderer font = HUD.hudMode.isCurrentMode("Classic") ? Hanabi.INSTANCE.fontManager.raleway17 : Hanabi.INSTANCE.fontManager.usans18;
+        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
 
         if (namewidth == 0)
             namewidth = font.getStringWidth(name);
@@ -252,10 +253,9 @@ public abstract class Mod {
 
             if (!this.getName().equals("ClickGUI") && !this.getName().equals("HUD") && !this.getName().equals("APaletteGui")) {
                 if (mc.thePlayer != null)
-                    if (((HUD)ModManager.getModule("HUD")).sound.isCurrentMode("Custom1"))
+                    if (((HUD) ModManager.getModule("HUD")).sound.isCurrentMode("Custom1"))
                         new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.Disable, -9);
-                    else
-                    if (((HUD)ModManager.getModule("HUD")).sound.isCurrentMode("Custom2"))
+                    else if (((HUD) ModManager.getModule("HUD")).sound.isCurrentMode("Custom2"))
                         new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.Disable2, -9);
                     else
                         mc.thePlayer.playSound("random.click", 0.2F, 0.5F);
@@ -281,7 +281,7 @@ public abstract class Mod {
 
     public void setDisplayName(String displayName) {
 
-        HFontRenderer font = HUD.hudMode.isCurrentMode("Classic") ? Hanabi.INSTANCE.fontManager.raleway17 : Hanabi.INSTANCE.fontManager.usans18;
+        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
 
         if (this.displayName == null) {
             this.displayName = displayName;
