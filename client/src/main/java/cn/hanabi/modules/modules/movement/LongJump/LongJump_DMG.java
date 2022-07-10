@@ -2,7 +2,6 @@ package cn.hanabi.modules.modules.movement.LongJump;
 
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
-import cn.hanabi.gui.notifications.Notification;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.utils.*;
 import cn.hanabi.utils.random.Random;

@@ -4,7 +4,6 @@ import cn.hanabi.events.EventMove;
 import cn.hanabi.events.EventPostMotion;
 import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.events.EventPullback;
-import cn.hanabi.gui.notifications.Notification;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.utils.ClientUtil;
@@ -32,7 +31,6 @@ public class LongJump extends Mod {
     @EventTarget
     private void onLagBack(EventPullback e) {
         if (lagback.getValueState()) {
-            ClientUtil.sendClientMessage("(LagBackCheck) LongJump Disabled", Notification.Type.WARNING);
             set(false);
         }
     }
