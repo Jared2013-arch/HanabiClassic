@@ -2,21 +2,16 @@ package me.yarukon.mainmenu;
 
 import cn.hanabi.Client;
 import cn.hanabi.Hanabi;
-import cn.hanabi.altmanager.GuiAltManager;
-import cn.hanabi.gui.superskidder.material.items.SButton;
-import cn.hanabi.gui.superskidder.material.items.impl.RoundButton;
+import cn.hanabi.gui.classic.altmanager.GuiAltManager;
 import cn.hanabi.utils.ParticleUtils;
 import cn.hanabi.utils.RenderUtil;
 import cn.hanabi.utils.fontmanager.HanabiFonts;
 import me.yarukon.BlurBuffer;
 import me.yarukon.YRenderUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Mouse;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -57,9 +52,9 @@ public class GuiCustomMainMenu extends GuiScreen {
         GlStateManager.translate(this.currentX / 30.0f, this.currentY / 15.0f, 0.0f);
 
         if (!Client.onDebug)
-            RenderUtil.drawImage(new ResourceLocation("Client/mainmenu/mainmenu.png"), -30, -30, res.getScaledWidth() + 60, res.getScaledHeight() + 60);
+            RenderUtil.drawImage(new ResourceLocation("Client/classic/mainmenu/mainmenu.png"), -30, -30, res.getScaledWidth() + 60, res.getScaledHeight() + 60);
         else
-            RenderUtil.drawImage(new ResourceLocation("Client/mainmenu/scifi.png"), -30, -30, res.getScaledWidth() + 60, res.getScaledHeight() + 60);
+            RenderUtil.drawImage(new ResourceLocation("Client/classic/mainmenu/scifi.png"), -30, -30, res.getScaledWidth() + 60, res.getScaledHeight() + 60);
 
 
         GlStateManager.translate(-this.currentX / 30.0f, -this.currentY / 15.0f, 0.0f);

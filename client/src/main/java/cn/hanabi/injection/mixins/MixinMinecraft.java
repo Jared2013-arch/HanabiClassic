@@ -14,12 +14,13 @@ import cn.hanabi.utils.RenderUtil;
 import com.darkmagician6.eventapi.EventManager;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.LanguageManager;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Session;
-import net.minecraft.util.Timer;
+import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.util.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.Sys;
@@ -30,6 +31,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.awt.*;
 import java.nio.ByteBuffer;
 
 @Mixin(Minecraft.class)
@@ -124,19 +126,19 @@ public abstract class MixinMinecraft implements IMinecraft {
         Client.doLogin();
     }
 
-	private long lasteFrame = getTime();
+    private long lasteFrame = getTime();
 
-	public long getTime() {
-		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
-	}
+    public long getTime() {
+        return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+    }
 
     @Inject(method = "runGameLoop", at = @At("HEAD"))
     private void runGameLoop(CallbackInfo ci) {
         PacketHelper.onUpdate();
-	    final long currentTime = getTime();
-	    final int deltaTime = (int) (currentTime - lasteFrame);
-	    lasteFrame = currentTime;
-	    RenderUtil.delta = deltaTime;
+        final long currentTime = getTime();
+        final int deltaTime = (int) (currentTime - lasteFrame);
+        lasteFrame = currentTime;
+        RenderUtil.delta = deltaTime;
 
         Client.onGameLoop();
     }
@@ -165,7 +167,6 @@ public abstract class MixinMinecraft implements IMinecraft {
     private void middleClickMouse(CallbackInfo callbackInfo) {
         EventManager.call(new EventMouse(EventMouse.Button.Middle));
     }
-
 
 
     @Inject(method = "runTick", at = @At("HEAD"))
@@ -209,8 +210,43 @@ public abstract class MixinMinecraft implements IMinecraft {
         }
     }
 
+    short stage;
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/common/ProgressManager$ProgressBar;step(Ljava/lang/String;)V", shift = At.Shift.AFTER))
+    public void drawSplash(CallbackInfo ci) {
+        stage++;
+        this.drawSplashScreen(stage, 5, "Loading");
+    }
+
+    private void drawSplashScreen(int stage, int totalStage, String arg) {
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        int i = sr.getScaleFactor();
+        Framebuffer framebuffer = new Framebuffer(sr.getScaledWidth() * i, sr.getScaledHeight() * i, true);
+        framebuffer.bindFramebuffer(false);
+        GlStateManager.matrixMode(5889);
+        GlStateManager.loadIdentity();
+        GlStateManager.ortho(0.0D, sr.getScaledWidth(), sr.getScaledHeight(), 0.0D, 1000.0D, 3000.0D);
+        GlStateManager.matrixMode(5888);
+        GlStateManager.loadIdentity();
+        GlStateManager.translate(0.0F, 0.0F, -2000.0F);
+        GlStateManager.disableLighting();
+        GlStateManager.disableFog();
+        GlStateManager.resetColor();
+        Gui.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(24, 24, 24).getRGB());
+        Gui.drawRect(0, sr.getScaledHeight() - 4, (int) ((stage / ((float) totalStage)) * sr.getScaledWidth()), sr.getScaledHeight(), new Color(61, 155, 239).getRGB());
+
+        RenderUtil.drawImage(new ResourceLocation("Client/new/loading/logo.png"), sr.getScaledWidth() / 2f - 269 / 4f, sr.getScaledHeight() / 2f - 20f, 269 / 2f, 91 / 2f);
+        GlStateManager.disableLighting();
+        GlStateManager.disableFog();
+        framebuffer.unbindFramebuffer();
+        framebuffer.framebufferRender(sr.getScaledWidth() * i, sr.getScaledHeight() * i);
+        GlStateManager.enableAlpha();
+        GlStateManager.alphaFunc(516, 0.1F);
+        Minecraft.getMinecraft().updateDisplay();
+    }
+
     /**
-     * @author
+     * @author SuperSkidder
      */
     @Overwrite
     private void sendClickBlockToController(boolean leftClick) {

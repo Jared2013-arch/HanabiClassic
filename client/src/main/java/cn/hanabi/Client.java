@@ -3,7 +3,6 @@ package cn.hanabi;
 import aLph4anTi1eaK_cN.Annotation.Setup;
 import cn.hanabi.events.EventLoop;
 import cn.hanabi.events.EventWorldChange;
-import cn.hanabi.gui.Login;
 import com.darkmagician6.eventapi.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -51,10 +50,6 @@ public class Client {
     }
 
     public static void doLogin() {
-//        Login login = new Login();
-//        login.doLogin();
-        username = "";
-        rank = "";
         new Hanabi();
     }
 }

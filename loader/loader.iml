@@ -162,7 +162,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://D:/java/Projects/Hanabi-Beta-master/client/libs/aLph4anTi1eaKcN_Annotation.jar!/"/>
+          <root url="jar://D:/java/Projects/Hanabi/client/libs/aLph4anTi1eaKcN_Annotation.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -171,7 +171,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://D:/java/Projects/Hanabi-Beta-master/client/libs/jfxrt.jar!/"/>
+          <root url="jar://D:/java/Projects/Hanabi/client/libs/jfxrt.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -850,10 +850,12 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/SuperSkidder/.gradle/caches/minecraft/net/minecraftforge/forge/1.8.9-11.15.1.2318-1.8.9/stable/22/forgeBin-1.8.9-11.15.1.2318-1.8.9.jar!/"/>
+          <root url="jar://C:/Users/SuperSkidder/.gradle/caches/minecraft/net/minecraftforge/forge/1.8.9-11.15.1.2318-1.8.9/stable/22/forgeSrc-1.8.9-11.15.1.2318-1.8.9.jar!/"/>
         </CLASSES>
         <JAVADOC/>
-        <SOURCES/>
+        <SOURCES>
+          <root url="jar://C:/Users/SuperSkidder/.gradle/caches/minecraft/net/minecraftforge/forge/1.8.9-11.15.1.2318-1.8.9/stable/22/forgeSrc-1.8.9-11.15.1.2318-1.8.9-sources.jar!/"/>
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="RUNTIME">

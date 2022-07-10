@@ -4,7 +4,7 @@ import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
-import cn.hanabi.gui.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.injection.interfaces.IEntityPlayer;
 import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.modules.Category;
@@ -21,7 +21,6 @@ import cn.hanabi.utils.rotation.VecRotation;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
-import me.yarukon.font.GlyphPageFontRenderer;
 import me.yarukon.palette.ColorValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -1040,11 +1039,7 @@ public class KillAura extends Mod {
                     int height = sr.getScaledHeight() / 2;
 
                     EntityLivingBase player = target;
-                    if (ClickGUIModule.theme.isCurrentMode("Light")) {
-                        Gui.drawRect(width - 70, height + 30, width + 80, height + 105, new Color(255, 255, 255, 100).getRGB());
-                    } else {
-                        Gui.drawRect(width - 70, height + 30, width + 80, height + 105, new Color(0, 0, 0, 140).getRGB());
-                    }
+                    Gui.drawRect(width - 70, height + 30, width + 80, height + 105, new Color(0, 0, 0, 140).getRGB());
 
                     font.drawString(player.getName() + "             " + (Criticals.isReadyToCritical ? "Critical " : " "), width - 65, height + 35, 0xFFFFFF);
                     font1.drawString(player.onGround ? "On Ground" : "No Ground", width - 65, height + 50, 0xFFFFFF);
