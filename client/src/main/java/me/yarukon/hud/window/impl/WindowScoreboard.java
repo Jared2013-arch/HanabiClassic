@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class WindowScoreboard extends HudWindow {
     public WindowScoreboard() {
-        super("Scoreboard", 5, 200, 200, 300, "Scoreboard", "", 12, 0, 1f);
+        super("Scoreboard", 5, 200, 200, 300, "Scoreboard", "", 12, 0, 1f,false);
     }
 
     @Override

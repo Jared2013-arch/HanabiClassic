@@ -48,24 +48,25 @@ public class HudWindow {
     public int titleBGColor;
     public int frameBGColor;
     public int textColor;
+    public boolean alwaysDisplayTitle;
 
     public HudWindow(String windowID, float x, float y, float width, float height, String title) {
-        this(windowID, x, y, width, height, title, "", 15, 0, 0, false, 0, 0);
+        this(windowID, x, y, width, height, title, "", 15, 0, 0, false, 0, 0, true);
     }
 
     public HudWindow(String windowID, float x, float y, float width, float height, String title, String icon) {
-        this(windowID, x, y, width, height, title, icon, 15, 0, 0, false, 0, 0);
+        this(windowID, x, y, width, height, title, icon, 15, 0, 0, false, 0, 0, true);
     }
 
     public HudWindow(String windowID, float x, float y, float width, float height, String title, boolean resizeable, float minWidth, float minHeight) {
-        this(windowID, x, y, width, height, title, "", 15, 0, 0, resizeable, minWidth, minHeight);
+        this(windowID, x, y, width, height, title, "", 15, 0, 0, resizeable, minWidth, minHeight, true);
     }
 
-    public HudWindow(String windowID, float x, float y, float width, float height, String title, String icon, float draggableHeight, float iconOffX, float iconOffY) {
-        this(windowID, x, y, width, height, title, icon, draggableHeight, iconOffX, iconOffY, false, 0, 0);
+    public HudWindow(String windowID, float x, float y, float width, float height, String title, String icon, float draggableHeight, float iconOffX, float iconOffY, boolean disTitle) {
+        this(windowID, x, y, width, height, title, icon, draggableHeight, iconOffX, iconOffY, false, 0, 0, disTitle);
     }
 
-    public HudWindow(String windowID, float x, float y, float width, float height, String title, String icon, float draggableHeight, float iconOffX, float iconOffY, boolean resizeable, float minWidth, float minHeight) {
+    public HudWindow(String windowID, float x, float y, float width, float height, String title, String icon, float draggableHeight, float iconOffX, float iconOffY, boolean resizeable, float minWidth, float minHeight, boolean disTitle) {
         this.windowID = windowID;
         this.x = x;
         this.y = y;
@@ -79,13 +80,14 @@ public class HudWindow {
         this.resizeable = resizeable;
         this.minWidth = minWidth;
         this.minHeight = minHeight;
+        this.alwaysDisplayTitle = disTitle;
     }
 
     public void draw() {
         if (OpenGlHelper.shadersSupported && Minecraft.getMinecraft().getRenderViewEntity() instanceof EntityPlayer) {
-            if(!HudWindowManager.blur.getValueState()) {
-                if(Hanabi.INSTANCE.hasOptifine) {
-                    if(Hanabi.INSTANCE.fastRenderDisabled(mc.gameSettings)) {
+            if (!HudWindowManager.blur.getValueState()) {
+                if (Hanabi.INSTANCE.hasOptifine) {
+                    if (Hanabi.INSTANCE.fastRenderDisabled(mc.gameSettings)) {
                         BlurBuffer.blurArea((int) x, (int) y, (int) width, (int) height + (int) draggableHeight, true);
                     }
                 } else {
@@ -94,36 +96,35 @@ public class HudWindow {
             }
         }
 
-        boolean isClassic = HUD.hudMode.isCurrentMode("Classic");
 
-        textColor = isClassic ? 0xFFFFFFFF : 0xFF404040;
-//        titleBGColor = HUD.design.getColor();
-        titleBGColor = isClassic ? 0xCC2F74FF : 0xBBFFFFFF;
-//        frameBGColor = isClassic ? 0xAA000000 : Colors.getColor(166, 173, 176,175);
-        frameBGColor = isClassic ? 0xAA000000 : Colors.getColor(166, 173, 176,175);
+        textColor = 0xFFFFFFFF;
+        titleBGColor = 0xCC2F74FF;
+        frameBGColor = 0xAA000000;
 
-        YRenderUtil.drawRect(this.x, this.y, width, draggableHeight, titleBGColor);
+        if (alwaysDisplayTitle || mc.currentScreen instanceof GuiChat) {
+            YRenderUtil.drawRect(this.x, this.y, width, draggableHeight, titleBGColor);
+        }
         YRenderUtil.drawRect(this.x, this.y + draggableHeight, width, height, frameBGColor);
 
         boolean displayIcon = !icon.isEmpty();
         if (displayIcon) {
             Hanabi.INSTANCE.fontManager.sessionInfoIcon14.drawString(this.icon, this.x + iconOffX, this.y + iconOffY, textColor);
         }
-
-        Hanabi.INSTANCE.fontManager.usans15.drawString(this.title, this.x + 3 + (displayIcon ? 8 : 0), this.y + (draggableHeight / 2f) - (Hanabi.INSTANCE.fontManager.usans15.FONT_HEIGHT / 2f), textColor);
-
-        if(mc.currentScreen instanceof GuiChat) {
+        if (alwaysDisplayTitle || mc.currentScreen instanceof GuiChat) {
+            Hanabi.INSTANCE.fontManager.usans15.drawString(this.title, this.x + 3 + (displayIcon ? 8 : 0), this.y + (draggableHeight / 2f) - (Hanabi.INSTANCE.fontManager.usans15.FONT_HEIGHT / 2f), textColor);
+        }
+        if (mc.currentScreen instanceof GuiChat) {
             YRenderUtil.drawRect(this.x, this.y, width, draggableHeight, 0xff00af87);
-            Hanabi.INSTANCE.fontManager.sessionInfoIcon20.drawString("A", this.x + iconOffX, this.y + iconOffY+2, Colors.WHITE.c);
+            Hanabi.INSTANCE.fontManager.sessionInfoIcon20.drawString("A", this.x + iconOffX, this.y + iconOffY + 2, Colors.WHITE.c);
             Hanabi.INSTANCE.fontManager.usans15.drawString("Move", x + 12, this.y + (draggableHeight / 2f) - (Hanabi.INSTANCE.fontManager.usans15.FONT_HEIGHT / 2f), 0xffffffff);
         }
     }
 
     public void postDraw() {
-        if(resizeable && mc.currentScreen instanceof GuiChat) {
+        if (resizeable && mc.currentScreen instanceof GuiChat) {
             Hanabi.INSTANCE.fontManager.sessionInfoIcon14.drawString("N", this.x + width - 8, this.y + draggableHeight + height - 8, textColor);
 
-            if(resizing) {
+            if (resizing) {
                 String gay = (int) this.width + ", " + (int) this.height;
                 YRenderUtil.drawRectNormal(this.x + this.width + 2, this.y + this.draggableHeight + this.height - 12, this.x + this.width + 2 + Hanabi.INSTANCE.fontManager.usans16.getStringWidth(gay) + 4, this.y + this.draggableHeight + this.height, frameBGColor);
                 Hanabi.INSTANCE.fontManager.usans16.drawString(gay, this.x + this.width + 4, this.y + this.draggableHeight + this.height - 10, textColor);
@@ -136,7 +137,7 @@ public class HudWindow {
     }
 
     public void mouseClick(int mouseX, int mouseY, int mouseButton) {
-        if(mouseButton == 0) {
+        if (mouseButton == 0) {
             if (YRenderUtil.isHoveringBound(mouseX, mouseY, x, y, width, draggableHeight)) {
                 this.drag = true;
                 lastClickTime = System.currentTimeMillis();
@@ -144,7 +145,7 @@ public class HudWindow {
                 this.y2 = mouseY - this.y;
             }
 
-            if(YRenderUtil.isHoveringBound(mouseX, mouseY, x + width - 8, y + draggableHeight + height - 8, 8, 8) && this.resizeable) {
+            if (YRenderUtil.isHoveringBound(mouseX, mouseY, x + width - 8, y + draggableHeight + height - 8, 8, 8) && this.resizeable) {
                 this.resizing = true;
                 lastClickTime = System.currentTimeMillis();
                 this.x2 = mouseX;
@@ -159,7 +160,7 @@ public class HudWindow {
             Hanabi.INSTANCE.fileManager.saveWindows();
         }
 
-        if(this.resizing) {
+        if (this.resizing) {
             this.resizing = false;
             Hanabi.INSTANCE.fileManager.saveWindows();
         }
@@ -171,7 +172,7 @@ public class HudWindow {
             this.y = mouseY - this.y2;
         }
 
-        if(this.resizing) {
+        if (this.resizing) {
             this.width += mouseX - x2;
 
             if (width < minWidth) {
@@ -188,7 +189,7 @@ public class HudWindow {
                 this.y2 = mouseY;
             }
 
-            if(!Display.isActive()) {
+            if (!Display.isActive()) {
                 this.resizing = false;
             }
         }
@@ -212,10 +213,10 @@ public class HudWindow {
     }
 
     public boolean isOnFrame(int mouseX, int mouseY) {
-        if(this.resizing) {
+        if (this.resizing) {
             return YRenderUtil.isHoveringBound(mouseX, mouseY, x, y, width, draggableHeight + height);
         } else {
-            return resizeable ? (YRenderUtil.isHoveringBound(mouseX, mouseY, x, y, width, draggableHeight) || YRenderUtil.isHoveringBound(mouseX, mouseY, x + width - 8, y + draggableHeight + height - 8, 8, 8))  : YRenderUtil.isHoveringBound(mouseX, mouseY, x, y, width, draggableHeight);
+            return resizeable ? (YRenderUtil.isHoveringBound(mouseX, mouseY, x, y, width, draggableHeight) || YRenderUtil.isHoveringBound(mouseX, mouseY, x + width - 8, y + draggableHeight + height - 8, 8, 8)) : YRenderUtil.isHoveringBound(mouseX, mouseY, x, y, width, draggableHeight);
         }
     }
 
