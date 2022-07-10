@@ -34,8 +34,7 @@ public class WindowPlayerInventory extends HudWindow {
         float startY = y + draggableHeight + 2;
         int curIndex = 0;
 
-        boolean isClassic = HUD.hudMode.isCurrentMode("Classic");
-        int col = isClassic ? 0x88ffffff : 0x88404040;
+        int col = 0x88ffffff;
 
         //Inventory Item
         for (int i = 9; i < 36; ++i) {

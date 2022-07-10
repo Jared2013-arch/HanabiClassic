@@ -57,10 +57,9 @@ public class WindowScoreboard extends HudWindow {
 
             int height = 0;
             float width = iconOffX + mc.fontRendererObj.getStringWidth(title) + 10;
-            boolean isClassic = HUD.hudMode.isCurrentMode("Classic");
 
             String s3 = scoreObjective1.getDisplayName();
-            YRenderUtil.drawRectNormal(x, y + draggableHeight, x + this.width, y + draggableHeight + 14, isClassic ? 0x44000000 : Colors.getColor(166, 173, 176, 190));
+            YRenderUtil.drawRectNormal(x, y + draggableHeight, x + this.width, y + draggableHeight + 14,0x44000000);
             this.drawCenteredString(s3, (int) x + (int) (this.width / 2), (int) y + (int) draggableHeight + 3, 0xffffffff);
             height += 18;
 

@@ -108,7 +108,7 @@ public class ArrowEsp extends Mod {
         float green = (float) (design >> 8 & 255) / 255.0F;
         float blue = (float) (design & 255) / 255.0F;
 
-        final Color clr = HUD.hudMode.isCurrentMode("Simple") ? new Color(1f, 1f, 1f, (f2)) : new Color(red , green , blue , f2);
+        final Color clr = new Color(red , green , blue , f2);
         return new Color(clr.getRed(), clr.getGreen(), clr.getBlue(), (int) ((255 - clr.getAlpha()) / 1.3f));
     }
 

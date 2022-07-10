@@ -49,22 +49,18 @@ public class HudWindow {
     public int textColor;
     public boolean alwaysDisplayTitle;
 
-    public HudWindow(String windowID, float x, float y, float width, float height, String title) {
-        this(windowID, x, y, width, height, title, "", 15, 0, 0, false, 0, 0, true);
-    }
-
-    public HudWindow(String windowID, float x, float y, float width, float height, String title, String icon) {
-        this(windowID, x, y, width, height, title, icon, 15, 0, 0, false, 0, 0, true);
-    }
-
-    public HudWindow(String windowID, float x, float y, float width, float height, String title, boolean resizeable, float minWidth, float minHeight) {
-        this(windowID, x, y, width, height, title, "", 15, 0, 0, resizeable, minWidth, minHeight, true);
-    }
 
     public HudWindow(String windowID, float x, float y, float width, float height, String title, String icon, float draggableHeight, float iconOffX, float iconOffY, boolean disTitle) {
         this(windowID, x, y, width, height, title, icon, draggableHeight, iconOffX, iconOffY, false, 0, 0, disTitle);
     }
 
+    public HudWindow(String windowID, float x, float y, float width, float height, String title, String icon, float draggableHeight, float iconOffX, float iconOffY, boolean resizeable, float minWidth, float minHeight) {
+        this(windowID, x, y, width, height, title, icon, draggableHeight, iconOffX, iconOffY, resizeable, minWidth, minHeight, true);
+    }
+
+    public HudWindow(String windowID, float x, float y, float width, float height, String title, String icon, float draggableHeight, float iconOffX, float iconOffY) {
+        this(windowID, x, y, width, height, title, icon, draggableHeight, iconOffX, iconOffY, false, 0, 0, true);
+    }
     public HudWindow(String windowID, float x, float y, float width, float height, String title, String icon, float draggableHeight, float iconOffX, float iconOffY, boolean resizeable, float minWidth, float minHeight, boolean disTitle) {
         this.windowID = windowID;
         this.x = x;
