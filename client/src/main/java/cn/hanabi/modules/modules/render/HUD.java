@@ -160,7 +160,6 @@ public class HUD extends Mod {
         float height = sr.getScaledHeight();
 
         if (potion.getValueState()) {
-
             this.renderPotionStatus((int) width, (int) height);
         }
 
@@ -188,9 +187,9 @@ public class HUD extends Mod {
 
         if (arraylist.getValueState()) {
             if (Hanabi.INSTANCE.newStyle)
-                renderClassicArray(sr);
-            else
                 renderNewArray(sr);
+            else
+                renderClassicArray(sr);
         }
 
         if (noti.getValueState()) {

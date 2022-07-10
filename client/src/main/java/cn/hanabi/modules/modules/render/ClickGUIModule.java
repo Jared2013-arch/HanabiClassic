@@ -36,7 +36,7 @@ public class ClickGUIModule extends Mod {
             new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.ClickGuiOpen, -4);
 
         if(Hanabi.INSTANCE.newStyle){
-
+            mc.displayGuiScreen(classicGui);
         }else {
             mc.displayGuiScreen(classicGui);
         }
