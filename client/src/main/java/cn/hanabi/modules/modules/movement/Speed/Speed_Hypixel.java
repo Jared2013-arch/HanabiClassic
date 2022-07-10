@@ -163,11 +163,11 @@ public class Speed_Hypixel {
                 }
                 switch (stage) {
                     case 0: {
-                        speed = baseSpeed * 2.15;
+                        speed = baseSpeed * 2.1;
                         break;
                     }
                     case 1: {
-                        speed *= 0.58;
+                        speed *= 0.57;
                         break;
                     }
                     case 4: {
@@ -175,13 +175,13 @@ public class Speed_Hypixel {
                         break;
                     }
                     default: {
-                        speed = speed / 100 * 98.5f;
+                        speed = speed / 100 * 98f;
                         break;
                     }
                 }
                 stage++;
 
-                event.setMotionPartialStrafe((float) Math.max(baseSpeed, speed), 0.235F + (float) MoveUtils.getRandomHypixelValues());
+                event.setMotionPartialStrafe((float) Math.max(baseSpeed, speed), 0.23F + (float) MoveUtils.getRandomHypixelValues());
             } else {
                 event.setMotion(0);
             }

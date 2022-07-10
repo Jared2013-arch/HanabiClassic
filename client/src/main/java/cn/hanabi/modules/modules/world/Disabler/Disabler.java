@@ -1,10 +1,7 @@
 package cn.hanabi.modules.modules.world.Disabler;
 
 import cn.hanabi.Wrapper;
-import cn.hanabi.events.EventMove;
-import cn.hanabi.events.EventPacket;
-import cn.hanabi.events.EventPreMotion;
-import cn.hanabi.events.EventWorldChange;
+import cn.hanabi.events.*;
 import cn.hanabi.injection.interfaces.IC03PacketPlayer;
 import cn.hanabi.injection.interfaces.INetHandlerPlayClient;
 import cn.hanabi.modules.Category;
@@ -36,7 +33,7 @@ public class Disabler extends Mod {
     public double posZ;
     private boolean cancel;
     private TimeHelper timer2 = new TimeHelper();
-    private TimeHelper timer = new TimeHelper();
+    private TimeHelper timer1 = new TimeHelper();
     private boolean active;
     public Disabler() {
         super("Disabler", Category.WORLD);
@@ -56,7 +53,7 @@ public class Disabler extends Mod {
 
     @EventTarget
     public void onLoadWorld(EventWorldChange event) {
-        timer.reset();
+        timer1.reset();
         timer2.reset();
     }
 
@@ -80,7 +77,7 @@ public class Disabler extends Mod {
     @EventTarget
     public void onMove(EventMove event) {
         if(!mc.isSingleplayer()) {
-            if (timer.hasTimeElapsed(10000, true)) {
+            if (timer1.hasTimeElapsed(10000, true)) {
                 cancel = true;
                 timer2.reset();
             }
@@ -104,41 +101,13 @@ public class Disabler extends Mod {
         if(p instanceof C03PacketPlayer) {
             final C03PacketPlayer c03 = (C03PacketPlayer) p;
             if(mc.thePlayer.ticksExisted == 1) {
-                initPos = new Vec3(c03.getPositionX() + getRandom(-100000, 100000), c03.getPositionY() + getRandom(-100000, 100000), c03.getPositionZ() + getRandom(-100000, 100000));
+                initPos = new Vec3(c03.getPositionX() + getRandom(-1000000, 1000000), c03.getPositionY() + getRandom(-1000000, 1000000), c03.getPositionZ() + getRandom(-100000, 100000));
             } else if(((INetHandlerPlayClient)mc.thePlayer.sendQueue).getdoneLoadingTerrain() && initPos != null && mc.thePlayer.ticksExisted < 100) {
                 ((IC03PacketPlayer)c03).setPosX(initPos.xCoord);
                 ((IC03PacketPlayer)c03).setPosY(initPos.yCoord);
                 ((IC03PacketPlayer)c03).setPosZ(initPos.zCoord);
             }
         }
-        if (p instanceof S08PacketPlayerPosLook) {
-            S08PacketPlayerPosLook packet = (S08PacketPlayerPosLook) event.getPacket();
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(packet.getX(), packet.getY(), packet.getZ(), false));
-            mc.thePlayer.motionX = mc.thePlayer.motionY = mc.thePlayer.motionZ = 0;
-            mc.thePlayer.setPosition(packet.getX(), packet.getY(), packet.getZ());
-            mc.thePlayer.prevPosX = mc.thePlayer.posX;
-            mc.thePlayer.prevPosY = mc.thePlayer.posY;
-            mc.thePlayer.prevPosZ = mc.thePlayer.posZ;
-            mc.displayGuiScreen(null);
-            event.setCancelled(true);
-        }
-        if (p instanceof C0BPacketEntityAction) {
-            event.setCancelled(true);
-        }
-        if (((INetHandlerPlayClient)mc.getNetHandler()).getdoneLoadingTerrain()) {
-            if (!event.isCancelled() && (event.getPacket() instanceof C03PacketPlayer ||event.getPacket() instanceof C0FPacketConfirmTransaction || event.getPacket() instanceof C00PacketKeepAlive)) {
-                event.setCancelled(true);
-                packets.add(event.getPacket());
-            }
-        }
-    }
-
-    public TimeHelper getTimer(){
-        return this.timer;
-    }
-
-    public boolean isActive() {
-        return active;
     }
 
     public static double getRandom(double min, double max) {
@@ -151,7 +120,7 @@ public class Disabler extends Mod {
         }
         return ThreadLocalRandom.current().nextDouble(min, max);
     }
-
+    
     //Bypass Timer
     private void doTimerDisabler(EventPacket e) {
         if (e.getPacket() instanceof C03PacketPlayer) {
@@ -160,7 +129,7 @@ public class Disabler extends Mod {
                 e.setCancelled(true);
             }
             if (cancel) {
-                if (!timer2.hasTimeElapsed(600, false)) {
+                if (!timer2.hasTimeElapsed(400, false)) {
                     if (!ModManager.getModule("Scaffold").isEnabled()) {
                         e.setCancelled(true);
                         packets.add(e.getPacket());

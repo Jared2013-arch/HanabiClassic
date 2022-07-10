@@ -1,9 +1,6 @@
 package cn.hanabi.modules.modules.movement.LongJump;
 
-import cn.hanabi.events.EventMove;
-import cn.hanabi.events.EventPostMotion;
-import cn.hanabi.events.EventPreMotion;
-import cn.hanabi.events.EventPullback;
+import cn.hanabi.events.*;
 import cn.hanabi.gui.notifications.Notification;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
@@ -37,7 +34,6 @@ public class LongJump extends Mod {
         }
     }
 
-
     @EventTarget
     private void onMove(EventMove e) {
         if (mode.isCurrentMode("Bow")) {
@@ -52,7 +48,6 @@ public class LongJump extends Mod {
             nonDMG.onMove(e);
         }
     }
-
 
     @EventTarget
     private void onPre(EventPreMotion e) {
@@ -70,14 +65,12 @@ public class LongJump extends Mod {
         }
     }
 
-
     @EventTarget
     private void onPost(EventPostMotion e) {
         if (mode.isCurrentMode("Bow")) {
             bow.onPost(e);
         }
     }
-
 
     @Override
     public void onEnable() {
