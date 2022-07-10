@@ -24,6 +24,7 @@ import me.yarukon.YRenderUtil;
 import me.yarukon.palette.ColorValue;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -208,7 +209,15 @@ public class HUD extends Mod {
 
         if (logo.getValueState()) {
             if (Hanabi.INSTANCE.newStyle) {
-                RenderUtil.drawImage(new ResourceLocation("Client/new/hud/logo.png"), 20, 20, 215 / 2f, 79 / 2f);
+                GL11.glPushMatrix();
+                GlStateManager.enableBlend();
+                GlStateManager.disableAlpha();
+                GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+                this.mc.getTextureManager().bindTexture(new ResourceLocation("Client/new/hud/logo.png"));
+                Gui.drawModalRectWithCustomSizedTexture(20, 20, (float) 0, (float) 0, 215 / 2, 79 / 2, 215 / 2, 79 / 2);
+                GlStateManager.disableBlend();
+                GlStateManager.enableAlpha();
+                GL11.glPopMatrix();
             } else {
                 Hanabi.INSTANCE.fontManager.icon130.drawStringWithShadow(HanabiFonts.ICON_HANABI_LOGO, 15, 60, array.isCurrentMode("Rainbow") ? new Color(47, 100, 253).getRGB() : design.getColor(), 120);
             }
@@ -320,10 +329,21 @@ public class HUD extends Mod {
         for (Mod m : mods) {
             if (!m.isEnabled())
                 continue;
-            String name = m.getName() + " " + ChatFormatting.GRAY + m.getDisplayName();
+            if (m.getCategory().equals(Category.RENDER))
+                continue;
+            String name = m.getName() + ((m.getDisplayName() != null) ? " " + ChatFormatting.GRAY + m.getDisplayName() : "");
             int stringWidth = font.getStringWidth(name);
             int posX = sr.getScaledWidth() - stringWidth - 4;
-            RenderUtil.drawImage(new ResourceLocation("Client/new/hud/arraylistshadow.png"), posX + stringWidth / 2f - 87 / 4f, arrayListY - 37 / 4f, 87 / 2f, 37 / 2f);
+            GL11.glPushMatrix();
+            GlStateManager.enableBlend();
+            GlStateManager.disableAlpha();
+            GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+            this.mc.getTextureManager().bindTexture(new ResourceLocation("Client/new/hud/arraylistshadow.png"));
+            GlStateManager.color(1.0f, 1.0f, 1.0f, 0.7f);
+            Gui.drawModalRectWithCustomSizedTexture((posX - 2), (int) (arrayListY - 37 / 4f), (float) 0, (float) 0, font.getStringWidth(name) + 13, 37, font.getStringWidth(name) + 13, 37);
+            GlStateManager.disableBlend();
+            GlStateManager.enableAlpha();
+            GL11.glPopMatrix();
             font.drawString(name, posX, arrayListY, -1);
             arrayListY += 14;
         }

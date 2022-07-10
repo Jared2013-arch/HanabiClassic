@@ -62,6 +62,6 @@
   "client": [
     "MixinAbstractClientPlayer",
     "MixinGui",
-    "MixinGuiConnecting"
+    "MixinGuiConnecting1"
   ]
 }
