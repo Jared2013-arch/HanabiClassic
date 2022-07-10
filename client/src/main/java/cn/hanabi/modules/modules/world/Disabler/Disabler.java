@@ -1,7 +1,10 @@
 package cn.hanabi.modules.modules.world.Disabler;
 
 import cn.hanabi.Wrapper;
-import cn.hanabi.events.*;
+import cn.hanabi.events.EventMove;
+import cn.hanabi.events.EventPacket;
+import cn.hanabi.events.EventPreMotion;
+import cn.hanabi.events.EventWorldChange;
 import cn.hanabi.injection.interfaces.IC03PacketPlayer;
 import cn.hanabi.injection.interfaces.INetHandlerPlayClient;
 import cn.hanabi.modules.Category;

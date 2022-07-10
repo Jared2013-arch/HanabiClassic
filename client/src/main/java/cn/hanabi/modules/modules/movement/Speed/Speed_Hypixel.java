@@ -10,7 +10,6 @@ import cn.hanabi.utils.MoveUtils;
 import cn.hanabi.utils.PlayerUtil;
 import cn.hanabi.utils.TimeHelper;
 import cn.hanabi.value.Value;
-import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockIce;
 import net.minecraft.block.BlockPackedIce;
@@ -164,25 +163,25 @@ public class Speed_Hypixel {
                 }
                 switch (stage) {
                     case 0: {
-                        moveSpeed = baseSpeed * 2.15;
+                        speed = baseSpeed * 2.15;
                         break;
                     }
                     case 1: {
-                        moveSpeed *= 0.58;
+                        speed *= 0.58;
                         break;
                     }
                     case 4: {
-                        moveSpeed = baseSpeed * 1.2;
+                        speed = baseSpeed * 1.2;
                         break;
                     }
                     default: {
-                        moveSpeed = moveSpeed / 100 * 98.5f;
+                        speed = speed / 100 * 98.5f;
                         break;
                     }
                 }
                 stage++;
 
-                event.setMotionPartialStrafe((float) Math.max(baseSpeed, moveSpeed), 0.235F + (float) MoveUtils.getRandomHypixelValues());
+                event.setMotionPartialStrafe((float) Math.max(baseSpeed, speed), 0.235F + (float) MoveUtils.getRandomHypixelValues());
             } else {
                 event.setMotion(0);
             }
@@ -194,7 +193,7 @@ public class Speed_Hypixel {
         final KillAura killAura = ModManager.getModule(KillAura.class);
         final TargetStrafe targetStrafe = ModManager.getModule(TargetStrafe.class);
 
-        if (!motion.isCurrentMode("New")){
+        if (!motion.isCurrentMode("New")) {
             //low hop moment
             if (motion.isCurrentMode("LowHop") || motion.isCurrentMode("OnGround")) {
                 if (rounded == MathUtils.round(0.4D, 3.0D)) {
@@ -246,14 +245,13 @@ public class Speed_Hypixel {
             double add = mc.thePlayer.isBurning() ? 0 : mc.thePlayer.hurtResistantTime < 8 ? mc.thePlayer.hurtResistantTime * damageBoost.getValue() * 0.008 : mc.thePlayer.hurtResistantTime * damageBoost.getValue() * .01;
             speed *= 1 + (boost.getValue() ? add : 0);
 
-
-            if (MoveUtils.isMoving()) {
-                if (targetStrafe.isStrafing(event, killAura.target, speed))
-                    setMotion(event, speed);
-            } else {
-                setMotion(event, 0.0);
-                stage = 0;
-            }
+        }
+        if (MoveUtils.isMoving()) {
+            if (targetStrafe.isStrafing(event, killAura.target, speed))
+                setMotion(event, speed);
+        } else {
+            setMotion(event, 0.0);
+            stage = 0;
         }
     }
 

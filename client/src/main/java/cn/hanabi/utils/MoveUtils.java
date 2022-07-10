@@ -5,7 +5,6 @@ import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventMove;
 import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.modules.modules.world.Scaffold;
 import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
