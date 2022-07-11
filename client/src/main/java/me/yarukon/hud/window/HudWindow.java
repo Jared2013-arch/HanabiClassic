@@ -87,14 +87,14 @@ public class HudWindow {
                         if (alwaysDisplayTitle || mc.currentScreen instanceof GuiChat) {
                             BlurBuffer.blurArea((int) x, (int) y, (int) width, (int) height + (int) draggableHeight, true);
                         } else {
-                            BlurBuffer.blurArea((int) x, (int) y + draggableHeight, (int) width, (int) height + (int) draggableHeight, true);
+                            BlurBuffer.blurArea((int) x, (int) y + draggableHeight, (int) width, (int) height, true);
                         }
                     }
                 } else {
                     if (alwaysDisplayTitle || mc.currentScreen instanceof GuiChat) {
                         BlurBuffer.blurArea((int) x, (int) y, (int) width, (int) height + (int) draggableHeight, true);
                     } else {
-                        BlurBuffer.blurArea((int) x, (int) y + draggableHeight, (int) width, (int) height + (int) draggableHeight, true);
+                        BlurBuffer.blurArea((int) x, (int) y + draggableHeight, (int) width, (int) height, true);
                     }
                 }
             }
