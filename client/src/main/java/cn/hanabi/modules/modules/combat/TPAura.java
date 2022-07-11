@@ -4,7 +4,7 @@ import cn.hanabi.events.EventRender;
 import cn.hanabi.events.EventUpdate;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.utils.pathfinder.PathUtils;
 import cn.hanabi.utils.pathfinder.Vec3;
 import cn.hanabi.value.Value;

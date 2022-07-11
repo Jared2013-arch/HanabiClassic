@@ -2,7 +2,7 @@ package cn.hanabi.gui.common.cloudmusic.ui;
 
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.common.cloudmusic.api.CloudMusicAPI;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.render.RenderUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;

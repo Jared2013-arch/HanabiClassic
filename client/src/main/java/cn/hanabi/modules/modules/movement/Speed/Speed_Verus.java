@@ -2,7 +2,7 @@ package cn.hanabi.modules.modules.movement.Speed;
 
 import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.events.EventMove;
-import cn.hanabi.utils.MoveUtils;
+import cn.hanabi.utils.game.MoveUtils;
 import net.minecraft.client.Minecraft;
 
 

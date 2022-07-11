@@ -1,7 +1,7 @@
 package cn.hanabi.command.commands;
 
 import cn.hanabi.command.Command;
-import cn.hanabi.utils.ChatUtils;
+import cn.hanabi.utils.game.ChatUtils;
 import me.yarukon.Yarukon;
 import org.jetbrains.annotations.NotNull;
 

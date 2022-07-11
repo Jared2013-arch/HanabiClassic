@@ -1,7 +1,7 @@
 package me.yarukon;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.utils.ChatUtils;
+import cn.hanabi.utils.game.ChatUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ImageBufferDownload;

@@ -3,7 +3,7 @@ package me.yarukon;
 import cn.hanabi.Client;
 import cn.hanabi.Hanabi;
 import cn.hanabi.modules.modules.combat.KillAura;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.math.TimeHelper;
 import me.yarukon.hud.window.HudWindowManager;
 import me.yarukon.hud.window.impl.WindowSessInfo;
 import net.arikia.dev.drpc.DiscordEventHandlers;

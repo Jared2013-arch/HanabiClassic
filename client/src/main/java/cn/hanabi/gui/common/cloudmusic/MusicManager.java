@@ -5,7 +5,7 @@ import cn.hanabi.events.EventTick;
 import cn.hanabi.gui.common.cloudmusic.api.CloudMusicAPI;
 import cn.hanabi.gui.common.cloudmusic.impl.Lyric;
 import cn.hanabi.gui.common.cloudmusic.impl.Track;
-import cn.hanabi.utils.PlayerUtil;
+import cn.hanabi.utils.game.PlayerUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import javafx.embed.swing.JFXPanel;

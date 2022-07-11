@@ -4,7 +4,7 @@ import cn.hanabi.events.EventPacket;
 import cn.hanabi.injection.interfaces.IKeyBinding;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.math.TimeHelper;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.EventType;

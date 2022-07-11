@@ -7,12 +7,11 @@ import cn.hanabi.injection.interfaces.INetHandlerPlayClient;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.math.TimeHelper;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
-import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.util.Vec3;
 
 import java.util.ArrayList;

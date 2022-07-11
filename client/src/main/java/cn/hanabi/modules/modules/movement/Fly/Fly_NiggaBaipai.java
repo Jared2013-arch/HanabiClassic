@@ -2,9 +2,9 @@ package cn.hanabi.modules.modules.movement.Fly;
 
 import cn.hanabi.events.EventMove;
 import cn.hanabi.events.EventPacket;
-import cn.hanabi.utils.MoveUtils;
-import cn.hanabi.utils.PlayerUtil;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.game.MoveUtils;
+import cn.hanabi.utils.game.PlayerUtil;
+import cn.hanabi.utils.math.TimeHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.C03PacketPlayer;
 

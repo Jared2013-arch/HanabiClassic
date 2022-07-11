@@ -1,10 +1,10 @@
 package cn.hanabi.gui.classic.notifications;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.utils.ClientUtil;
-import cn.hanabi.utils.Colors;
-import cn.hanabi.utils.RenderUtil;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.client.ClientUtil;
+import cn.hanabi.utils.color.Colors;
+import cn.hanabi.utils.render.RenderUtil;
+import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.utils.fontmanager.HanabiFonts;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;

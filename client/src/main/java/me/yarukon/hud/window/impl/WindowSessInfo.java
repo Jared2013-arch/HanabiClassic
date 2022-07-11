@@ -5,7 +5,7 @@ import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.modules.modules.combat.KillAura;
-import cn.hanabi.utils.PacketHelper;
+import cn.hanabi.utils.game.PacketHelper;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import me.yarukon.hud.window.HudWindow;

@@ -2,7 +2,7 @@ package cn.hanabi.modules.modules.movement.Fly;
 
 import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.injection.interfaces.IKeyBinding;
-import cn.hanabi.utils.PlayerUtil;
+import cn.hanabi.utils.game.PlayerUtil;
 import net.minecraft.client.Minecraft;
 
 

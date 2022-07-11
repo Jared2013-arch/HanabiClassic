@@ -3,7 +3,7 @@ package cn.hanabi.command.commands;
 import cn.hanabi.Hanabi;
 import cn.hanabi.command.Command;
 import cn.hanabi.gui.classic.notifications.Notification;
-import cn.hanabi.utils.ClientUtil;
+import cn.hanabi.utils.client.ClientUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

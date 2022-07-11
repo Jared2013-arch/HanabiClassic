@@ -4,7 +4,7 @@ package cn.hanabi.modules.modules.movement;
 import cn.hanabi.events.EventUpdate;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.BlockUtils;
+import cn.hanabi.utils.game.BlockUtils;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.block.BlockLiquid;

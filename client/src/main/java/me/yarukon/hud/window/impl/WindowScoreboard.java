@@ -2,8 +2,6 @@ package me.yarukon.hud.window.impl;
 
 import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.Hanabi;
-import cn.hanabi.modules.modules.render.HUD;
-import cn.hanabi.utils.Colors;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import me.yarukon.YRenderUtil;

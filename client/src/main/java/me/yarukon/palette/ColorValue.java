@@ -1,7 +1,7 @@
 package me.yarukon.palette;
 
-import cn.hanabi.utils.MathUtils;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.math.MathUtils;
+import cn.hanabi.utils.render.RenderUtil;
 
 import java.awt.*;
 import java.util.ArrayList;

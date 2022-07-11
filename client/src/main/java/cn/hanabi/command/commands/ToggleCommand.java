@@ -14,7 +14,7 @@ import cn.hanabi.command.Command;
 import cn.hanabi.command.CommandException;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.utils.ChatUtils;
+import cn.hanabi.utils.game.ChatUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

@@ -5,7 +5,7 @@ import cn.hanabi.command.commands.SpammerCommand;
 import cn.hanabi.events.EventUpdate;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 

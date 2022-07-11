@@ -4,7 +4,7 @@ import cn.hanabi.Hanabi;
 import cn.hanabi.events.EventRender2D;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.DebugUtil;
+import cn.hanabi.utils.client.DebugUtil;
 import com.darkmagician6.eventapi.EventTarget;
 
 public class Debug extends Mod {

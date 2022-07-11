@@ -4,7 +4,7 @@ import cn.hanabi.events.EventUpdate;
 import cn.hanabi.injection.interfaces.IMinecraft;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.item.Item;

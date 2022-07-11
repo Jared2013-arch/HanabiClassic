@@ -2,7 +2,7 @@ package me.yarukon.hud.window;
 
 import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.Hanabi;
-import cn.hanabi.utils.Colors;
+import cn.hanabi.utils.color.Colors;
 import me.yarukon.BlurBuffer;
 import me.yarukon.YRenderUtil;
 import net.minecraft.client.Minecraft;

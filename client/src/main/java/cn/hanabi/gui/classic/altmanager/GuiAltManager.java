@@ -2,8 +2,8 @@ package cn.hanabi.gui.classic.altmanager;
 
 import cn.hanabi.Client;
 import cn.hanabi.Hanabi;
-import cn.hanabi.utils.ParticleUtils;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.render.ParticleUtils;
+import cn.hanabi.utils.render.RenderUtil;
 import com.thealtening.auth.TheAlteningAuthentication;
 import com.thealtening.auth.service.AlteningServiceType;
 import me.yarukon.BlurBuffer;

@@ -5,7 +5,7 @@ import cn.hanabi.modules.ModManager;
 import cn.hanabi.modules.modules.movement.NoJumpDelay;
 import cn.hanabi.modules.modules.render.HUD;
 import cn.hanabi.modules.modules.render.HitAnimation;
-import cn.hanabi.utils.SoundFxPlayer;
+import cn.hanabi.utils.client.SoundFxPlayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;

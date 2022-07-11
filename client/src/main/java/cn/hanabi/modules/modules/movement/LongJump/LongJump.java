@@ -7,7 +7,7 @@ import cn.hanabi.events.EventPullback;
 import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.ClientUtil;
+import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 

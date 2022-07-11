@@ -3,8 +3,8 @@ package cn.hanabi.modules.modules.ghost;
 import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.ReflectionUtils;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.client.ReflectionUtils;
+import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 

@@ -15,7 +15,7 @@ import cn.hanabi.command.CommandException;
 import cn.hanabi.events.EventKey;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.utils.ChatUtils;
+import cn.hanabi.utils.game.ChatUtils;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import org.jetbrains.annotations.NotNull;

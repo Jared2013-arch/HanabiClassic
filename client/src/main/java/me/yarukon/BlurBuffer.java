@@ -4,7 +4,7 @@ import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.injection.interfaces.IShaderGroup;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.math.TimeHelper;
 import me.yarukon.hud.window.HudWindowManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;

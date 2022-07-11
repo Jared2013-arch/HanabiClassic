@@ -2,15 +2,13 @@ package cn.hanabi.modules.modules.render;
 
 import cn.hanabi.events.EventPostMotion;
 import cn.hanabi.events.EventRender;
-import cn.hanabi.events.EventRender2D;
 import cn.hanabi.events.EventUpdate;
 import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
-import com.darkmagician6.eventapi.types.Priority;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;

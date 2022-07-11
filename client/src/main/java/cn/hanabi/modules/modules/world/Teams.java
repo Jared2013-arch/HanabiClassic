@@ -3,7 +3,7 @@ package cn.hanabi.modules.modules.world;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.math.TimeHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 

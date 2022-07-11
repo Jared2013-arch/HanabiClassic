@@ -6,7 +6,7 @@ import cn.hanabi.events.EventWorldChange;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.entity.player.EntityPlayer;

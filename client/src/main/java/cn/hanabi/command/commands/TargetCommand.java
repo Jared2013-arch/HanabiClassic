@@ -2,9 +2,9 @@ package cn.hanabi.command.commands;
 
 import cn.hanabi.command.Command;
 import cn.hanabi.command.CommandException;
-import cn.hanabi.utils.ChatUtils;
-import cn.hanabi.utils.FriendManager;
-import cn.hanabi.utils.TargetManager;
+import cn.hanabi.utils.game.ChatUtils;
+import cn.hanabi.utils.client.FriendManager;
+import cn.hanabi.utils.client.TargetManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ import cn.hanabi.events.EventMove;
 import cn.hanabi.injection.interfaces.IKeyBinding;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.MoveUtils;
+import cn.hanabi.utils.game.MoveUtils;
 import com.darkmagician6.eventapi.EventTarget;
 
 public class Strafe extends Mod {

@@ -1,8 +1,8 @@
 package cn.hanabi.gui.common.font.compat;
 
 import cn.hanabi.gui.common.font.VertexFontRenderer;
-import cn.hanabi.utils.Colors;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.color.Colors;
+import cn.hanabi.utils.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;

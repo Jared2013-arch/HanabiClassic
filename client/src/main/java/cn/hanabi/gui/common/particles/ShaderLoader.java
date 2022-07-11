@@ -1,6 +1,6 @@
 package cn.hanabi.gui.common.particles;
 
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.BufferUtils;

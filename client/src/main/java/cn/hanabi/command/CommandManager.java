@@ -11,7 +11,7 @@
 package cn.hanabi.command;
 
 import cn.hanabi.command.commands.*;
-import cn.hanabi.utils.ChatUtils;
+import cn.hanabi.utils.game.ChatUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

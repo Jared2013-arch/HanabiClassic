@@ -1,7 +1,7 @@
 package cn.hanabi.gui.classic.altmanager;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.render.RenderUtil;
 import com.mojang.authlib.Agent;
 import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;

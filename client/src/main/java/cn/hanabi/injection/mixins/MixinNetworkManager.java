@@ -13,7 +13,7 @@ package cn.hanabi.injection.mixins;
 import cn.hanabi.Hanabi;
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.injection.interfaces.INetworkManager;
-import cn.hanabi.utils.PacketHelper;
+import cn.hanabi.utils.game.PacketHelper;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
 import com.google.common.collect.Queues;

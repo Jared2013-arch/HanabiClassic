@@ -1,8 +1,8 @@
 package me.yarukon.mainmenu;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.utils.Colors;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.color.Colors;
+import cn.hanabi.utils.render.RenderUtil;
 import me.yarukon.YRenderUtil;
 
 public class GuiMainMenuButton {

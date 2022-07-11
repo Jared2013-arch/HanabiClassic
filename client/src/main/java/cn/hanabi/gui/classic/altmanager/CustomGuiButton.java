@@ -1,7 +1,7 @@
 package cn.hanabi.gui.classic.altmanager;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 

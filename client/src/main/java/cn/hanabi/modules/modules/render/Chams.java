@@ -6,7 +6,7 @@ import cn.hanabi.events.EventRenderLivingEntity;
 import cn.hanabi.injection.interfaces.IRendererLivingEntity;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.Opacity;
+import cn.hanabi.utils.render.Opacity;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.Priority;

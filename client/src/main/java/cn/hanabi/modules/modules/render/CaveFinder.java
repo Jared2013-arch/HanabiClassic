@@ -5,7 +5,7 @@ import cn.hanabi.events.EventRenderBlock;
 import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.render.RenderUtil;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;

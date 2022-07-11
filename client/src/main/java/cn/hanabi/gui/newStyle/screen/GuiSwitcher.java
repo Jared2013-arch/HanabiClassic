@@ -1,9 +1,9 @@
 package cn.hanabi.gui.newStyle.screen;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.utils.AnimationUtil;
-import cn.hanabi.utils.ParticleUtils;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.math.AnimationUtil;
+import cn.hanabi.utils.render.ParticleUtils;
+import cn.hanabi.utils.render.RenderUtil;
 import me.yarukon.mainmenu.GuiCustomMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;

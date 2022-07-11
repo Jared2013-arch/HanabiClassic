@@ -3,7 +3,7 @@ package cn.hanabi.command.commands;
 import cn.hanabi.command.Command;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.utils.PlayerUtil;
+import cn.hanabi.utils.game.PlayerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 

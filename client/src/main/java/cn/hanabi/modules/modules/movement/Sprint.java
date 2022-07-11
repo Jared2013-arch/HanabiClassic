@@ -5,7 +5,7 @@ import cn.hanabi.injection.interfaces.IKeyBinding;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.utils.PlayerUtil;
+import cn.hanabi.utils.game.PlayerUtil;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 

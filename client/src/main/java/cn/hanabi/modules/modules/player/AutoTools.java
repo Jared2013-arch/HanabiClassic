@@ -4,7 +4,7 @@ import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.InvUtils;
+import cn.hanabi.utils.game.InvUtils;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.block.Block;

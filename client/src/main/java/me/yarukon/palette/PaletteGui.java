@@ -1,7 +1,7 @@
 package me.yarukon.palette;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.render.RenderUtil;
 import me.yarukon.YRenderUtil;
 import me.yarukon.palette.impl.ColorPicker;
 import net.minecraft.client.Minecraft;

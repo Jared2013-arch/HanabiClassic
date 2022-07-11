@@ -2,7 +2,7 @@ package cn.hanabi.modules.modules.movement.Fly;
 
 import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.events.EventPacket;
-import cn.hanabi.utils.MoveUtils;
+import cn.hanabi.utils.game.MoveUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;

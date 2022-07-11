@@ -6,7 +6,7 @@ import cn.hanabi.events.EventWorldChange;
 import cn.hanabi.injection.interfaces.IS08PacketPlayerPosLook;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.TimeHelper;
+import cn.hanabi.utils.math.TimeHelper;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 

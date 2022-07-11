@@ -1,7 +1,7 @@
 package cn.hanabi.gui.classic.clickui.misc;
 
-import cn.hanabi.utils.RenderUtil;
-import cn.hanabi.utils.TranslateUtil;
+import cn.hanabi.utils.render.RenderUtil;
+import cn.hanabi.utils.render.TranslateUtil;
 
 import java.awt.*;
 

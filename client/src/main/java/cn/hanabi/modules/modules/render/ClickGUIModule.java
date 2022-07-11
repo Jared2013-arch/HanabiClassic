@@ -5,7 +5,7 @@ import cn.hanabi.gui.classic.clickui.ClickUI;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.utils.SoundFxPlayer;
+import cn.hanabi.utils.client.SoundFxPlayer;
 import cn.hanabi.value.Value;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Keyboard;

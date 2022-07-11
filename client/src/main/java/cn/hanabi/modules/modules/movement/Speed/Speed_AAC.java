@@ -4,7 +4,7 @@ import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.injection.interfaces.IEntityPlayer;
-import cn.hanabi.utils.MoveUtils;
+import cn.hanabi.utils.game.MoveUtils;
 import cn.hanabi.value.Value;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.C03PacketPlayer;

@@ -4,7 +4,7 @@ import cn.hanabi.events.EventMouse;
 import cn.hanabi.events.EventUpdate;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.ReflectionUtils;
+import cn.hanabi.utils.client.ReflectionUtils;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 

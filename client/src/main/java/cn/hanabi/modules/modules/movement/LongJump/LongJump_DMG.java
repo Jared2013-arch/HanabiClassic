@@ -1,9 +1,10 @@
 package cn.hanabi.modules.modules.movement.LongJump;
 
-import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.utils.*;
+import cn.hanabi.utils.bypass.DamageUtil;
+import cn.hanabi.utils.game.MoveUtils;
+import cn.hanabi.utils.game.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;

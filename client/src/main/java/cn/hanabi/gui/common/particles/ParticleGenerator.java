@@ -1,6 +1,6 @@
 package cn.hanabi.gui.common.particles;
 
-import cn.hanabi.utils.ParticleRenderUtils;
+import cn.hanabi.utils.render.ParticleRenderUtils;
 import net.minecraft.client.Minecraft;
 
 import java.awt.*;

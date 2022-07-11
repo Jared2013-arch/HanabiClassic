@@ -4,7 +4,7 @@ import cn.hanabi.events.EventRender;
 import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import me.yarukon.palette.ColorValue;

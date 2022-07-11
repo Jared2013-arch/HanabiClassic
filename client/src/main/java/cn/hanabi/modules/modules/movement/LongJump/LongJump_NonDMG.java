@@ -2,8 +2,8 @@ package cn.hanabi.modules.modules.movement.LongJump;
 
 import cn.hanabi.events.EventMove;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.utils.MoveUtils;
-import cn.hanabi.utils.PlayerUtil;
+import cn.hanabi.utils.game.MoveUtils;
+import cn.hanabi.utils.game.PlayerUtil;
 import net.minecraft.client.Minecraft;
 
 public class LongJump_NonDMG {

@@ -10,11 +10,18 @@ import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.modules.modules.render.ClickGUIModule;
 import cn.hanabi.modules.modules.world.AntiBot;
 import cn.hanabi.modules.modules.world.AutoL;
 import cn.hanabi.modules.modules.world.Teams;
-import cn.hanabi.utils.*;
+import cn.hanabi.utils.client.FriendManager;
+import cn.hanabi.utils.client.TargetManager;
+import cn.hanabi.utils.color.ColorUtils;
+import cn.hanabi.utils.color.Colors;
+import cn.hanabi.utils.math.AnimationUtil;
+import cn.hanabi.utils.math.TimeHelper;
+import cn.hanabi.utils.game.PlayerUtil;
+import cn.hanabi.utils.render.PaletteUtil;
+import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.rotation.Rotation;
 import cn.hanabi.utils.rotation.RotationUtil;
 import cn.hanabi.utils.rotation.VecRotation;
@@ -184,6 +191,7 @@ public class KillAura extends Mod {
     private double hudHeight;
 
     public static int killCount = 0;
+    private ColorValue espcolor = new ColorValue("ESPColor", -1, 1, 1, 120, true, false, 1f);
 
     //other stuff
 
@@ -1189,7 +1197,7 @@ public class KillAura extends Mod {
 
         if (EspMode.isCurrentMode("Jello")) {
             for (EntityLivingBase entity : targets) {
-                drawCircle(entity,0.66,true);
+                drawCircle(entity, 0.66, true);
             }
         }
 
@@ -1397,9 +1405,9 @@ public class KillAura extends Mod {
         GlStateManager.disableCull();
         GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
 
-        final double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * Wrapper.getTimer().renderPartialTicks - ((IRenderManager)mc.getRenderManager()).getRenderPosX();
-        final double y = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * Wrapper.getTimer().renderPartialTicks - ((IRenderManager)mc.getRenderManager()).getRenderPosY()) + Math.sin(System.currentTimeMillis() / 2E+2) + 1;
-        final double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * Wrapper.getTimer().renderPartialTicks - ((IRenderManager)mc.getRenderManager()).getRenderPosZ();
+        final double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * Wrapper.getTimer().renderPartialTicks - ((IRenderManager) mc.getRenderManager()).getRenderPosX();
+        final double y = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * Wrapper.getTimer().renderPartialTicks - ((IRenderManager) mc.getRenderManager()).getRenderPosY()) + Math.sin(System.currentTimeMillis() / 2E+2) + 1;
+        final double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * Wrapper.getTimer().renderPartialTicks - ((IRenderManager) mc.getRenderManager()).getRenderPosZ();
 
         Color c;
 
@@ -1407,7 +1415,7 @@ public class KillAura extends Mod {
             final double vecX = x + rad * Math.cos(i);
             final double vecZ = z + rad * Math.sin(i);
 
-            c = new Color(197, 49, 169);
+            c = ColorUtils.intToColor(espcolor.getColor());
 
             if (shade) {
                 GL11.glColor4f(c.getRed() / 255.F,

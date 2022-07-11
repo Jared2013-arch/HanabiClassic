@@ -1,7 +1,7 @@
 package cn.hanabi.utils.rotation;
 
 import cn.hanabi.modules.modules.combat.KillAura;
-import cn.hanabi.utils.RaycastUtils;
+import cn.hanabi.utils.game.RaycastUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

@@ -5,7 +5,7 @@ import cn.hanabi.events.EventMove;
 import cn.hanabi.events.EventPostMotion;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.PlayerUtil;
+import cn.hanabi.utils.game.PlayerUtil;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;

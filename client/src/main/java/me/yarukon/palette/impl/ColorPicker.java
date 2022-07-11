@@ -1,7 +1,7 @@
 package me.yarukon.palette.impl;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.utils.RenderUtil;
+import cn.hanabi.utils.render.RenderUtil;
 import me.yarukon.YRenderUtil;
 import me.yarukon.palette.ColorValue;
 import me.yarukon.palette.PaletteGui;

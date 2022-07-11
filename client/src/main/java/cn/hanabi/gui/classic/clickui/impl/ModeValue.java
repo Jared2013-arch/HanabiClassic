@@ -3,8 +3,8 @@ package cn.hanabi.gui.classic.clickui.impl;
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.classic.clickui.ClickUI;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
-import cn.hanabi.utils.RenderUtil;
-import cn.hanabi.utils.TranslateUtil;
+import cn.hanabi.utils.render.RenderUtil;
+import cn.hanabi.utils.render.TranslateUtil;
 import cn.hanabi.value.Value;
 
 import java.awt.*;

@@ -6,7 +6,7 @@ import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.modules.modules.combat.KillAura;
 import cn.hanabi.modules.modules.combat.TargetStrafe;
-import cn.hanabi.utils.PlayerUtil;
+import cn.hanabi.utils.game.PlayerUtil;
 import net.minecraft.client.Minecraft;
 
 
