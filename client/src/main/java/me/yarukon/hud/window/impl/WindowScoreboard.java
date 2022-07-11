@@ -61,6 +61,7 @@ public class WindowScoreboard extends HudWindow {
             String s3 = scoreObjective1.getDisplayName();
             YRenderUtil.drawRectNormal(x, y + draggableHeight, x + this.width, y + draggableHeight + 14,0x44000000);
             this.drawCenteredString(s3, (int) x + (int) (this.width / 2), (int) y + (int) draggableHeight + 3, 0xffffffff);
+
             height += 18;
 
             for (int i = 0; i < arraylist1.size(); i++) {

@@ -61,6 +61,7 @@ public class HudWindow {
     public HudWindow(String windowID, float x, float y, float width, float height, String title, String icon, float draggableHeight, float iconOffX, float iconOffY) {
         this(windowID, x, y, width, height, title, icon, draggableHeight, iconOffX, iconOffY, false, 0, 0, true);
     }
+
     public HudWindow(String windowID, float x, float y, float width, float height, String title, String icon, float draggableHeight, float iconOffX, float iconOffY, boolean resizeable, float minWidth, float minHeight, boolean disTitle) {
         this.windowID = windowID;
         this.x = x;
@@ -83,10 +84,18 @@ public class HudWindow {
             if (!HudWindowManager.blur.getValueState()) {
                 if (Hanabi.INSTANCE.hasOptifine) {
                     if (Hanabi.INSTANCE.fastRenderDisabled(mc.gameSettings)) {
-                        BlurBuffer.blurArea((int) x, (int) y, (int) width, (int) height + (int) draggableHeight, true);
+                        if (alwaysDisplayTitle || mc.currentScreen instanceof GuiChat) {
+                            BlurBuffer.blurArea((int) x, (int) y, (int) width, (int) height + (int) draggableHeight, true);
+                        } else {
+                            BlurBuffer.blurArea((int) x, (int) y + draggableHeight, (int) width, (int) height + (int) draggableHeight, true);
+                        }
                     }
                 } else {
-                    BlurBuffer.blurArea((int) x, (int) y, (int) width, (int) height + (int) draggableHeight, true);
+                    if (alwaysDisplayTitle || mc.currentScreen instanceof GuiChat) {
+                        BlurBuffer.blurArea((int) x, (int) y, (int) width, (int) height + (int) draggableHeight, true);
+                    } else {
+                        BlurBuffer.blurArea((int) x, (int) y + draggableHeight, (int) width, (int) height + (int) draggableHeight, true);
+                    }
                 }
             }
         }

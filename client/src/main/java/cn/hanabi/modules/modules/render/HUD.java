@@ -326,11 +326,13 @@ public class HUD extends Mod {
         float arrayListY = 5;
         ArrayList<Mod> mods = new ArrayList<>(ModManager.getEnabledModListHUD());
         HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
+
         for (Mod m : mods) {
             if (!m.isEnabled())
                 continue;
             if (m.getCategory().equals(Category.RENDER))
                 continue;
+            m.onRenderArray();
             String name = m.getName() + ((m.getDisplayName() != null) ? " " + ChatFormatting.GRAY + m.getDisplayName() : "");
             int stringWidth = font.getStringWidth(name);
             int posX = sr.getScaledWidth() - stringWidth - 4;

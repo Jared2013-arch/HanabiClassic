@@ -103,7 +103,7 @@ public enum MusicOverlayRenderer {
 
             RenderUtil.drawArc(sr.getScaledWidth() - animation - 31 + 50, 22, 14, Colors.WHITE.c, 0, 360, 2);
 
-            sans.drawString("Now playing", sr.getScaledWidth() - animation - 12 + 50, 28, Colors.WHITE.c);
+            sans.drawString("Now playing", sr.getScaledWidth() - animation - 12 + 50, 12, Colors.WHITE.c);
             wqy.drawString(MusicManager.INSTANCE.getCurrentTrack().name, sr.getScaledWidth() - animation - 12 + 50, 26, Colors.WHITE.c);
 
             if (timer.isDelayComplete(5000)) {
@@ -193,7 +193,7 @@ public enum MusicOverlayRenderer {
 
             RenderUtil.drawArc(sr.getScaledWidth() - animation - 31 + 50, 22, 14, Colors.WHITE.c, 0, 360, 2);
 
-            sans.drawString("Now playing", sr.getScaledWidth() - animation - 12 + 50, 28, Colors.WHITE.c);
+            sans.drawString("Now playing", sr.getScaledWidth() - animation - 12 + 50, 12, Colors.WHITE.c);
             wqy.drawString(MusicManager.INSTANCE.getCurrentTrack().name, sr.getScaledWidth() - animation - 12 + 50, 26, Colors.WHITE.c);
 
             if (timer.isDelayComplete(5000)) {
