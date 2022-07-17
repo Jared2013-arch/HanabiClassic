@@ -52,7 +52,7 @@ public class IRCClient {
 
     public ChannelFuture reconnect() {
         try {
-            return bootstrap.connect("localhost", 6668).sync();
+            return bootstrap.connect("101.43.166.241", 4466).sync();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
