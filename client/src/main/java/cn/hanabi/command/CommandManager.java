@@ -36,6 +36,7 @@ public class CommandManager {
         addCommand(new WaypointCommands());
         addCommand(new FriendCommand());
         addCommand(new TargetCommand());
+        addCommand(new IRCCommand());
         addCommand(new HideCommand());
         addCommand(new SkinChangeCommand());
     }

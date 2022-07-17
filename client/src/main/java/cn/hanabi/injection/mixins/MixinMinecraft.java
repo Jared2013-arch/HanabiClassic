@@ -16,6 +16,7 @@ import com.darkmagician6.eventapi.EventManager;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -124,7 +125,7 @@ public abstract class MixinMinecraft implements IMinecraft {
 
     @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/client/SplashProgress;clearVanillaResources(Lnet/minecraft/client/renderer/texture/TextureManager;Lnet/minecraft/util/ResourceLocation;)V", shift = At.Shift.BEFORE))
     private void login(CallbackInfo ci) {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiLogin());
+        Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(new GuiMainMenu()));
     }
 
     @Inject(method = "createDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V", shift = At.Shift.AFTER))

@@ -2,28 +2,35 @@ package cn.hanabi.irc;
 
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.common.GuiLogin;
+import cn.hanabi.gui.common.GuiRegister;
 import cn.hanabi.irc.packets.Packet;
 import cn.hanabi.irc.packets.impl.PacketMessage;
 import cn.hanabi.irc.packets.impl.clientside.PacketHeartBeat;
+import cn.hanabi.irc.packets.impl.clientside.PacketRegister;
 import cn.hanabi.irc.packets.impl.serverside.PacketGetRep;
+import cn.hanabi.irc.packets.impl.serverside.PacketRegisterRep;
 import cn.hanabi.irc.packets.impl.serverside.PacketServerRep;
 import cn.hanabi.irc.utils.PacketUtil;
 import cn.hanabi.utils.game.PlayerUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import net.minecraft.client.Minecraft;
+
 public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
     public static ChannelHandlerContext context;
 
     @Override
-    public void channelInactive(final ChannelHandlerContext ctx){
+    public void channelInactive(final ChannelHandlerContext ctx) {
         System.out.println("Disconnected from server");
     }
+
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
         System.out.println("IRC Reconnecting...");
         Hanabi.INSTANCE.client.reconnect();
+        Hanabi.INSTANCE.loggedIn = false;
+        Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(null));
     }
 
     @Override
@@ -73,6 +80,10 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
                 case RETURN:
                     PacketGetRep packetReturn = PacketUtil.unpack(s, PacketGetRep.class);
                     PlayerUtil.tellPlayerWithoutPrefix(packetReturn.content);
+                    break;
+                case REGISTERREP:
+                    PacketRegisterRep packetRegisterRep = PacketUtil.unpack(s, PacketRegisterRep.class);
+                    GuiRegister.status = packetRegisterRep.content;
                     break;
             }
         }

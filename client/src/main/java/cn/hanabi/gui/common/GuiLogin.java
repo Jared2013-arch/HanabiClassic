@@ -21,21 +21,26 @@ public class GuiLogin extends GuiScreen {
     private PasswordField password;
     private GuiTextField username;
     public static String status;
+    public GuiScreen per;
 
-    public GuiLogin() {
-
+    public GuiLogin(GuiScreen per) {
+        this.per = per;
     }
 
     @Override
     protected void actionPerformed(GuiButton button) {
         try {
             switch (button.id) {
-                case 1: {
-                    this.mc.displayGuiScreen(new GuiMainMenu());
-                    break;
-                }
+//                case 1: {
+//                    this.mc.displayGuiScreen(new GuiMainMenu());
+//                    break;
+//                }
                 case 0: {
                     ClientHandler.context.writeAndFlush(PacketUtil.pack(new PacketLogin(username.getText(), password.getText())));
+                    break;
+                }
+                case 2:{
+                    this.mc.displayGuiScreen(new GuiRegister());
                     break;
                 }
             }
@@ -47,7 +52,7 @@ public class GuiLogin extends GuiScreen {
     @Override
     public void drawScreen(final int x, final int y, final float z) {
         if (Hanabi.INSTANCE.loggedIn)
-            mc.displayGuiScreen(new GuiMainMenu());
+            mc.displayGuiScreen(per);
         this.drawDefaultBackground();
         ScaledResolution res = new ScaledResolution(mc);
         RenderUtil.drawRect(0, 0, res.getScaledWidth(), res.getScaledHeight(), 0);
@@ -68,7 +73,7 @@ public class GuiLogin extends GuiScreen {
     public void initGui() {
         final int var3 = this.height / 4 + 24;
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, var3 + 72 + 12, "Login"));
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 100, var3 + 72 + 12 + 24, "Back"));
+        this.buttonList.add(new GuiButton(2, this.width / 2 - 100, var3 + 72 + 12 + 24 + 24, "Register"));
         this.username = new GuiTextField(var3, this.mc.fontRendererObj, this.width / 2 - 100, 60, 200, 20);
         this.password = new PasswordField(this.mc.fontRendererObj, this.width / 2 - 100, 100, 200, 20);
         this.username.setFocused(true);

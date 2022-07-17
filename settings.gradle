@@ -43,4 +43,4 @@ pluginManagement {
 
 rootProject.name = 'Hanabi'
 
-include "loader", "client", "server", "IRC"
+include "loader", "client", "server"

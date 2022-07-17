@@ -55,7 +55,7 @@ public class PlayerUtil {
     }
 
     public static void tellPlayerWithoutPrefix(String msg) {
-        if (mc.thePlayer != null) {
+        if (mc != null && mc.thePlayer != null) {
             mc.thePlayer.addChatComponentMessage(new ChatComponentText(msg));
         }
     }
