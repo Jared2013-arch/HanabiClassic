@@ -269,7 +269,7 @@ public class Scaffold extends Mod {
 
             // Set rotations to persistent rotations
             event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
-            event.setPitch(curPitch);
+            event.setPitch(angles[1]);
         }
     }
 
