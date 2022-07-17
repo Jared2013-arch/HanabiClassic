@@ -21,13 +21,14 @@ import org.lwjgl.input.Keyboard;
 public class Speed extends Mod {
 
     public static Value<String[]> mode = new Value<String[]>("Speed", "Mode", 1)
-            .LoadValue(new String[]{"GudHop", "Hypixel", "AAC", "Mineplex", "Verus"});
+            .LoadValue(new String[]{"GudHop", "Hypixel", "AAC", "Mineplex", "Verus", "Vulcan"});
     public static Value<Double> fall = new Value<>("Speed", "Falling Timer", 1.0, 0.9, 4.0, 0.01);
     private final Speed_Hypixel modeGlobalHypixel = new Speed_Hypixel();
     private final Speed_GudHop modeGudHop = new Speed_GudHop();
     private final Speed_AAC modeAAC = new Speed_AAC();
     private final Speed_Mineplex modeMineplex = new Speed_Mineplex();
     private final Speed_Verus modeVerus = new Speed_Verus();
+    private final Speed_Vulcan modeVulcan = new Speed_Vulcan();
     public Value<Boolean> lagback = new Value<>("Speed", "Lag Back Checks", true);
     public Value<Boolean> autodisable = new Value<>("Speed", "Auto Disable", true);
     public Value<Boolean> toggle = new Value<>("Speed", "Key Toggle Timer", true);
@@ -74,6 +75,8 @@ public class Speed extends Mod {
             modeAAC.onPre(e);
         } else if (mode.isCurrentMode("Mineplex")) {
             modeMineplex.onUpdate();
+        } else if (mode.isCurrentMode("Vulcan")) {
+            modeVulcan.onUpdate(e);
         }
 
     }

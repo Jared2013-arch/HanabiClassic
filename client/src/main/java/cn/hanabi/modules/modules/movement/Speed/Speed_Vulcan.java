@@ -1,0 +1,52 @@
+package cn.hanabi.modules.modules.movement.Speed;
+
+import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+import cn.hanabi.Wrapper;
+import cn.hanabi.events.EventMove;
+import cn.hanabi.events.EventPreMotion;
+import cn.hanabi.injection.interfaces.IKeyBinding;
+import cn.hanabi.utils.game.MoveUtils;
+import cn.hanabi.utils.game.PlayerUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.GameSettings;
+
+import static cn.hanabi.Wrapper.mc;
+
+@ObfuscationClass
+public class Speed_Vulcan {
+    private boolean wasTimer = false;
+
+    public void onUpdate(EventPreMotion e){
+        if (wasTimer) {
+            Wrapper.getTimer().timerSpeed = 1.00f;
+            wasTimer = false;
+        }
+        if (Math.abs(mc.thePlayer.movementInput.moveStrafe) < 0.1f) {
+            mc.thePlayer.jumpMovementFactor = 0.026499f;
+        }else {
+            mc.thePlayer.jumpMovementFactor = 0.0244f;
+        }
+        ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(GameSettings.isKeyDown(mc.gameSettings.keyBindJump)) ;
+
+        if (MoveUtils.getSpeed() < 0.215f && !mc.thePlayer.onGround) {
+            MoveUtils.strafe(0.215f);
+        }
+        if (mc.thePlayer.onGround && MoveUtils.isMoving()) {
+            ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
+            mc.thePlayer.jump();
+            if (!mc.thePlayer.isAirBorne) {
+                return; //Prevent flag with Fly
+            }
+            Wrapper.getTimer().timerSpeed = 1.25f;
+            wasTimer = true;
+            MoveUtils.strafe();
+            if(MoveUtils.getSpeed() < 0.5f) {
+                MoveUtils.strafe(0.4849f);
+            }
+        }else if (!PlayerUtil.isMoving()) {
+            Wrapper.getTimer().timerSpeed = 1.00f;
+            mc.thePlayer.motionX = 0.0;
+            mc.thePlayer.motionZ = 0.0;
+        }
+    }
+}
