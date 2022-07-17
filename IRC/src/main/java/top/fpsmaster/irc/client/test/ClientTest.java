@@ -38,7 +38,7 @@ public class ClientTest {
             }
         });
         try {
-            ChannelFuture cf = bootstrap.connect("localhost", 6668).sync();
+            ChannelFuture cf = bootstrap.connect("101.43.166.241", 4466).sync();
             cf.addListener(future -> {
                 if(future.cause() != null){
                     System.out.println("Failed to reconnect");
