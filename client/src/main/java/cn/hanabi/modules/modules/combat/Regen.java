@@ -28,7 +28,7 @@ public class Regen extends Mod {
                         if (mc.thePlayer.onGround) {
                             for (int i = 0; (double) i < (Double) this.packet.getValueState(); ++i) {
                                 if (mc.thePlayer.onGround) {
-                                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer());
+                                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
                                     this.setDisplayName("Health:" + mc.thePlayer.getHealth());
                                     delay.reset();
                                 } else {

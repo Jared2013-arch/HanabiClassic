@@ -54,6 +54,12 @@ public class PlayerUtil {
         return true;
     }
 
+    public static void tellPlayerWithoutPrefix(String msg) {
+        if (mc.thePlayer != null) {
+            mc.thePlayer.addChatComponentMessage(new ChatComponentText(msg));
+        }
+    }
+
     public enum BlockAction {
         PLACE, REPLACE, PLACE_ON
     }
@@ -109,10 +115,9 @@ public class PlayerUtil {
         float forward = 1.0f;
         if (PlayerUtil.mc.thePlayer.moveForward < 0.0f) {
             forward = -0.5f;
-        } else
-            if (PlayerUtil.mc.thePlayer.moveForward > 0.0f) {
-                forward = 0.5f;
-            }
+        } else if (PlayerUtil.mc.thePlayer.moveForward > 0.0f) {
+            forward = 0.5f;
+        }
         if (PlayerUtil.mc.thePlayer.moveStrafing > 0.0f) {
             yaw -= 90.0f * forward;
         }
@@ -125,7 +130,7 @@ public class PlayerUtil {
 
     public static boolean isInWater() {
         return PlayerUtil.mc.theWorld.getBlockState(
-                new BlockPos(PlayerUtil.mc.thePlayer.posX, PlayerUtil.mc.thePlayer.posY, PlayerUtil.mc.thePlayer.posZ))
+                        new BlockPos(PlayerUtil.mc.thePlayer.posX, PlayerUtil.mc.thePlayer.posY, PlayerUtil.mc.thePlayer.posZ))
                 .getBlock().getMaterial() == Material.water;
     }
 
@@ -276,21 +281,21 @@ public class PlayerUtil {
 
     public static void tellPlayer(String string) {
         if (string != null && mc.thePlayer != null) {
-		  //mc.thePlayer.addChatMessage(new ChatComponentText("\247b[Hanabi] \247r " + string));
-		  Hanabi.INSTANCE.debugUtils.add(new DebugUtil(string , 1000 , DebugUtil.Type.NONE));
-	  }
+            //mc.thePlayer.addChatMessage(new ChatComponentText("\247b[Hanabi] \247r " + string));
+            Hanabi.INSTANCE.debugUtils.add(new DebugUtil(string, 1000, DebugUtil.Type.NONE));
+        }
     }
 
     public static void debugChat(Object string) {
         if (string != null && mc.thePlayer != null) {
             mc.thePlayer.addChatMessage(new ChatComponentText("\247b[Hanabi] \247r " + string));
-        //    Hanabi.INSTANCE.debugUtils.add(new DebugUtil(string , 1000 , DebugUtil.Type.NONE));
+            //    Hanabi.INSTANCE.debugUtils.add(new DebugUtil(string , 1000 , DebugUtil.Type.NONE));
         }
     }
 
     public static void debug(Object string) {
         if (string != null && mc.thePlayer != null && ModManager.getModule("Debug").isEnabled() && Client.rank.toLowerCase().contains("beta"))
-            Hanabi.INSTANCE.debugUtils.add(new DebugUtil((String) string, 1000 , DebugUtil.Type.ERROR));
+            Hanabi.INSTANCE.debugUtils.add(new DebugUtil((String) string, 1000, DebugUtil.Type.ERROR));
     }
 
     public static boolean isMoving() {
@@ -388,10 +393,9 @@ public class PlayerUtil {
             if (forward != 0) {
                 if (strafe > 0) {
                     yaw += (forward > 0 ? -45 : 45);
-                } else
-                    if (strafe < 0) {
-                        yaw += (forward > 0 ? 45 : -45);
-                    }
+                } else if (strafe < 0) {
+                    yaw += (forward > 0 ? 45 : -45);
+                }
                 strafe = 0;
                 if (forward > 0) {
                     forward = 1;
@@ -439,10 +443,9 @@ public class PlayerUtil {
     /**
      * Creates a Vec3 using the pitch and yaw of the entities rotation.
      */
-    protected static final Vec3 getVectorForRotation(float pitch, float yaw)
-    {
-        float f = MathHelper.cos(-yaw * 0.017453292F - (float)Math.PI);
-        float f1 = MathHelper.sin(-yaw * 0.017453292F - (float)Math.PI);
+    protected static final Vec3 getVectorForRotation(float pitch, float yaw) {
+        float f = MathHelper.cos(-yaw * 0.017453292F - (float) Math.PI);
+        float f1 = MathHelper.sin(-yaw * 0.017453292F - (float) Math.PI);
         float f2 = -MathHelper.cos(-pitch * 0.017453292F);
         float f3 = MathHelper.sin(-pitch * 0.017453292F);
         return new Vec3(f1 * f2, f3, f * f2);

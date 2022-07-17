@@ -10,6 +10,7 @@ import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
@@ -22,6 +23,8 @@ public class Fly extends Mod {
     public static Value<Double> timer = new Value<>("Fly", "Motion Speed", 1d, 1d, 10d, 1d);
     Value<String> mode = new Value<>("Fly", "Mode", 0);
     Value<Boolean> lagback = new Value<>("Fly", "Lag Back Checks", true);
+    Value<Boolean> damage = new Value<>("Fly", "Damage", true);
+
     Fly_Motion MotionFly = new Fly_Motion();
     Fly_Hypixel hypixelfly = new Fly_Hypixel();
     Fly_AACv5 aacv5Fly = new Fly_AACv5();
@@ -47,9 +50,8 @@ public class Fly extends Mod {
         final int f = (potioneffect != null) ? (potioneffect.getAmplifier() + 1) : 0;
 
         //c13 exploit
-/*
         if (mc.thePlayer.onGround && damage > 0) {
-            for (int i = 0; i < (float) (mc.thePlayer.getMaxFallHeight() - 1 + Fly.dmgValue.getValueState() + f)
+            for (int i = 0; i < (float) (mc.thePlayer.getMaxFallHeight() - 1 + 1 + f)
                     / 0.05510000046342611 + 1.0; ++i) {
                 (mc.getNetHandler().getNetworkManager()).sendPacket(new C03PacketPlayer.C06PacketPlayerPosLook(
                         mc.thePlayer.posX, mc.thePlayer.posY + 0.05099991337, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, false));
@@ -60,7 +62,6 @@ public class Fly extends Mod {
             }
             mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, false));
         }
-*/
     }
 
     @EventTarget
@@ -134,6 +135,9 @@ public class Fly extends Mod {
     public void onEnable() {
         if(mode.isCurrentMode("AACv5")){
             aacv5Fly.onEnable();
+        }
+        if(damage.getValue()){
+            damagePlayer(1);
         }
         super.onEnable();
     }

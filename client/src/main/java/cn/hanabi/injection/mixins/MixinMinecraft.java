@@ -6,6 +6,7 @@ import cn.hanabi.events.EventGui;
 import cn.hanabi.events.EventKey;
 import cn.hanabi.events.EventMouse;
 import cn.hanabi.events.EventTick;
+import cn.hanabi.gui.common.GuiLogin;
 import cn.hanabi.injection.interfaces.IMinecraft;
 import cn.hanabi.utils.client.IconUtils;
 import cn.hanabi.utils.client.OSUtils;
@@ -119,6 +120,11 @@ public abstract class MixinMinecraft implements IMinecraft {
     @Inject(method = "startGame", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;ingameGUI:Lnet/minecraft/client/gui/GuiIngame;", shift = At.Shift.AFTER))
     private void startGame(CallbackInfo ci) {
         Client.Load();
+    }
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/client/SplashProgress;clearVanillaResources(Lnet/minecraft/client/renderer/texture/TextureManager;Lnet/minecraft/util/ResourceLocation;)V", shift = At.Shift.BEFORE))
+    private void login(CallbackInfo ci) {
+        Minecraft.getMinecraft().displayGuiScreen(new GuiLogin());
     }
 
     @Inject(method = "createDisplay", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;setTitle(Ljava/lang/String;)V", shift = At.Shift.AFTER))

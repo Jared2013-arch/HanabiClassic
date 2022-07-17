@@ -7,6 +7,7 @@ import cn.hanabi.events.EventPacket;
 import cn.hanabi.gui.common.cloudmusic.MusicManager;
 import cn.hanabi.gui.common.cloudmusic.ui.MusicPlayerUI;
 import cn.hanabi.gui.common.font.noway.ttfr.FontLoaders;
+import cn.hanabi.irc.IRCClient;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.client.DebugUtil;
@@ -49,6 +50,7 @@ public class Hanabi {
     public static final String CLIENT_INITIALS;
 
     public static Hanabi INSTANCE;
+    public IRCClient client;
 
     static {
         List<Character> chars = new ArrayList<>();
@@ -94,6 +96,8 @@ public class Hanabi {
 
     //Crasher
     public Queue<Packet<?>> packetQueue;
+    public String rank;
+    public boolean loggedIn;
     TimeHelper ms = new TimeHelper();
     public long timing;
 
@@ -117,6 +121,8 @@ public class Hanabi {
 //       if (!Auth.auth())
 //           CrashUtils.doCrash();
 
+        client = new IRCClient();
+        client.connect();
         Display.setTitle(Hanabi.CLIENT_NAME + " " + Hanabi.CLIENT_VERSION);
         location = Locale.getDefault().getCountry();
         // Without Socket Connection

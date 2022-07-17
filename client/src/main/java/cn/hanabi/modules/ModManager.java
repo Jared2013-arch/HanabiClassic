@@ -150,6 +150,7 @@ public class ModManager {
         addModule(new TeleportBedFucker());
         addModule(new Spammer());
         addModule(new AimBot());
+        addModule(new GodMode());
 
         // RENDER
         addModule(new ClickGUIModule());
