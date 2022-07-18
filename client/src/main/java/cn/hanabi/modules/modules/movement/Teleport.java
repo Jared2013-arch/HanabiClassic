@@ -63,24 +63,16 @@ public class Teleport extends Mod {
         if (mc.currentScreen == null && Mouse.isButtonDown(buttonIndex) && delay <= 0) {
             endPos = objectPosition.getBlockPos();
 
-
             if (BlockUtils.getBlock(endPos).getMaterial() == Material.air) {
                 endPos = null;
                 return;
             }
-
             delay = 6;
         }
 
         if (delay > 0)
             --delay;
 
-        if (endPos != null) {
-            final double endX = (double) endPos.getX() + 0.5D;
-            final double endY = endPos.getY() + 1 + fixedY;
-            final double endZ = (double) endPos.getZ() + 0.5D;
-
-        }
     }
 
     @EventTarget
