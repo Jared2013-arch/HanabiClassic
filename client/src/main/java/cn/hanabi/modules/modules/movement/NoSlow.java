@@ -74,7 +74,7 @@ public class NoSlow extends Mod {
     @EventTarget
     public void onPost(EventPostMotion e) {
         if (!mc.thePlayer.isUsingItem()) return;
-        if(mode.isCurrentMode("Vulcan")) {
+        if(mode.isCurrentMode("AAC5")) {
             if ((mc.thePlayer.isUsingItem() || mc.thePlayer.isBlocking())) {
                 mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0f, 0f, 0f));
             }
