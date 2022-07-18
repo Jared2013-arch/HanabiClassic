@@ -26,15 +26,15 @@ public class GuiSwitcher extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
         ScaledResolution sr = new ScaledResolution(mc);
-        RenderUtil.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(24, 24, 24).getRGB());
+        RenderUtil.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(255, 255, 255).getRGB());
         ParticleUtils.drawParticles(mouseX, mouseY);
 
-        RenderUtil.drawImage(new ResourceLocation("Client/new/switcher/HanabiSwitcher.png"), sr.getScaledWidth() / 2f - 305 / 4f, sr.getScaledHeight() / 3f - 39 / 2f, 305 / 2f, 39f);
+        RenderUtil.drawImage(new ResourceLocation("Client/new/switcher/HanabiSwitcher.png"), sr.getScaledWidth() / 2f - 265 / 4f, sr.getScaledHeight() / 3f - 38 / 2f, 265 / 2f, 38f / 2f);
         float xLeft1 = sr.getScaledWidth() / 2f - 310 / 2f;
         float yUp1 = sr.getScaledHeight() / 2f - box1Anim;
         float smoothSpeed = 0.5f;
-        float minSpeed = 0.2f;
-        int end = 10;
+        float minSpeed = 0.3f;
+        int end = 8;
         if (RenderUtil.isHoveringAppend(mouseX, mouseY, xLeft1, yUp1, 299 / 2f, 64f)) {
             box1Anim = AnimationUtil.moveUD(box1Anim, end, smoothSpeed, minSpeed);
             if (Mouse.isButtonDown(0)) {
