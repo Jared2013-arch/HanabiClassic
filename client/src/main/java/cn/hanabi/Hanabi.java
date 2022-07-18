@@ -155,7 +155,7 @@ public class Hanabi {
         if (windows) {
             if (SystemTray.isSupported()) {
                 try {
-                    this.trayIcon = new TrayIcon(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/assets/minecraft/Client/icon128.png"))));
+                    this.trayIcon = new TrayIcon(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/assets/minecraft/Client/logo128.png"))));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

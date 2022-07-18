@@ -239,10 +239,12 @@ public abstract class MixinMinecraft implements IMinecraft {
         GlStateManager.disableLighting();
         GlStateManager.disableFog();
         GlStateManager.resetColor();
-        Gui.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(24, 24, 24).getRGB());
-        Gui.drawRect(0, sr.getScaledHeight() - 4, (int) ((stage / ((float) totalStage)) * sr.getScaledWidth()), sr.getScaledHeight(), new Color(61, 155, 239).getRGB());
-
-        RenderUtil.drawImage(new ResourceLocation("Client/new/loading/logo.png"), sr.getScaledWidth() / 2f - 269 / 4f, sr.getScaledHeight() / 2f - 20f, 269 / 2f, 91 / 2f);
+        Gui.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(255, 255, 255).getRGB());
+        float i1 = sr.getScaledWidth() / 2f;
+        float i2 = sr.getScaledHeight() / 2f;
+        RenderUtil.drawRoundedRect(i1 - 60, i2 + 60, i1 + 60, i2 + 63, 3, new Color(222, 222, 222).getRGB());
+        RenderUtil.drawRoundedRect(i1 - 60, i2 + 60, i1 - 60 + stage / (float)totalStage * 120, i2 + 63, 3, new Color(61,155,239).getRGB());
+        RenderUtil.drawImage(new ResourceLocation("Client/logo128.png"), sr.getScaledWidth() / 2f - 128 / 4f, sr.getScaledHeight() / 2f - 128 / 2, 128 / 2f, 128 / 2f);
         GlStateManager.disableLighting();
         GlStateManager.disableFog();
         framebuffer.unbindFramebuffer();
