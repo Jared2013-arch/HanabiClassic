@@ -67,6 +67,26 @@ public class RenderUtil {
         GL11.glColor3d(1.0, 1.0, 1.0);
     }
 
+    public static void post3D() {
+        glDisable(GL_LINE_SMOOTH);
+        glEnable(GL_TEXTURE_2D);
+        glShadeModel(GL_FLAT);
+        glDisable(GL_BLEND);
+        glPopMatrix();
+        glColor4f(1, 1, 1, 1);
+    }
+
+    public static void pre3D() {
+        glPushMatrix();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glShadeModel(GL_SMOOTH);
+        glDisable(GL_TEXTURE_2D);
+        glEnable(GL_LINE_SMOOTH);
+        glDisable(GL_LIGHTING);
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    }
+
     public static int width() {
         return new ScaledResolution(Minecraft.getMinecraft()).getScaledWidth();
     }
@@ -779,6 +799,14 @@ public class RenderUtil {
         float f2 = (float) (color >> 8 & 255) / 255.0f;
         float f3 = (float) (color & 255) / 255.0f;
         GL11.glColor4f(f1, f2, f3, f);
+    }
+
+    public static void color(Color color) {
+        GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
+    }
+
+    public static void color(Color color, float alpha) {
+        GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, alpha / 255f);
     }
 
     public static int createShader(String shaderCode, int shaderType) throws Exception {
