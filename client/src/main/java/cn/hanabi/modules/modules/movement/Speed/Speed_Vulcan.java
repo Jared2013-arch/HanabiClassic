@@ -4,6 +4,7 @@ import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventMove;
 import cn.hanabi.events.EventPreMotion;
+import cn.hanabi.events.EventUpdate;
 import cn.hanabi.injection.interfaces.IKeyBinding;
 import cn.hanabi.utils.game.MoveUtils;
 import cn.hanabi.utils.game.PlayerUtil;
@@ -14,15 +15,11 @@ import static cn.hanabi.Wrapper.mc;
 
 @ObfuscationClass
 public class Speed_Vulcan {
-    private boolean wasTimer = false;
 
-    public void onUpdate(EventPreMotion e){
-        if (wasTimer) {
-            Wrapper.getTimer().timerSpeed = 1.00f;
-            wasTimer = false;
-        }
+    public void onUpdate(EventUpdate e){
+        Wrapper.getTimer().timerSpeed = 1.00f;
         if (Math.abs(mc.thePlayer.movementInput.moveStrafe) < 0.1f) {
-            mc.thePlayer.jumpMovementFactor = 0.026499f;
+            mc.thePlayer.jumpMovementFactor = 0.0265f;
         }else {
             mc.thePlayer.jumpMovementFactor = 0.0244f;
         }
@@ -32,16 +29,12 @@ public class Speed_Vulcan {
             MoveUtils.strafe(0.215f);
         }
         if (mc.thePlayer.onGround && MoveUtils.isMoving()) {
+            Wrapper.getTimer().timerSpeed = 1.25f;
             ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
             mc.thePlayer.jump();
-            if (!mc.thePlayer.isAirBorne) {
-                return; //Prevent flag with Fly
-            }
-            Wrapper.getTimer().timerSpeed = 1.25f;
-            wasTimer = true;
             MoveUtils.strafe();
             if(MoveUtils.getSpeed() < 0.5f) {
-                MoveUtils.strafe(0.4849f);
+                MoveUtils.strafe(0.48479f);
             }
         }else if (!PlayerUtil.isMoving()) {
             Wrapper.getTimer().timerSpeed = 1.00f;
