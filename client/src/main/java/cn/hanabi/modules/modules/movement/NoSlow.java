@@ -22,7 +22,7 @@ import static cn.hanabi.Wrapper.sendPacketNoEvent;
 @ObfuscationClass
 public class NoSlow extends Mod {
     public Value<String> mode = new Value<String>("NoSlow", "Mode", 0)
-            .LoadValue(new String[]{"Vanilla", "NCP", "Vulcan"});
+            .LoadValue(new String[]{"Vanilla", "NCP", "Vulcan", "AAC5"});
 
     private boolean isBlocking;
     TimeHelper ms = new TimeHelper();
@@ -70,9 +70,15 @@ public class NoSlow extends Mod {
             }
         }
     }
+
     @EventTarget
     public void onPost(EventPostMotion e) {
         if (!mc.thePlayer.isUsingItem()) return;
+        if(mode.isCurrentMode("Vulcan")) {
+            if ((mc.thePlayer.isUsingItem() || mc.thePlayer.isBlocking())) {
+                mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0f, 0f, 0f));
+            }
+        }
     }
 
     @EventTarget
@@ -93,11 +99,6 @@ public class NoSlow extends Mod {
 
                 event.setCancelled(true);
             }
-        }
-        if (!mc.thePlayer.isUsingItem()) return;
-        if (event.getPacket() instanceof S30PacketWindowItems) {
-            event.setCancelled(true);
-            PlayerUtil.debug("Gay Sir");
         }
     }
 }

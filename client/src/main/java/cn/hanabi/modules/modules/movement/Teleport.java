@@ -71,7 +71,7 @@ public class Teleport extends Mod {
     @EventTarget
     public void onUpdate(EventPreMotion event) {
         final int buttonIndex = Arrays.asList(true).indexOf("Right");
-        if (mc.currentScreen == null && Mouse.isButtonDown(buttonIndex) && delay <= 0) {
+        if (mc.currentScreen == null && delay <= 0) {
             endPos = objectPosition.getBlockPos();
 
             if (BlockUtils.getBlock(endPos).getMaterial() == Material.air) {
