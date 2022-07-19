@@ -51,7 +51,7 @@ public class DoubleValue {
         RenderUtil.circle(x + 130 + anima.getX(), y + 12, 2, new Color(72,151,244, 255).getRGB());
         if (ClickUINew.isHover(mouseX, mouseY, x + 120, y + 2, x + 230, y + length - 2)) {
             double v = longValue * (valn - min) / (max - min);
-            font.drawCenteredString((double) values.getValueState() + "", (float) (x + 125 + v + 4), y, new Color(255, 255, 255, 255).getRGB());
+            font.drawCenteredString((double) values.getValueState() + "", (float) (x + 125 + v + 4), y, new Color(155, 155, 155, 255).getRGB());
         }
     }
 
