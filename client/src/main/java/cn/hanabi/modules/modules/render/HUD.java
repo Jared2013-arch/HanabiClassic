@@ -219,8 +219,8 @@ public class HUD extends Mod {
                 GlStateManager.enableBlend();
                 GlStateManager.disableAlpha();
                 GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-                this.mc.getTextureManager().bindTexture(new ResourceLocation("Client/new/hud/logo128.png"));
-                Gui.drawModalRectWithCustomSizedTexture(20, 20, (float) 0, (float) 0, 215 / 2, 79 / 2, 215 / 2, 79 / 2);
+                mc.getTextureManager().bindTexture(new ResourceLocation("Client/logo128.png"));
+                Gui.drawModalRectWithCustomSizedTexture(20, 20, (float) 0, (float) 0, 128 / 2, 128 / 2, 128 / 2, 128 / 2);
                 GlStateManager.disableBlend();
                 GlStateManager.enableAlpha();
                 GL11.glPopMatrix();

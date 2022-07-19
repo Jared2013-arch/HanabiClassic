@@ -2,6 +2,7 @@ package cn.hanabi.modules.modules.render;
 
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.classic.clickui.ClickUI;
+import cn.hanabi.gui.newStyle.clickui.ClickUINew;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
@@ -12,6 +13,7 @@ import org.lwjgl.input.Keyboard;
 
 public class ClickGUIModule extends Mod {
     public static ClickUI classicGui = new ClickUI();
+    public static ClickUINew newGui = new ClickUINew();
 
     public static Value<Boolean> blur = new Value<>("ClickGUI", "Blur", true);
     ScaledResolution sr;
@@ -36,7 +38,7 @@ public class ClickGUIModule extends Mod {
             new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.ClickGuiOpen, -4);
 
         if(Hanabi.INSTANCE.newStyle){
-            mc.displayGuiScreen(classicGui);
+            mc.displayGuiScreen(newGui);
         }else {
             mc.displayGuiScreen(classicGui);
         }
