@@ -20,6 +20,7 @@ import cn.hanabi.modules.modules.ghost.Hitbox;
 import cn.hanabi.modules.modules.movement.NoSlow;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
+import de.enzaxd.viaforge.ViaForge;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -38,6 +39,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
@@ -51,6 +53,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
@@ -93,9 +96,12 @@ public class MixinEntityPlayerSP extends AbstractClientPlayer implements IEntity
     @Shadow
     private int positionUpdateTicks;
 
+
     public MixinEntityPlayerSP() {
         super(null, null);
     }
+
+
 
     /**
      * @author

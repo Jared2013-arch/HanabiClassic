@@ -54,6 +54,9 @@ repositories {
 //    maven {
 //        url "http://repo.ratsiel.me"
 //    }
+    maven {
+        url = "https://repo.viaversion.com"
+    }
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -77,12 +80,19 @@ dependencies {
         exclude module: "launchwrapper"
         exclude module: "log4j-core"
     }
+
+    implementation "com.viaversion:viaversion:4.3.2-SNAPSHOT"
+    implementation "com.viaversion:viabackwards:4.3.1-SNAPSHOT"
+    implementation "com.viaversion:viarewind-fabric:2.0.3-SNAPSHOT"
+    implementation "org.yaml:snakeyaml:1.29"
+
 	implementation 'org.jetbrains:annotations:15.0'
     // https://mvnrepository.com/artifact/com.google.zxing/core
     implementation group: 'com.google.zxing', name: 'core', version: '2.1'
     // https://mvnrepository.com/artifact/org.json/json
     implementation 'org.json:json:20211205'
     implementation group: 'javazoom', name: 'jlayer', version: '1.0.1'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
