@@ -14,6 +14,9 @@ import org.apache.commons.lang3.RandomUtils;
 
 public class RotationUtil {
 
+    public static Rotation targetRotation;
+    private static int keepLength;
+    private static int revTick;
     private static final double RAD_TO_DEG = 180.0 / Math.PI;
     private static final Minecraft mc = Minecraft.getMinecraft();
     public static float[] prevRotations = new float[2];

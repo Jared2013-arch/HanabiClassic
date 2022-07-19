@@ -43,13 +43,15 @@ import java.util.concurrent.ThreadLocalRandom;
 import static cn.hanabi.Wrapper.sendPacketNoEvent;
 
 public class Scaffold extends Mod {
-
+    private float saveYaw, savePitch;
     //MODE
     private final Value<String> towerMode = new Value<String>("Scaffold", "TowerMode", 0)
             .LoadValue(new String[]{"None", "NCP", "AACv4"});
+    private final Value<String> RoteMode = new Value<String>("Scaffold", "RoteMode", 0)
+            .LoadValue(new String[]{"Hypixel", "None", "Hyt"});
+    private final Value<String> placeMode = new Value<String>("Scaffold", "PlaceMode", 0).LoadValue(new String[]{"Post", "Pre"});
 
     //BUILD
-    private final Value<String> placeMode = new Value<String>("Scaffold", "PlaceMode", 0).LoadValue(new String[]{"Post", "Pre"});
     private final Value<Double> delay = new Value<>("Scaffold", "Place Delay", 0d, 0d, 500d, 10d);
     private final Value<Boolean> diagonal = new Value<>("Scaffold", "Diagonal", true);
     private final Value<Boolean> silent = new Value<>("Scaffold", "Slient", true);
@@ -69,9 +71,6 @@ public class Scaffold extends Mod {
 
     //RENDER
     private final Value<Boolean> render = new Value<>("Scaffold", "ESP", true);
-
-    //Rotate
-    private final Value<Boolean> rotateed = new Value<>("Scaffold", "Rotate", true);
 
     //OTHER
     private final Value<Double> sneakAfter = new Value<>("Scaffold", "Sneak Tick", 1d, 1d, 10d, 1d);
@@ -237,6 +236,7 @@ public class Scaffold extends Mod {
                 mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX - xz[0], mc.thePlayer.posY, mc.thePlayer.posZ - xz[1], true));
                 slowTicks--;
             }
+        }
 
             final BlockPos blockUnder = getBlockUnder();
             data = getBlockData(blockUnder);
@@ -267,11 +267,35 @@ public class Scaffold extends Mod {
                     angles = dstRotations;
                 }
             }
-        }
+
         // Set rotations to persistent rotations
-        if (rotateed.getValue()) {
-            event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
-            event.setPitch(curPitch);
+        switch (RoteMode.getModeAt(RoteMode.getCurrentMode())) {
+            case "None": {
+
+                break;
+            }
+            case "Hypixel": {
+                event.setYaw(angles[0]);
+                event.setPitch(curPitch);
+                break;
+            }
+            case "Hyt": {
+                    mc.thePlayer.rotationYawHead = saveYaw;
+                    mc.thePlayer.renderYawOffset = saveYaw;
+                    double x = mc.thePlayer.posX;
+                    double z = mc.thePlayer.posZ;
+                    double y = mc.thePlayer.posY;
+                    BlockPos underPos = new BlockPos(x, y, z);
+                    final BlockData data = getBlockData(underPos);
+                    final float[] rots = MoveUtils.getRotationsBlock(data.pos, data.face);
+                    final float yaw = rots[0];
+                    final float pitch = rots[1];
+                    saveYaw = yaw;
+                    curPitch = pitch;
+                    event.setYaw(getYawBackward());
+                    event.setPitch(angles[1]);
+                break;
+            }
         }
         ItemStack itemStack = mc.thePlayer.inventory.getStackInSlot(slot);
         BlockPos blockPos = getBlockPosToPlaceOn(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ));
@@ -284,7 +308,7 @@ public class Scaffold extends Mod {
                     }
                 }
                 if (timeHelper.isDelayComplete(delay.getValue().longValue()) && (ray != null && ray.getBlockPos().equals(blockPos) || !rayCast.getValue())) {
-                    Vec3 hitVec = new Vec3(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5);
+                    Vec3 hitVec = hypixel.getValue() ? new Vec3(rotate.getX(), rotate.getY(), rotate.getZ()) : ray != null ? ray.hitVec : new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
                     if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemStack, blockPos, enumFacing, hitVec)) {
                         sneakCount++;
                         slowTicks = 3;
@@ -303,6 +327,7 @@ public class Scaffold extends Mod {
                     if (sneak.getValue())
                         ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
                 }
+                break;
             }
         }
     }
@@ -314,6 +339,31 @@ public class Scaffold extends Mod {
                 .isReplaceable(mc.theWorld, pos);
     }
 
+    public float getYawBackward() {
+        float yaw = MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw);
+
+        MovementInput input = mc.thePlayer.movementInput;
+        float strafe = input.moveStrafe, forward = input.moveForward;
+
+        if (forward != 0) {
+            if (strafe < 0) {
+                yaw += forward < 0 ? 135 : 45;
+            } else if (strafe > 0) {
+                yaw -= forward < 0 ? 135 : 45;
+            } else if (strafe == 0 && forward < 0) {
+                yaw -= 180;
+            }
+
+        } else {
+            if (strafe < 0) {
+                yaw += 90;
+            } else if (strafe > 0) {
+                yaw -= 90;
+            }
+        }
+
+        return MathHelper.wrapAngleTo180_float(yaw - 180);
+    }
     @EventTarget
     private void onPacket(EventPacket e) {
         if (e.getPacket() instanceof C09PacketHeldItemChange) {
@@ -409,6 +459,7 @@ public class Scaffold extends Mod {
                         if (sneak.getValue())
                             ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
                     }
+                    break;
                 }
             }
             // tower
