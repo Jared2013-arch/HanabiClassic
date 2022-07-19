@@ -129,6 +129,7 @@ public class ModManager {
         addModule(new NoJumpDelay());
         addModule(new IceSpeed());
         addModule(new WaterSpeed());
+        addModule(new Teleport());
 
         // PLAYER
         addModule(new AutoArmor());
@@ -172,6 +173,7 @@ public class ModManager {
         addModule(new OreTarget());
         addModule(new Waypoints());
         addModule(new MusicPlayer());
+        addModule(new JumpCircles());
         addModule(new ArrowEsp());
         addModule(new NoFov());
         addModule(new NameProtect());

@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
+import net.minecraft.util.Rotations;
 
 public class Rotation {
 

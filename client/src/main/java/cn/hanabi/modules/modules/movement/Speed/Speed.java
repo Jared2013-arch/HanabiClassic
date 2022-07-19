@@ -59,9 +59,15 @@ public class Speed extends Mod {
             modeGlobalHypixel.onStep(e);
         }
     }
+    @EventTarget
+    public void onUpdate(EventUpdate e) {
+        if (mode.isCurrentMode("Vulcan")) {
+            modeVulcan.onUpdate(e);
+        }
+    }
 
     @EventTarget
-    public void onUpdate(EventPreMotion e) {
+    public void onPre(EventPreMotion e) {
 
         this.setDisplayName(mode.getModeAt(mode.getCurrentMode()));
 
@@ -75,8 +81,6 @@ public class Speed extends Mod {
             modeAAC.onPre(e);
         } else if (mode.isCurrentMode("Mineplex")) {
             modeMineplex.onUpdate();
-        } else if (mode.isCurrentMode("Vulcan")) {
-            modeVulcan.onUpdate(e);
         }
 
     }

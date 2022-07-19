@@ -43,10 +43,13 @@ import java.util.concurrent.ThreadLocalRandom;
 import static cn.hanabi.Wrapper.sendPacketNoEvent;
 
 public class Scaffold extends Mod {
-
+    private float saveYaw, savePitch;
     //MODE
     private final Value<String> towerMode = new Value<String>("Scaffold", "TowerMode", 0)
             .LoadValue(new String[]{"None", "NCP", "AACv4"});
+    private final Value<String> RoteMode = new Value<String>("Scaffold", "RoteMode", 0)
+            .LoadValue(new String[]{"Hypixel", "None", "Hyt"});
+    private final Value<String> placeMode = new Value<String>("Scaffold", "PlaceMode", 0).LoadValue(new String[]{"Post", "Pre"});
 
     //BUILD
     private final Value<Double> delay = new Value<>("Scaffold", "Place Delay", 0d, 0d, 500d, 10d);
@@ -233,14 +236,8 @@ public class Scaffold extends Mod {
                 mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX - xz[0], mc.thePlayer.posY, mc.thePlayer.posZ - xz[1], true));
                 slowTicks--;
             }
-            final PotionEffect speed = mc.thePlayer.getActivePotionEffect(Potion.moveSpeed);
-            final int moveSpeedAmp = speed == null ? 0 : speed.getAmplifier() + 1;
-            if (moveSpeedAmp > 0) {
-                final double multiplier = 1.0 + 0.2 * moveSpeedAmp + 0.1;
-                // Reduce motionX/Z based on speed amplifier
-                mc.thePlayer.motionX /= multiplier;
-                mc.thePlayer.motionZ /= multiplier;
-            }
+        }
+
             final BlockPos blockUnder = getBlockUnder();
             data = getBlockData(blockUnder);
 
@@ -270,10 +267,69 @@ public class Scaffold extends Mod {
                     angles = dstRotations;
                 }
             }
-        }
+
         // Set rotations to persistent rotations
-        event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
-        event.setPitch(curPitch);
+        switch (RoteMode.getModeAt(RoteMode.getCurrentMode())) {
+            case "None": {
+
+                break;
+            }
+            case "Hypixel": {
+                event.setYaw(angles[0]);
+                event.setPitch(curPitch);
+                break;
+            }
+            case "Hyt": {
+                    mc.thePlayer.rotationYawHead = saveYaw;
+                    mc.thePlayer.renderYawOffset = saveYaw;
+                    double x = mc.thePlayer.posX;
+                    double z = mc.thePlayer.posZ;
+                    double y = mc.thePlayer.posY;
+                    BlockPos underPos = new BlockPos(x, y, z);
+                    final BlockData data = getBlockData(underPos);
+                    final float[] rots = MoveUtils.getRotationsBlock(data.pos, data.face);
+                    final float yaw = rots[0];
+                    final float pitch = rots[1];
+                    saveYaw = yaw;
+                    curPitch = pitch;
+                    event.setYaw(getYawBackward());
+                    event.setPitch(angles[1]);
+                break;
+            }
+        }
+        ItemStack itemStack = mc.thePlayer.inventory.getStackInSlot(slot);
+        BlockPos blockPos = getBlockPosToPlaceOn(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ));
+        MovingObjectPosition ray = PlayerUtil.rayCastedBlock(curYaw, curPitch);
+        switch (placeMode.getModeAt(placeMode.getCurrentMode())) {
+            case "Pre": {
+                if (mc.thePlayer.onGround && PlayerUtil.isMoving()){
+                    if (jump.getValue()) {
+                        mc.thePlayer.motionY = 0.3544999999;
+                    }
+                }
+                if (timeHelper.isDelayComplete(delay.getValue().longValue()) && (ray != null && ray.getBlockPos().equals(blockPos) || !rayCast.getValue())) {
+                    Vec3 hitVec = hypixel.getValue() ? new Vec3(rotate.getX(), rotate.getY(), rotate.getZ()) : ray != null ? ray.hitVec : new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                    if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemStack, blockPos, enumFacing, hitVec)) {
+                        sneakCount++;
+                        slowTicks = 3;
+                        if (sneakCount > sneakAfter.getValue())
+                            sneakCount = 0;
+
+                        if (!noSwing.getValue())
+                            mc.thePlayer.swingItem();
+                        else
+                            mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
+
+                        timeHelper.reset();
+                    }
+
+                } else {
+                    if (sneak.getValue())
+                        ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
+                }
+                break;
+            }
+        }
     }
 
     private boolean validateReplaceable(final BlockData data) {
@@ -283,6 +339,31 @@ public class Scaffold extends Mod {
                 .isReplaceable(mc.theWorld, pos);
     }
 
+    public float getYawBackward() {
+        float yaw = MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw);
+
+        MovementInput input = mc.thePlayer.movementInput;
+        float strafe = input.moveStrafe, forward = input.moveForward;
+
+        if (forward != 0) {
+            if (strafe < 0) {
+                yaw += forward < 0 ? 135 : 45;
+            } else if (strafe > 0) {
+                yaw -= forward < 0 ? 135 : 45;
+            } else if (strafe == 0 && forward < 0) {
+                yaw -= 180;
+            }
+
+        } else {
+            if (strafe < 0) {
+                yaw += 90;
+            } else if (strafe > 0) {
+                yaw -= 90;
+            }
+        }
+
+        return MathHelper.wrapAngleTo180_float(yaw - 180);
+    }
     @EventTarget
     private void onPacket(EventPacket e) {
         if (e.getPacket() instanceof C09PacketHeldItemChange) {
@@ -347,12 +428,6 @@ public class Scaffold extends Mod {
             else if (sneakCount < sneakAfter.getValue())
                 ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
 
-            if (mc.thePlayer.onGround && PlayerUtil.isMoving()){
-                if (jump.getValue()) {
-                    mc.thePlayer.motionY = 0.3544999999;
-                }
-            }
-
 //            mc.thePlayer.rotationYaw = rotation[0];
 //            mc.thePlayer.rotationPitch = rotation[1];
             float[] rotation = hypixel.getValue() ? getRotation(rotate, curYaw, curPitch, turnspeed.getValue().floatValue() * 30)
@@ -362,27 +437,31 @@ public class Scaffold extends Mod {
             curPitch = rotation[1];
 
             MovingObjectPosition ray = PlayerUtil.rayCastedBlock(curYaw, curPitch);
+            switch (placeMode.getModeAt(placeMode.getCurrentMode())) {
+                case "Post": {
+                    if (timeHelper.isDelayComplete(delay.getValue().longValue()) && (ray != null && ray.getBlockPos().equals(blockPos) || !rayCast.getValue())) {
+                        Vec3 hitVec = hypixel.getValue() ? new Vec3(rotate.getX(), rotate.getY(), rotate.getZ()) : ray != null ? ray.hitVec : new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                        if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemStack, blockPos, enumFacing, hitVec)) {
+                            sneakCount++;
+                            slowTicks = 3;
+                            if (sneakCount > sneakAfter.getValue())
+                                sneakCount = 0;
 
-            if (timeHelper.isDelayComplete(delay.getValue().longValue()) && (ray != null && ray.getBlockPos().equals(blockPos) || !rayCast.getValue())) {
-                Vec3 hitVec = hypixel.getValue() ? new Vec3(rotate.getX(), rotate.getY(), rotate.getZ()) : ray != null ? ray.hitVec : new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemStack, blockPos, enumFacing, hitVec)) {
-                    sneakCount++;
-                    slowTicks = 3;
-                    if (sneakCount > sneakAfter.getValue())
-                        sneakCount = 0;
+                            if (!noSwing.getValue())
+                                mc.thePlayer.swingItem();
+                            else
+                                mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
 
-                    if (!noSwing.getValue())
-                        mc.thePlayer.swingItem();
-                    else
-                        mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
+                            timeHelper.reset();
+                        }
 
-                    timeHelper.reset();
+                    } else {
+                        if (sneak.getValue())
+                            ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
+                    }
+                    break;
                 }
-            } else {
-                if (sneak.getValue())
-                    ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
             }
-
             // tower
             if (MoveUtils.getJumpEffect() == 0) {
                 if (mc.thePlayer.movementInput.jump) { // if Scaffolded to UP

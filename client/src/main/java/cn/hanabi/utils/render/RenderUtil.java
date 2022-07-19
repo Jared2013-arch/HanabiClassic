@@ -1,5 +1,6 @@
 package cn.hanabi.utils.render;
 
+import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.injection.interfaces.IEntityRenderer;
 import cn.hanabi.injection.interfaces.IRenderManager;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
@@ -40,15 +42,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
+import static cn.hanabi.Wrapper.mc;
 import static org.lwjgl.opengl.GL11.*;
 
 public class RenderUtil {
     public static float delta;
-
+    private static final Map<Integer, Boolean> glCapMap = new HashMap<>();
     public static double interpolate(double newPos, double oldPos) {
         return oldPos + (newPos - oldPos) * Wrapper.getTimer().renderPartialTicks;
     }
@@ -60,11 +61,71 @@ public class RenderUtil {
         GL11.glBlendFunc(770, 771);
     }
 
+    public static void setGlCap(final int cap, final boolean state) {
+        glCapMap.put(cap, glGetBoolean(cap));
+        setGlState(cap, state);
+    }
+
+    public static void setGlState(final int cap, final boolean state) {
+        if (state)
+            glEnable(cap);
+        else
+            glDisable(cap);
+    }
+
+    public static void resetCaps() {
+        glCapMap.forEach(RenderUtil::setGlState);
+    }
+
+    public static void renderNameTag(final String string, final double x, final double y, final double z) {
+        final RenderManager renderManager = mc.getRenderManager();
+
+        glPushMatrix();
+        glTranslated(x - ((IRenderManager) renderManager).getRenderPosX(), y - ((IRenderManager) renderManager).getRenderPosY(), z - ((IRenderManager) renderManager).getRenderPosZ());
+        glNormal3f(0F, 1F, 0F);
+        glRotatef(-mc.getRenderManager().playerViewY, 0F, 1F, 0F);
+        glRotatef(mc.getRenderManager().playerViewX, 1F, 0F, 0F);
+        glScalef(-0.05F, -0.05F, 0.05F);
+        setGlCap(GL_LIGHTING, false);
+        setGlCap(GL_DEPTH_TEST, false);
+        setGlCap(GL_BLEND, true);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        final int width = Hanabi.INSTANCE.fontManager.comfortaa35.getStringWidth(string) / 2;
+
+        Gui.drawRect(-width - 1, -1, width + 1, Hanabi.INSTANCE.fontManager.comfortaa35.FONT_HEIGHT, Integer.MIN_VALUE);
+        Hanabi.INSTANCE.fontManager.comfortaa35.drawString(string, -width, 1.5F, Color.WHITE.getRGB(), true);
+
+        resetCaps();
+        glColor4f(1F, 1F, 1F, 1F);
+        glPopMatrix();
+    }
+
     public static void post() {
         GL11.glDisable(3042);
         GL11.glEnable(3553);
         GL11.glEnable(2929);
         GL11.glColor3d(1.0, 1.0, 1.0);
+    }
+
+    public static void post3D() {
+        glDisable(GL_LINE_SMOOTH);
+        glEnable(GL_TEXTURE_2D);
+        glShadeModel(GL_FLAT);
+        glDisable(GL_BLEND);
+        glPopMatrix();
+        glColor4f(1, 1, 1, 1);
+    }
+
+    public static void pre3D() {
+        glPushMatrix();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glShadeModel(GL_SMOOTH);
+        glDisable(GL_TEXTURE_2D);
+        glEnable(GL_LINE_SMOOTH);
+        glDisable(GL_LIGHTING);
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     }
 
     public static int width() {
@@ -779,6 +840,14 @@ public class RenderUtil {
         float f2 = (float) (color >> 8 & 255) / 255.0f;
         float f3 = (float) (color & 255) / 255.0f;
         GL11.glColor4f(f1, f2, f3, f);
+    }
+
+    public static void color(Color color) {
+        GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
+    }
+
+    public static void color(Color color, float alpha) {
+        GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, alpha / 255f);
     }
 
     public static int createShader(String shaderCode, int shaderType) throws Exception {
