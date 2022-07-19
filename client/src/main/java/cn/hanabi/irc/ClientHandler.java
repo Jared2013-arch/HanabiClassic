@@ -23,13 +23,13 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelInactive(final ChannelHandlerContext ctx) {
         System.out.println("Disconnected from server");
+        Hanabi.INSTANCE.loggedIn = false;
     }
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
         System.out.println("IRC Reconnecting...");
         Hanabi.INSTANCE.client.reconnect();
-        Hanabi.INSTANCE.loggedIn = false;
         Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(null));
     }
 

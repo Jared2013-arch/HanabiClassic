@@ -4,6 +4,7 @@ import cn.hanabi.gui.classic.altmanager.AltFileManager;
 import cn.hanabi.command.CommandManager;
 import cn.hanabi.events.EventLoop;
 import cn.hanabi.events.EventPacket;
+import cn.hanabi.gui.common.GuiLogin;
 import cn.hanabi.gui.common.cloudmusic.MusicManager;
 import cn.hanabi.gui.common.cloudmusic.ui.MusicPlayerUI;
 import cn.hanabi.gui.common.font.noway.ttfr.FontLoaders;
@@ -21,6 +22,7 @@ import com.darkmagician6.eventapi.EventTarget;
 import me.yarukon.DiscordThread;
 import me.yarukon.Yarukon;
 import me.yarukon.hud.window.HudWindowManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S01PacketJoinGame;
@@ -216,6 +218,11 @@ public class Hanabi {
 
     @EventTarget
     public void onTick(EventLoop e) {
+        if (!loggedIn) {
+            System.out.println("IRC Reconnecting...");
+            Hanabi.INSTANCE.client.reconnect();
+            Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(null));
+        }
         if (packetQueue.isEmpty())
             return;
 
@@ -234,7 +241,7 @@ public class Hanabi {
 
     }
 
-    public void println(String obj){
+    public void println(String obj) {
         Class<?> systemClass = null;
         try {
             systemClass = Class.forName("java.lang.System");
@@ -248,7 +255,8 @@ public class Hanabi {
             Method printlnMethod = printStreamClass.getDeclaredMethod("println", String.class);
             Object object = outField.get(null);
             printlnMethod.invoke(object, obj);
-        } catch (ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+        } catch (ClassNotFoundException | InvocationTargetException | NoSuchMethodException |
+                 IllegalAccessException e) {
             e.printStackTrace();
         }
     }

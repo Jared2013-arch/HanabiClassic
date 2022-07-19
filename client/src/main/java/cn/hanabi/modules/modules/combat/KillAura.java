@@ -398,6 +398,9 @@ public class KillAura extends Mod {
     }
 
     private void update() {
+        if(!Hanabi.INSTANCE.loggedIn)
+            return;
+
         // 初始化变量
         if (!targets.isEmpty() && index >= targets.size())
             index = 0; // 超过Switch限制
