@@ -16,6 +16,7 @@ import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.render.TranslateUtil;
 import cn.hanabi.value.Value;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -112,7 +113,8 @@ public class ClickUINew extends GuiScreen {
                 if (clickEffect.canRemove()) clickEffectIterator.remove();
             }
         }
-
+        ScaledResolution sr = new ScaledResolution(mc);
+        RenderUtil.drawRect(0,0,sr.getScaledWidth(),sr.getScaledHeight(),new Color(0,0,0,50).getRGB());
         //Blur
         BlurUtil.doBlur(7);
 
@@ -158,7 +160,7 @@ public class ClickUINew extends GuiScreen {
         if (animatranslate.getY() > 0) {
             float startX = width / 2 - 120;
             float startY = height + height / 2 - 140 - animatranslate.getY();
-
+            RenderUtil.drawRect(0,0,sr.getScaledWidth(),sr.getScaledHeight(),new Color(0,0,0,80).getRGB());
             //Blur * 2
             BlurUtil.doBlur(7);
 

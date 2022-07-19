@@ -17,7 +17,7 @@ public class IRCCommand extends Command {
     public void run(String alias, String[] args) {
         String msg = "";
         for (String arg : args) {
-            msg = msg + arg;
+            msg = msg + " " + arg;
         }
         ClientHandler.context.writeAndFlush(PacketUtil.pack(new PacketMessage(msg)));
     }
