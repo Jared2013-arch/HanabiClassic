@@ -269,34 +269,7 @@ public class Scaffold extends Mod {
             }
 
         // Set rotations to persistent rotations
-        switch (RoteMode.getModeAt(RoteMode.getCurrentMode())) {
-            case "None": {
 
-                break;
-            }
-            case "Hypixel": {
-                event.setYaw(angles[0]);
-                event.setPitch(curPitch);
-                break;
-            }
-            case "Hyt": {
-                    mc.thePlayer.rotationYawHead = saveYaw;
-                    mc.thePlayer.renderYawOffset = saveYaw;
-                    double x = mc.thePlayer.posX;
-                    double z = mc.thePlayer.posZ;
-                    double y = mc.thePlayer.posY;
-                    BlockPos underPos = new BlockPos(x, y, z);
-                    final BlockData data = getBlockData(underPos);
-                    final float[] rots = MoveUtils.getRotationsBlock(data.pos, data.face);
-                    final float yaw = rots[0];
-                    final float pitch = rots[1];
-                    saveYaw = yaw;
-                    curPitch = pitch;
-                    event.setYaw(getYawBackward());
-                    event.setPitch(angles[1]);
-                break;
-            }
-        }
         ItemStack itemStack = mc.thePlayer.inventory.getStackInSlot(slot);
         BlockPos blockPos = getBlockPosToPlaceOn(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ));
         MovingObjectPosition ray = PlayerUtil.rayCastedBlock(curYaw, curPitch);
@@ -327,6 +300,31 @@ public class Scaffold extends Mod {
                     if (sneak.getValue())
                         ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
                 }
+                break;
+            }
+        }
+    }
+
+    @EventTarget
+    private void onUpdate(EventPreMotion event) {
+        switch (RoteMode.getModeAt(RoteMode.getCurrentMode())) {
+            case "None": {
+
+                break;
+            }
+            case "Hypixel": {
+                event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
+                event.setPitch(angles[1]);
+                break;
+            }
+            case "Hyt": {
+                if (PlayerUtil.isMoving()) {
+                    mc.thePlayer.rotationYawHead = curYaw;
+                    mc.thePlayer.renderYawOffset = curYaw;
+                }
+
+                event.setYaw(curYaw);
+                event.setPitch(89);
                 break;
             }
         }
@@ -364,6 +362,7 @@ public class Scaffold extends Mod {
 
         return MathHelper.wrapAngleTo180_float(yaw - 180);
     }
+
     @EventTarget
     private void onPacket(EventPacket e) {
         if (e.getPacket() instanceof C09PacketHeldItemChange) {
