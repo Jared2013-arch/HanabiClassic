@@ -21,7 +21,7 @@ import org.lwjgl.input.Keyboard;
 public class Speed extends Mod {
 
     public static Value<String[]> mode = new Value<String[]>("Speed", "Mode", 1)
-            .LoadValue(new String[]{"GudHop", "Hypixel", "AAC", "Mineplex", "Verus", "Vulcan"});
+            .LoadValue(new String[]{"GudHop", "Hypixel", "AAC", "Mineplex", "Verus", "VulcanHop"});
     public static Value<Double> fall = new Value<>("Speed", "Falling Timer", 1.0, 0.9, 4.0, 0.01);
     private final Speed_Hypixel modeGlobalHypixel = new Speed_Hypixel();
     private final Speed_GudHop modeGudHop = new Speed_GudHop();

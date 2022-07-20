@@ -229,6 +229,31 @@ public class Scaffold extends Mod {
     }
 
     @EventTarget
+    private void onUpdate(EventPreMotion event) {
+        switch (RoteMode.getModeAt(RoteMode.getCurrentMode())) {
+            case "None": {
+
+                break;
+            }
+            case "Hypixel": {
+                event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
+                event.setPitch(angles[1]);
+                break;
+            }
+            case "Hyt": {
+                if (PlayerUtil.isMoving()) {
+                    mc.thePlayer.rotationYawHead = curYaw;
+                    mc.thePlayer.renderYawOffset = curYaw;
+                }
+
+                event.setYaw(curYaw);
+                event.setPitch(89);
+                break;
+            }
+        }
+    }
+
+    @EventTarget
     private void onPre(EventPreMotion event) {
         if (hypixel.getValue()) {
             if (slowTicks <= 3 && mc.thePlayer.onGround) {
@@ -275,11 +300,6 @@ public class Scaffold extends Mod {
         MovingObjectPosition ray = PlayerUtil.rayCastedBlock(curYaw, curPitch);
         switch (placeMode.getModeAt(placeMode.getCurrentMode())) {
             case "Pre": {
-                if (mc.thePlayer.onGround && PlayerUtil.isMoving()){
-                    if (jump.getValue()) {
-                        mc.thePlayer.motionY = 0.3544999999;
-                    }
-                }
                 if (timeHelper.isDelayComplete(delay.getValue().longValue()) && (ray != null && ray.getBlockPos().equals(blockPos) || !rayCast.getValue())) {
                     Vec3 hitVec = hypixel.getValue() ? new Vec3(rotate.getX(), rotate.getY(), rotate.getZ()) : ray != null ? ray.hitVec : new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
                     if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemStack, blockPos, enumFacing, hitVec)) {
@@ -296,35 +316,7 @@ public class Scaffold extends Mod {
                         timeHelper.reset();
                     }
 
-                } else {
-                    if (sneak.getValue())
-                        ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
                 }
-                break;
-            }
-        }
-    }
-
-    @EventTarget
-    private void onUpdate(EventPreMotion event) {
-        switch (RoteMode.getModeAt(RoteMode.getCurrentMode())) {
-            case "None": {
-
-                break;
-            }
-            case "Hypixel": {
-                event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
-                event.setPitch(angles[1]);
-                break;
-            }
-            case "Hyt": {
-                if (PlayerUtil.isMoving()) {
-                    mc.thePlayer.rotationYawHead = curYaw;
-                    mc.thePlayer.renderYawOffset = curYaw;
-                }
-
-                event.setYaw(curYaw);
-                event.setPitch(89);
                 break;
             }
         }
@@ -436,6 +428,11 @@ public class Scaffold extends Mod {
             curPitch = rotation[1];
 
             MovingObjectPosition ray = PlayerUtil.rayCastedBlock(curYaw, curPitch);
+            if (mc.thePlayer.onGround && PlayerUtil.isMoving()){
+                if (jump.getValue()) {
+                    mc.thePlayer.motionY = 0.3544999999;
+                }
+            }
             switch (placeMode.getModeAt(placeMode.getCurrentMode())) {
                 case "Post": {
                     if (timeHelper.isDelayComplete(delay.getValue().longValue()) && (ray != null && ray.getBlockPos().equals(blockPos) || !rayCast.getValue())) {

@@ -128,6 +128,9 @@ public class Teleport extends Mod {
     public void onPacket(EventPacket event) {
         final Packet<?> packet = event.getPacket();
 
+        if(disableLogger)
+            return;
+
         if (packet instanceof C03PacketPlayer) {
             final C03PacketPlayer packetPlayer = (C03PacketPlayer) packet;
             if (endPos == null)
