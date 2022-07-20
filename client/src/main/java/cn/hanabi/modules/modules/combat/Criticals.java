@@ -27,7 +27,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Criticals extends Mod {
     public static boolean isReadyToCritical = false;
     public static Value<String> modes = new Value<String>("Criticals", "Mode", 0)
-            .LoadValue(new String[]{"Packet", "AACv4", "NoGround", "Jump"});
+            .LoadValue(new String[]{"Packet", "AACv4", "NoGround", "Jump", "VulcanSemi"});
     public static Value<String> pmode = new Value<String>("Criticals", "Packet Mode", 0)
             .LoadValue(new String[]{"Minus", "Drop", "Offest", "Old", "Hover", "Rise", "Abuse1", "Abuse2"});
     public static Value<Double> hurttime = new Value<>("Criticals", "Hurt Time", 15d, 1d, 20d, 1d);
@@ -45,6 +45,8 @@ public class Criticals extends Mod {
     static TimeHelper critTimer = new TimeHelper();
 
     static double[] y1 = {0.104080378093037, 0.105454222033912, 0.102888018147468, 0.099634532004642};
+
+    private int attacks = 0;
 
 
     public Criticals() {
@@ -222,6 +224,7 @@ public class Criticals extends Mod {
 
     @Override
     public void onEnable() {
+        attacks = 0;
     }
 
     @EventTarget
@@ -250,6 +253,15 @@ public class Criticals extends Mod {
         double y = mc.thePlayer.posY;
         double z = mc.thePlayer.posZ;
 
+        if (modes.isCurrentMode("VulcanSemi")) {
+            attacks++;
+            if (attacks > 6) {
+                sendCriticalPacket(x,0.2, z,false);
+                sendCriticalPacket(x,0.1216,z, false);
+                attacks = 0;
+            }
+        }
+
         if (modes.isCurrentMode("Jump"))
             mc.thePlayer.jump();
 
@@ -257,5 +269,13 @@ public class Criticals extends Mod {
             mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(x, y + 0.0000000000000036, z, false));
             mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, false));
         }
+    }
+
+    public void sendCriticalPacket(Double xOffset,Double yOffset,Double zOffset,Boolean ground) {
+        double x = mc.thePlayer.posX + xOffset;
+        double y = mc.thePlayer.posY + yOffset;
+        double z = mc.thePlayer.posZ + zOffset;
+
+        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, ground));
     }
 }
