@@ -29,12 +29,12 @@ public class Speed_Vulcan {
             MoveUtils.strafe(0.215f);
         }
         if (mc.thePlayer.onGround && MoveUtils.isMoving()) {
-            Wrapper.getTimer().timerSpeed = 1.25f;
+            Wrapper.getTimer().timerSpeed = 1.22f;
             ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
             mc.thePlayer.jump();
             MoveUtils.strafe();
             if(MoveUtils.getSpeed() < 0.5f) {
-                MoveUtils.strafe(0.48479f);
+                MoveUtils.strafe(0.485f);
             }
         }else if (!PlayerUtil.isMoving()) {
             Wrapper.getTimer().timerSpeed = 1.00f;
