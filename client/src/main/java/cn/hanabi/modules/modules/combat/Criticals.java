@@ -27,9 +27,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Criticals extends Mod {
     public static boolean isReadyToCritical = false;
     public static Value<String> modes = new Value<String>("Criticals", "Mode", 0)
-            .LoadValue(new String[]{"Packet", "AACv4", "NoGround", "Jump", "VulcanSemi"});
+            .LoadValue(new String[]{"Packet", "AACv4", "NoGround", "Jump", "Semi"});
     public static Value<String> pmode = new Value<String>("Criticals", "Packet Mode", 0)
             .LoadValue(new String[]{"Minus", "Drop", "Offest", "Old", "Hover", "Rise", "Abuse1", "Abuse2"});
+    public static Value<String> smode = new Value<String>("Criticals", "Semi Mode", 0)
+            .LoadValue(new String[]{"MatrixSemi", "VulcanSemi"});
     public static Value<Double> hurttime = new Value<>("Criticals", "Hurt Time", 15d, 1d, 20d, 1d);
     public static Value<Double> delay = new Value<>("Criticals", "Delay", 100d, 50d, 800d, 10d);
     public static Value<Double> steptick = new Value<>("Criticals", "Step Timer", 100d, 50d, 500d, 10d);
@@ -253,12 +255,26 @@ public class Criticals extends Mod {
         double y = mc.thePlayer.posY;
         double z = mc.thePlayer.posZ;
 
-        if (modes.isCurrentMode("VulcanSemi")) {
-            attacks++;
-            if (attacks > 6) {
-                sendCriticalPacket(x,0.2, z,false);
-                sendCriticalPacket(x,0.1216,z, false);
-                attacks = 0;
+        if (modes.isCurrentMode("Semi")) {
+            switch (smode.getModeAt(smode.getCurrentMode())) {
+                case "VulcanSemi":
+                    attacks++;
+                    if (attacks > 6) {
+                        sendCriticalPacket(x, 0.2, z, false);
+                        sendCriticalPacket(x, 0.1216, z, false);
+                        attacks = 0;
+                    }
+                    break;
+                case "MatrixSemi":
+                    attacks++;
+                    if (attacks > 3) {
+                        sendCriticalPacket(x, 0.0825080378093, z, false);
+                        sendCriticalPacket(x, 0.023243243674, z, false);
+                        sendCriticalPacket(x, 0.0215634532004, z, false);
+                        sendCriticalPacket(x, 0.00150000001304, z, false);
+                        attacks = 0;
+                    }
+                    break;
             }
         }
 
