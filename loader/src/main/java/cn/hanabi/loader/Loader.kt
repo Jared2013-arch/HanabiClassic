@@ -1,6 +1,5 @@
 package cn.hanabi.loader
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass
 import cn.hanabi.loader.antidump.AntiDump
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -16,7 +15,6 @@ import java.nio.charset.StandardCharsets
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
-@ObfuscationClass
 object Loader {
 //URLClassLoader(arrayOf(), Launch.classLoader)
 
@@ -27,8 +25,8 @@ object Loader {
     var shouldInit = false
 
     inline fun load() {
-    //    AntiDump.checkLaunchFlags()
-   //     AntiDump.disableJavaAgents()
+        AntiDump.checkLaunchFlags()
+        AntiDump.disableJavaAgents()
         AntiDump.setPackageNameFilter()
         AntiDump.dissasembleStructs()
 //

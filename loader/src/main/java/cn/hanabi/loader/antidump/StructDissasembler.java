@@ -1,6 +1,5 @@
 package cn.hanabi.loader.antidump;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
@@ -11,7 +10,6 @@ import java.util.*;
 /**
  * Based on code from both apangin and half-cambodian-hacker-man
  */
-@ObfuscationClass
 @SuppressWarnings("Duplicates")
 public class StructDissasembler {
     private static final Unsafe unsafe = getUnsafe();

@@ -645,7 +645,6 @@ public class HStringCache {
             GlStateManager.enableTexture2D();
         }
 
-
         /* Return total horizontal advance (slightly wider than the bounding box, but close enough for centering strings) */
         return entry.advance / 2;
     }

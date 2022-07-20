@@ -354,6 +354,11 @@
 			<attribute name="gradle_used_by_scope" value="api,main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/SuperSkidder/Desktop/obf/annotations.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="api,main,test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="E:/java/Projects/Hanabi-Beta-master/client/libs/jfxrt.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="api,main,test"/>

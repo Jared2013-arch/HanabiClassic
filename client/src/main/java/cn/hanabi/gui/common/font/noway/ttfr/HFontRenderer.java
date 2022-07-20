@@ -259,6 +259,7 @@ public class HFontRenderer implements IResourceManagerReloadListener {
         } else {
             i = this.renderString(p_drawString_1_, p_drawString_2_, p_drawString_3_, p_drawString_4_, false);
         }
+        GlStateManager.disableAlpha();
 
         return i;
     }

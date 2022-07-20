@@ -12,10 +12,13 @@ import cn.hanabi.irc.packets.impl.serverside.PacketRegisterRep;
 import cn.hanabi.irc.packets.impl.serverside.PacketServerRep;
 import cn.hanabi.irc.utils.PacketUtil;
 import cn.hanabi.utils.game.PlayerUtil;
+import com.eskid.annotation.Native;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import net.minecraft.client.Minecraft;
+import org.apache.commons.io.Charsets;
 
+@Native
 public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
     public static ChannelHandlerContext context;
@@ -61,7 +64,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String s) throws Exception {
         Packet p = PacketUtil.unpack(s, Packet.class);
-        System.out.println("[DEBUG] " + p.type.name() + "   " + p.content);
         if (p != null) {
             switch (p.type) {
                 case LOGINREP:

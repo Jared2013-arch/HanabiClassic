@@ -95,7 +95,7 @@ dependencies {
     implementation 'org.json:json:20211205'
 
 
-    compile project(':client')
+//    compile project(':client')
 }
 
 

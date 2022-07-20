@@ -1,9 +1,7 @@
 package cn.hanabi.loader.antidump
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass
 import java.lang.management.ManagementFactory
 
-@ObfuscationClass
 interface AntiDump {
     /**
      * Checks the JVM launch arguments for flags used to:
@@ -38,7 +36,6 @@ interface AntiDump {
     fun shutdownHard(): Nothing
 
 
-    @ObfuscationClass
     companion object : AntiDump {
         private val naughtyFlags = arrayOf("-javaagent", "-Xdebug", "-agentlib", "-Xrunjdwp", "-Xnoagent", "-verbose", "-DproxySet", "-DproxyHost", "-DproxyPort", "-Djavax.net.ssl.trustStore", "-Djavax.net.ssl.trustStorePassword")
 

@@ -1,6 +1,5 @@
 package cn.hanabi.loader.antidump
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes.*
 import org.objectweb.asm.tree.*

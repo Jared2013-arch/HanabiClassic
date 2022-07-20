@@ -910,6 +910,19 @@ public class RenderUtil {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0f, 240.0f);
     }
 
+    public static void drawCustomImage2(float x, float y, float width, float height, ResourceLocation res) {
+        GL11.glPushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+        mc.getTextureManager().bindTexture(res);
+        drawModalRectWithCustomSizedTexture(x, y, 0f, 0f, width, height, width, height);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GL11.glPopMatrix();
+    }
+
+
     public static void outlineFive() {
         GL11.glPolygonOffset(1.0f, 2000000.0f);
         GL11.glDisable(10754);

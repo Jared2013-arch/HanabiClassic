@@ -6,10 +6,10 @@ import java.net.ServerSocket
 import java.net.Socket
 import java.net.SocketException
 
-const val PATH = "Hanabi-Server/"
-const val CLIENT_PATH = "${PATH}Hanabi.jar"
+var CLIENT_PATH = ""
 
 fun main() {
+    CLIENT_PATH = System.getProperty("usr.dir") + "/Hanabi.jar"
     println("Initializing...")
     val port = 37254 //你的驗證伺服器端口
     val tcpServer = ServerSocket(port)
@@ -61,7 +61,12 @@ class Client(private val clientSocket: Socket) : Thread() {
             output.flush()
             fileStream.close()
             socket.close()
-            println("Finish sending file in " + String.format("%.3f", (System.nanoTime() - startTime) / 1E9) + " seconds")
+            println(
+                "Finish sending file in " + String.format(
+                    "%.3f",
+                    (System.nanoTime() - startTime) / 1E9
+                ) + " seconds"
+            )
         } catch (e: SocketException) {
             println("Connection reset, client disconnected")
         }

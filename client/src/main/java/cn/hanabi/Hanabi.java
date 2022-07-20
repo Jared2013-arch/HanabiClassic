@@ -1,5 +1,6 @@
 package cn.hanabi;
 
+import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.gui.classic.altmanager.AltFileManager;
 import cn.hanabi.command.CommandManager;
 import cn.hanabi.events.EventLoop;
@@ -19,6 +20,7 @@ import cn.hanabi.utils.fileSystem.FileManager;
 import cn.hanabi.utils.waypoints.WaypointManager;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
+import com.eskid.annotation.Native;
 import me.yarukon.DiscordThread;
 import me.yarukon.Yarukon;
 import me.yarukon.hud.window.HudWindowManager;
@@ -40,7 +42,7 @@ import java.util.Queue;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-
+@Native
 public class Hanabi {
     @NotNull
     public static final String CLIENT_NAME = "Hanabi";

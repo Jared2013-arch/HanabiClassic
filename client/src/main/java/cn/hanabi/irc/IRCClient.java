@@ -2,6 +2,7 @@ package cn.hanabi.irc;
 
 import cn.hanabi.irc.handler.DelimiterEncoder;
 import cn.hanabi.utils.game.PlayerUtil;
+import com.eskid.annotation.Native;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -13,6 +14,7 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
+@Native
 public class IRCClient {
 
     public static void main(String[] args) {

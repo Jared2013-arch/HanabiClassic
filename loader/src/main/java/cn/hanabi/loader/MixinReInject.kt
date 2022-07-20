@@ -1,6 +1,5 @@
 package cn.hanabi.loader
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass
 import net.minecraft.launchwrapper.Launch
 import org.spongepowered.asm.lib.tree.ClassNode
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin
@@ -9,7 +8,6 @@ import java.io.File
 import java.net.MalformedURLException
 
 
-@ObfuscationClass
 class MixinReInject : IMixinConfigPlugin {
     private var mixins: MutableList<String> = ArrayList()
 

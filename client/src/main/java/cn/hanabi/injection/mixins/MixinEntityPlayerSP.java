@@ -20,7 +20,6 @@ import cn.hanabi.modules.modules.ghost.Hitbox;
 import cn.hanabi.modules.modules.movement.NoSlow;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
-import de.enzaxd.viaforge.ViaForge;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
