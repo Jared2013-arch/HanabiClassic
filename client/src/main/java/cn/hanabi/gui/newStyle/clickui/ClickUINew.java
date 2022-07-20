@@ -114,7 +114,7 @@ public class ClickUINew extends GuiScreen {
             }
         }
         ScaledResolution sr = new ScaledResolution(mc);
-        RenderUtil.drawRect(0,0,sr.getScaledWidth(),sr.getScaledHeight(),new Color(0,0,0,50).getRGB());
+        RenderUtil.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(0, 0, 0, 50).getRGB());
         //Blur
         BlurUtil.doBlur(7);
 
@@ -138,7 +138,7 @@ public class ClickUINew extends GuiScreen {
         if (isSearching) {
             font.drawString(searchcontent + input, Math.min(width / 2 - 55, width / 2 + 50 - font.getStringWidth(searchcontent)), 4, new Color(135, 135, 135, 255).getRGB());
         } else {
-            font.drawString("Search", width / 2 - 55, 4, new Color(155, 155, 155, 255).getRGB());
+            font.drawString("Search", width / 2 - 55, 6, new Color(155, 155, 155, 255).getRGB());
         }
         RenderUtil.stopGlScissor();
         GL11.glDisable(3089);
@@ -147,7 +147,7 @@ public class ClickUINew extends GuiScreen {
         //画Reset按钮
         boolean resetHover = isHover(mouseX, mouseY, width / 2 + 80, 0, width / 2 + 130, 20) && currentMod == null;
         RenderUtil.drawRoundedRect(width / 2 + 80, 2, width / 2 + 130, 18, 2, new Color(resetHover ? 255 : 245, resetHover ? 255 : 245, resetHover ? 255 : 245).getRGB());
-        Hanabi.INSTANCE.fontManager.wqy18.drawCenteredString("Reset Gui", width / 2 + 105, 4, new Color(155, 155, 155, 255).getRGB());
+        Hanabi.INSTANCE.fontManager.wqy18.drawCenteredString("Reset Gui", width / 2 + 105, 6, new Color(155, 155, 155, 255).getRGB());
 
         //设定Value的Panel的动画
         if (currentMod != null) {
@@ -160,12 +160,12 @@ public class ClickUINew extends GuiScreen {
         if (animatranslate.getY() > 0) {
             float startX = width / 2 - 120;
             float startY = height + height / 2 - 140 - animatranslate.getY();
-            RenderUtil.drawRect(0,0,sr.getScaledWidth(),sr.getScaledHeight(),new Color(0,0,0,80).getRGB());
+            RenderUtil.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(0, 0, 0, (int) ((animatranslate.getY() / height) * 60)).getRGB());
             //Blur * 2
             BlurUtil.doBlur(7);
-
             //画ValuePanel
-            RenderUtil.drawRoundRect(startX, startY, startX + 240, startY + 280, 2, new Color(255,255,255, 255).getRGB());
+
+            RenderUtil.drawRoundRect(startX, startY, startX + 240, startY + 280, 2, new Color(255, 255, 255, 255).getRGB());
             if (currentMod != null) {
                 //画Value
                 drawValue(mouseX, mouseY, startX, startY);

@@ -57,7 +57,16 @@
     "MixinVisGraph",
     "MixinWorld",
     "MixinWorldRenderer",
-    "MixinSplashProgress"
+    "MixinSplashProgress",
+
+    "via.ViaMixinEntityPlayerSP",
+    "via.ViaMixinGuiConnecting",
+    "via.ViaMixinGuiDisconnected",
+    "via.ViaMixinGuiMultiplayer",
+    "via.ViaMixinGuiScreenAddServer",
+    "via.ViaMixinNetworkManagerChInit",
+    "via.ViaMixinMinecraft",
+    "via.ViaMixinGuiScreenServerList"
   ],
   "client": [
     "MixinAbstractClientPlayer",

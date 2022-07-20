@@ -35,7 +35,7 @@ public class ModeValue {
         HFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
         float width = 0;
         for (String mode : values.getModes()) {
-            float w1 = font.getStringWidth(values.getModeAt(values.getCurrentMode())) + 30;
+            float w1 = font.getStringWidth(mode) + 30;
             if (w1 > width)
                 width = w1;
         }
@@ -61,7 +61,7 @@ public class ModeValue {
         HFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
         float width = 0;
         for (String mode : values.getModes()) {
-            float w1 = font.getStringWidth(values.getModeAt(values.getCurrentMode())) + 30;
+            float w1 = font.getStringWidth(mode) + 30;
             if (w1 > width)
                 width = w1;
         }
@@ -70,7 +70,7 @@ public class ModeValue {
             float modeY = 18;
             while (i < values.mode.size()) {
                 if (values.getModeAt(values.getCurrentMode()) != values.mode.get(i)) {
-                    if (ClickUINew.isHover(mouseX, mouseY, x + 220, y + modeY + 4, x + 220 - width, y + modeY + 22)) {
+                    if (ClickUINew.isHover(mouseX, mouseY, x + 220-width, y + modeY + 4, x + 220, y + modeY + 22)) {
                         values.setCurrentMode(i);
                     }
                     modeY += 18.0f;
