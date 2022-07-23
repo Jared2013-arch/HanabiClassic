@@ -47,10 +47,10 @@ dependencies {
         exclude module: 'annotations'
     }
 
-    implementation 'commons-codec:commons-codec:1.15'
-    implementation 'com.google.code.gson:gson:2.2.4'
-    implementation 'io.netty:netty-all:4.0.23.Final'
-    implementation 'mysql:mysql-connector-java:8.0.29'
+    jarLibs('commons-codec:commons-codec:1.15')
+    jarLibs('com.google.code.gson:gson:2.2.4')
+    jarLibs('io.netty:netty-all:4.0.23.Final')
+    jarLibs('mysql:mysql-connector-java:8.0.29')
     implementation configurations.jarLibs
 
 }
@@ -58,7 +58,7 @@ dependencies {
 jar {
     manifest.attributes(
             'Manifest-Version': 1.0,
-            "Main-Class": "MainKt"
+            "Main-Class": "cn.hanabi.irc.server.ServerMain"
     )
 
     from {
