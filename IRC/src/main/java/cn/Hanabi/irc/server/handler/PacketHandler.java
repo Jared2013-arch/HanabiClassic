@@ -30,7 +30,7 @@ public class PacketHandler {
                 PacketLogin packetLogin = PacketUtil.unpack(o, PacketLogin.class);
                 String rank = packetLogin.user.login();
                 channel.writeAndFlush(PacketUtil.pack(new PacketServerRep(rank, "1.0", String.valueOf(NettyServerHandler.users.size()), rank)));
-                if (rank.equals("Failed to login")) {
+                if (rank.length() > 14) {
                     channel.close();
                     ctx.close();
                     NettyServerHandler.channelGroup.remove(ctx);

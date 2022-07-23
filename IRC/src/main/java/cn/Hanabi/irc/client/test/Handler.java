@@ -19,7 +19,7 @@ import static cn.hanabi.irc.client.test.ClientTest.bootstrap;
 public class Handler extends SimpleChannelInboundHandler<String> {
 
     @Override
-    public void channelInactive(final ChannelHandlerContext ctx){
+    public void channelInactive(final ChannelHandlerContext ctx) {
         System.out.println("Disconnected from server");
     }
 
@@ -50,7 +50,7 @@ public class Handler extends SimpleChannelInboundHandler<String> {
                             ctx.writeAndFlush(PacketUtil.pack(new PacketRegister(msg.split(" ")[1], msg.split(" ")[2], msg.length() == 4 ? msg.split(" ")[3] : "")));
                             break;
                         case "LOGIN":
-                            ctx.writeAndFlush(PacketUtil.pack(new PacketLogin(msg.split(" ")[1], msg.split(" ")[2])));
+                            ctx.writeAndFlush(PacketUtil.pack(new PacketLogin(msg.split(" ")[1], msg.split(" ")[2], "")));
                             break;
                     }
                 }
@@ -80,7 +80,7 @@ public class Handler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String s) throws Exception {
         Packet p = PacketUtil.unpack(s, Packet.class);
-        if(p.type!= Packet.Type.HEARTBEATREP) {
+        if (p.type != Packet.Type.HEARTBEATREP) {
             System.out.println(p.type.name() + "  " + p.content);
         }
         if (p != null) {

@@ -9,11 +9,11 @@ import java.text.SimpleDateFormat;
 public class DBHelper {
     static Connection connection;
 
-    public static void init() {
+    public static void init(String address, String port, String dbName, String user, String pwd) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("jdbc:mysql://" + ServerMain.dbAddress + ":" + ServerMain.dbPort + "/" + ServerMain.dbName);
-            connection = DriverManager.getConnection("jdbc:mysql://" + ServerMain.dbAddress + ":" + ServerMain.dbPort + "/" + ServerMain.dbName + "?serverTimezone=UTC", ServerMain.dbUserName, ServerMain.dbPWD);
+            System.out.println("jdbc:mysql://" + address + ":" + port + "/" + dbName);
+            connection = DriverManager.getConnection("jdbc:mysql://" + address + ":" + port + "/" + dbName + "?serverTimezone=UTC", user, pwd);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -49,7 +49,7 @@ public class DBHelper {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "Failed to login";
+        return "Failed to login, Please check your username and password";
     }
 
     public static String register(String username, String password, String key) {

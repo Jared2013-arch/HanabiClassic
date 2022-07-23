@@ -47,8 +47,9 @@ dependencies {
         exclude module: 'annotations'
     }
 
-    implementation configurations.jarLibs
+    compile project(':IRC')
 
+    implementation configurations.jarLibs
 }
 
 jar {
