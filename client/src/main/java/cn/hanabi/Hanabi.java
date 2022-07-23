@@ -1,6 +1,5 @@
 package cn.hanabi;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.gui.classic.altmanager.AltFileManager;
 import cn.hanabi.command.CommandManager;
 import cn.hanabi.events.EventLoop;
@@ -221,7 +220,6 @@ public class Hanabi {
     @EventTarget
     public void onTick(EventLoop e) {
         if (!loggedIn) {
-            System.out.println("IRC Reconnecting...");
             Hanabi.INSTANCE.client.reconnect();
             Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(null));
         }

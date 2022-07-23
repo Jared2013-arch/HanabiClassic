@@ -3,16 +3,13 @@ package cn.hanabi.gui.common;
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.classic.altmanager.*;
 import cn.hanabi.irc.ClientHandler;
-import cn.hanabi.irc.IRCClient;
 import cn.hanabi.irc.packets.impl.clientside.PacketLogin;
 import cn.hanabi.irc.utils.PacketUtil;
+import cn.hanabi.utils.auth.Check;
 import cn.hanabi.utils.render.RenderUtil;
 import net.minecraft.client.gui.*;
-import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
 
-import java.awt.*;
-import java.awt.datatransfer.DataFlavor;
 import java.io.IOException;
 
 public class GuiLogin extends GuiScreen {
@@ -31,15 +28,11 @@ public class GuiLogin extends GuiScreen {
     protected void actionPerformed(GuiButton button) {
         try {
             switch (button.id) {
-//                case 1: {
-//                    this.mc.displayGuiScreen(new GuiMainMenu());
-//                    break;
-//                }
                 case 0: {
-                    ClientHandler.context.writeAndFlush(PacketUtil.pack(new PacketLogin(username.getText(), password.getText())));
+                    ClientHandler.context.writeAndFlush(PacketUtil.pack(new PacketLogin(username.getText(), password.getText(), Check.getHWID())));
                     break;
                 }
-                case 2:{
+                case 2: {
                     this.mc.displayGuiScreen(new GuiRegister());
                     break;
                 }

@@ -2,7 +2,6 @@ package cn.hanabi.gui.common;
 
 import cn.hanabi.gui.classic.altmanager.PasswordField;
 import cn.hanabi.irc.ClientHandler;
-import cn.hanabi.irc.packets.impl.clientside.PacketLogin;
 import cn.hanabi.irc.packets.impl.clientside.PacketRegister;
 import cn.hanabi.irc.utils.PacketUtil;
 import net.minecraft.client.gui.GuiButton;

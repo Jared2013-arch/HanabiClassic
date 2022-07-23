@@ -9,7 +9,8 @@ import java.net.SocketException
 var CLIENT_PATH = ""
 
 fun main() {
-    CLIENT_PATH = System.getProperty("usr.dir") + "/Hanabi.jar"
+    CLIENT_PATH = System.getProperty("user.dir") + "/Hanabi.jar"
+    println("Located: $CLIENT_PATH")
     println("Initializing...")
     val port = 37254 //你的驗證伺服器端口
     val tcpServer = ServerSocket(port)
@@ -36,12 +37,20 @@ class Client(private val clientSocket: Socket) : Thread() {
             }
             clientSocket.inetAddress.hostAddress ?: return
             val ip = clientSocket.inetAddress.hostAddress.toString()
-            if (received == "HIHI") {
-                output.writeUTF("Passed")
+
+            if (verify(received)) {
+                output.writeUTF("U2FsdGVkX19mdvTKKe9cnW3d881zwWCJea5qVu60d9zcbiQruJL1L46MFZoljN0r6i4UtYE84l+gegxkqhN/fOZLeov95hENaMBVEPbVyCo=")
                 println("Sending file to $ip...")
                 sendFile(clientSocket, output, System.nanoTime())
             }
         }
+    }
+
+    private fun verify(received: String): Boolean {
+        var username = received.split("§")[0]
+        var password = received.split("§")[1]
+        var hwid = received.split("§")[2]
+
     }
 
 

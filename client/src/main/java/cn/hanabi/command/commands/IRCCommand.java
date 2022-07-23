@@ -1,6 +1,5 @@
 package cn.hanabi.command.commands;
 
-import cn.hanabi.Hanabi;
 import cn.hanabi.command.Command;
 import cn.hanabi.irc.ClientHandler;
 import cn.hanabi.irc.packets.impl.PacketMessage;

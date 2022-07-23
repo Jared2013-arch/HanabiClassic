@@ -81,6 +81,8 @@ dependencies {
         exclude module: "log4j-core"
     }
 
+    compile project(':IRC')
+
 //    implementation "com.viaversion:viaversion:4.3.2-SNAPSHOT"
 //    implementation "com.viaversion:viabackwards:4.3.1-SNAPSHOT"
 //    implementation "com.viaversion:viarewind-fabric:2.0.3-SNAPSHOT"

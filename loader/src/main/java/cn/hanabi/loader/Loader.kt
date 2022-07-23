@@ -1,6 +1,7 @@
 package cn.hanabi.loader
 
 import cn.hanabi.loader.antidump.AntiDump
+import cn.hanabi.loader.auth.Check
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import net.minecraft.launchwrapper.Launch
@@ -14,6 +15,7 @@ import java.net.URLClassLoader
 import java.nio.charset.StandardCharsets
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
+import javax.swing.JOptionPane
 
 object Loader {
 //URLClassLoader(arrayOf(), Launch.classLoader)
@@ -25,8 +27,10 @@ object Loader {
     var shouldInit = false
 
     inline fun load() {
-        AntiDump.checkLaunchFlags()
-        AntiDump.disableJavaAgents()
+        var username = JOptionPane.showInputDialog("Your Username")
+        var password = JOptionPane.showInputDialog("Your Password")
+//        AntiDump.checkLaunchFlags()
+//        AntiDump.disableJavaAgents()
         AntiDump.setPackageNameFilter()
         AntiDump.dissasembleStructs()
 //
@@ -37,7 +41,7 @@ object Loader {
         }
 
 
-        val host = "173.82.163.16"
+        val host = "127.0.0.1"
         val port = 37254 //你的驗證伺服器端口
 
         val fileSocket = Socket(host, port)
@@ -46,9 +50,11 @@ object Loader {
 
         var passed = false
         //驗證的東西
-        outputF.writeUTF("HIHI")
+        outputF.writeUTF("$username§$password§" + Check.getHWID())
 
-        if (inputF.readUTF().equals("Passed")) {
+        if (inputF.readUTF()
+                .equals("U2FsdGVkX19mdvTKKe9cnW3d881zwWCJea5qVu60d9zcbiQruJL1L46MFZoljN0r6i4UtYE84l+gegxkqhN/fOZLeov95hENaMBVEPbVyCo=")
+        ) {
             passed = true
         }
 
@@ -73,7 +79,8 @@ object Loader {
                     }
                 }
             }
-            val mixinConfig: JsonObject = Gson().fromJson(String(mixinByte, StandardCharsets.UTF_8), JsonObject::class.java)
+            val mixinConfig: JsonObject =
+                Gson().fromJson(String(mixinByte, StandardCharsets.UTF_8), JsonObject::class.java)
             mixinConfig.getAsJsonArray("client").forEach {
                 mixinCache.add(it.asString)
             }

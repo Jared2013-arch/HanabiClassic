@@ -22,7 +22,7 @@ public class Check {
     public Check(){
     }
 
-    protected @NotNull String getOriginal() {
+    public static @NotNull String getOriginal() {
         try{
             String toEncrypt = "EmoManIsGay" + System.getProperty("COMPUTERNAME") + System.getenv("PROCESSOR_IDENTIFIER") + System.getenv("PROCESSOR_LEVEL");
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -44,7 +44,7 @@ public class Check {
         }
     }
 
-    protected String getHWID() {
+    public static String getHWID() {
         String hwid = null;
         try {
             hwid = g(getOriginal());
@@ -53,7 +53,7 @@ public class Check {
         return hwid;
     }
 
-    protected @NotNull String g(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public static @NotNull String g(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         text = Base64.getUrlEncoder().encodeToString(text.getBytes());
         //System.out.println(text);
         MessageDigest md = MessageDigest.getInstance("SHA-1");
