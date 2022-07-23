@@ -44,7 +44,7 @@ class Client(private val clientSocket: Socket) : Thread() {
             if (received.contains("§")) {//登录。。
                 if (verify(received)) {
                     output.writeUTF("U2FsdGVkX19mdvTKKe9cnW3d881zwWCJea5qVu60d9zcbiQruJL1L46MFZoljN0r6i4UtYE84l+gegxkqhN/fOZLeov95hENaMBVEPbVyCo=")
-                    println("Sending file to $ip...")
+                    println("Sending file to $ip(${received.split("§"[0])})...")
                     sendFile(clientSocket, output, System.nanoTime(), received.split("§")[3])
                 }
             }

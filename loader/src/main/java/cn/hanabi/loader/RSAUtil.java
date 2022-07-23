@@ -1,5 +1,6 @@
 package cn.hanabi.loader;
 
+import com.eskid.annotation.Native;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.compress.utils.IOUtils;
 
@@ -14,6 +15,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
 
+@Native
 public class RSAUtil {
 
     public static final String CHARSET = "UTF-8";

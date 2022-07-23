@@ -1,5 +1,6 @@
 package cn.hanabi.loader.antidump;
 
+import com.eskid.annotation.Native;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
@@ -10,6 +11,7 @@ import java.util.*;
 /**
  * Based on code from both apangin and half-cambodian-hacker-man
  */
+@Native
 @SuppressWarnings("Duplicates")
 public class StructDissasembler {
     private static final Unsafe unsafe = getUnsafe();

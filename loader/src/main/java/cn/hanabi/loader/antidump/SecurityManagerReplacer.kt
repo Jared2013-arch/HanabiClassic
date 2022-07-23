@@ -1,11 +1,12 @@
 package cn.hanabi.loader.antidump
 
+import com.eskid.annotation.Native
 import sun.security.util.SecurityConstants
 import java.lang.reflect.Field
 import java.security.AccessController
 import java.security.PrivilegedAction
 
-
+@Native
 fun replaceSecurityManager(sm: SecurityManager?) {
     if (sm != null && sm.javaClass.classLoader != null) {
         AccessController.doPrivileged(PrivilegedAction<Any?> {

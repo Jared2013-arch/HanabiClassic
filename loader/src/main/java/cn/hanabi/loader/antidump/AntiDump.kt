@@ -1,7 +1,9 @@
 package cn.hanabi.loader.antidump
 
+import com.eskid.annotation.Native
 import java.lang.management.ManagementFactory
 
+@Native
 interface AntiDump {
     /**
      * Checks the JVM launch arguments for flags used to:

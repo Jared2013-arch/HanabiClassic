@@ -1,5 +1,6 @@
 package cn.hanabi.loader.auth;
 
+import com.eskid.annotation.Native;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -16,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Objects;
-
+@Native
 public class Check {
 
     public Check(){

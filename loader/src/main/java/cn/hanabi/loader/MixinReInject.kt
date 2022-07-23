@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo
 import java.io.File
 import java.net.MalformedURLException
 
-
 class MixinReInject : IMixinConfigPlugin {
     private var mixins: MutableList<String> = ArrayList()
 

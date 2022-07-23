@@ -1,5 +1,6 @@
 package cn.hanabi.loader.antidump
 
+import com.eskid.annotation.Native
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes.*
 import org.objectweb.asm.tree.*
