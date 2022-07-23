@@ -1,4 +1,5 @@
 import java.io.BufferedInputStream
+import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.FileInputStream
@@ -40,10 +41,12 @@ class Client(private val clientSocket: Socket) : Thread() {
             clientSocket.inetAddress.hostAddress ?: return
             val ip = clientSocket.inetAddress.hostAddress.toString()
 
-            if (verify(received)) {
-                output.writeUTF("U2FsdGVkX19mdvTKKe9cnW3d881zwWCJea5qVu60d9zcbiQruJL1L46MFZoljN0r6i4UtYE84l+gegxkqhN/fOZLeov95hENaMBVEPbVyCo=")
-                println("Sending file to $ip...")
-                sendFile(clientSocket, output, System.nanoTime())
+            if (received.contains("§")) {//登录。。
+                if (verify(received)) {
+                    output.writeUTF("U2FsdGVkX19mdvTKKe9cnW3d881zwWCJea5qVu60d9zcbiQruJL1L46MFZoljN0r6i4UtYE84l+gegxkqhN/fOZLeov95hENaMBVEPbVyCo=")
+                    println("Sending file to $ip...")
+                    sendFile(clientSocket, output, System.nanoTime(), received.split("§")[3])
+                }
             }
         }
     }
@@ -59,9 +62,11 @@ class Client(private val clientSocket: Socket) : Thread() {
     }
 
 
-    private fun sendFile(socket: Socket, output: DataOutputStream, startTime: Long) {
+    private fun sendFile(socket: Socket, output: DataOutputStream, startTime: Long, key: String) {
         //每次都讀取一下端文件, 如果你不想每次都讀取可以搞個Field存到内存
-        val fileStream = DataInputStream(BufferedInputStream(FileInputStream(CLIENT_PATH)))
+        var bufferedInputStream = BufferedInputStream(FileInputStream(CLIENT_PATH))
+        var publicEncrypt = RSAUtil.publicEncrypt(bufferedInputStream.readBytes(), RSAUtil.getPublicKey(key))
+        val fileStream = DataInputStream(ByteArrayInputStream(publicEncrypt))
         val bufferSize = 8192
         val buf = ByteArray(bufferSize)
         try {

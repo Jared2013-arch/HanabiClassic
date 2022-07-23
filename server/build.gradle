@@ -46,7 +46,7 @@ dependencies {
         exclude module: 'kotlin-stdlib-common'
         exclude module: 'annotations'
     }
-
+    jarLibs('org.apache.commons:commons-compress:1.21')
     jarLibs('commons-codec:commons-codec:1.15')
     jarLibs('mysql:mysql-connector-java:8.0.29')
     implementation configurations.jarLibs

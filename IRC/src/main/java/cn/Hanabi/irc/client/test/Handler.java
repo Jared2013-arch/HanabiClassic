@@ -50,7 +50,7 @@ public class Handler extends SimpleChannelInboundHandler<String> {
                             ctx.writeAndFlush(PacketUtil.pack(new PacketRegister(msg.split(" ")[1], msg.split(" ")[2], msg.length() == 4 ? msg.split(" ")[3] : "")));
                             break;
                         case "LOGIN":
-                            ctx.writeAndFlush(PacketUtil.pack(new PacketLogin(msg.split(" ")[1], msg.split(" ")[2], "")));
+                            ctx.writeAndFlush(PacketUtil.pack(new PacketLogin(msg.split(" ")[1], msg.split(" ")[2], msg.split(" ")[3])));
                             break;
                     }
                 }

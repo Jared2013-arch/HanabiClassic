@@ -6,13 +6,17 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import net.minecraft.launchwrapper.Launch
 import net.minecraft.launchwrapper.LaunchClassLoader
+import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.io.FileWriter
+import java.io.InputStream
 import java.net.Socket
 import java.net.URLClassLoader
 import java.nio.charset.StandardCharsets
+import java.nio.file.Files
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import javax.swing.JOptionPane
@@ -25,7 +29,7 @@ object Loader {
     var mixinCache = mutableListOf<String>()
     val refMapFile = File(System.getProperty("java.io.tmpdir"), "+~JF${getRandomString(18)}" + ".tmp")
     var shouldInit = false
-
+    var keyMap: Map<String, String> = HashMap()
     inline fun load() {
         var username = JOptionPane.showInputDialog("Your Username")
         var password = JOptionPane.showInputDialog("Your Password")
@@ -50,16 +54,24 @@ object Loader {
 
         var passed = false
         //驗證的東西
-        outputF.writeUTF("$username§$password§" + Check.getHWID())
+
+        keyMap = RSAUtil.createKeys(1024);// 生成秘钥对
+        var publicKey = keyMap["publicKey"]
+        var privateKey = keyMap["privateKey"]
+        outputF.writeUTF("$username§$password§" + Check.getHWID() + "§$publicKey")//发送信息
 
         if (inputF.readUTF()
-                .equals("U2FsdGVkX19mdvTKKe9cnW3d881zwWCJea5qVu60d9zcbiQruJL1L46MFZoljN0r6i4UtYE84l+gegxkqhN/fOZLeov95hENaMBVEPbVyCo=")
+                .equals("U2FsdGVkX19mdvTKKe9cnW3d881zwWCJea5qVu60d9zcbiQruJL1L46MFZoljN0r6i4UtYE84l+gegxkqhN/fOZLeov95hENaMBVEPbVyCo=")//校验
         ) {
             passed = true
         }
-
+        var currentTimeMillis = System.currentTimeMillis()
+        println("Started to read")
         if (passed) {
-            ZipInputStream(inputF).use { zipStream ->
+            var bytes = inputF.readBytes()
+            bytes = RSAUtil.privateDecrypt(bytes, RSAUtil.getPrivateKey(privateKey))
+            var input: InputStream = ByteArrayInputStream(bytes)
+            ZipInputStream(input).use { zipStream ->
                 var zipEntry: ZipEntry?
                 while (zipStream.nextEntry.also { zipEntry = it } != null) {
                     var name = zipEntry!!.name
@@ -94,6 +106,8 @@ object Loader {
             shutDownMethod.isAccessible = true
             shutDownMethod.invoke(null, 0)
         }
+        println("Finished")
+        println(((System.currentTimeMillis() - currentTimeMillis) / 1000).toString() + "s")
 
         // replace classloader
 //        val newClassLoader = object : LaunchClassLoader(Launch.classLoader.urLs) {
