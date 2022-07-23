@@ -47,7 +47,7 @@ dependencies {
         exclude module: 'annotations'
     }
 
-    implementation 'commons-codec:commons-codec:20041127.091804'
+    implementation 'commons-codec:commons-codec:1.15'
     implementation 'com.google.code.gson:gson:2.2.4'
     implementation 'io.netty:netty-all:4.0.23.Final'
     implementation 'mysql:mysql-connector-java:8.0.29'

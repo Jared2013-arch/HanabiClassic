@@ -47,8 +47,8 @@ dependencies {
         exclude module: 'annotations'
     }
 
-    compile project(':IRC')
-
+    jarLibs('commons-codec:commons-codec:1.15')
+    jarLibs('mysql:mysql-connector-java:8.0.29')
     implementation configurations.jarLibs
 }
 

@@ -50,7 +50,7 @@ public class ServerMain {
             System.exit(0);
         }
 
-        DBHelper.init();
+        DBHelper.init(dbAddress, dbPort, dbName, dbUserName, dbPWD);
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();

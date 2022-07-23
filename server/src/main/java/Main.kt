@@ -1,5 +1,3 @@
-import cn.hanabi.irc.management.User
-import cn.hanabi.irc.server.database.DBHelper
 import java.io.BufferedInputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -16,7 +14,8 @@ fun main() {
     println("Initializing...")
     val port = 37254 //你的驗證伺服器端口
     val tcpServer = ServerSocket(port)
-    DBHelper.init("101.43.166.241","3306","hanabi","hanabi","w2Zh7mKJL2YywwAw")
+
+    DBHelper.init("101.43.166.241", "3306", "hanabi", "hanabi", "w2Zh7mKJL2YywwAw")
 
     println("Waiting for connection...")
     while (!tcpServer.isClosed) {
@@ -53,7 +52,10 @@ class Client(private val clientSocket: Socket) : Thread() {
         var username = received.split("§")[0]
         var password = received.split("§")[1]
         var hwid = received.split("§")[2]
-        return User(username, password, hwid).login().length < 14
+        println("User $username($password) try to login - $hwid")
+        var message = DBHelper.login(username, MD5Utils.getMD5(password), hwid)
+        println(message)
+        return message.length < 14
     }
 
 
