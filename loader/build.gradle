@@ -143,8 +143,6 @@ idea {
 shadowJar {
     dependencies {
         include(dependency('org.spongepowered:mixin'))
-        include(dependency('com.google.zxing:core'))
-        include(dependency('com.github.Vazkii:MineTunes'))
         include(dependency('org.jetbrains.kotlin:kotlin-stdlib'))
     }
 
