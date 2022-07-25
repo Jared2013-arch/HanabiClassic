@@ -8,6 +8,7 @@ import cn.hanabi.irc.packets.impl.serverside.PacketHeartBeatRep;
 import cn.hanabi.irc.packets.impl.serverside.PacketRegisterRep;
 import cn.hanabi.irc.packets.impl.serverside.PacketServerRep;
 import cn.hanabi.irc.server.ServerMain;
+import cn.hanabi.irc.server.utils.LogUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import cn.hanabi.irc.management.RankManager;
@@ -30,20 +31,16 @@ public class PacketHandler {
                 PacketLogin packetLogin = PacketUtil.unpack(o, PacketLogin.class);
                 String rank = packetLogin.user.login();
                 channel.writeAndFlush(PacketUtil.pack(new PacketServerRep(rank, "1.0", String.valueOf(NettyServerHandler.users.size()), rank)));
-                if (rank.length() > 14) {
+                if (rank.length() > 14) { //todo: WTF IS THIS
                     channel.close();
                     ctx.close();
                     NettyServerHandler.channelGroup.remove(ctx);
-                    if (ServerMain.debug) {
-                        System.out.println("[DEBUG]Login failed: " + packetLogin.user.username + " ip:" + ctx.channel().remoteAddress());
-                    }
+                    LogUtil.info("Login failed: " + packetLogin.user.username + " ip:" + ctx.channel().remoteAddress());
                 } else {
                     NettyServerHandler.channelGroup.add(channel);
                     NettyServerHandler.users.put(ctx, packetLogin.user);
                     NettyServerHandler.channelGroup.writeAndFlush(PacketUtil.pack(new PacketMessage("§6[IRC]" + packetLogin.user.rankInGame + packetLogin.user.username + "§r connected to the irc.")));
-                    if (ServerMain.debug) {
-                        System.out.println("[DEBUG]Login successfully: " + packetLogin.user.rank + " " + packetLogin.user.username + " ip:" + ctx.channel().remoteAddress());
-                    }
+                    LogUtil.info("Login successfully: " + packetLogin.user.rank + " " + packetLogin.user.username + " ip:" + ctx.channel().remoteAddress());
                 }
                 break;
             case COMMAND:

@@ -1,6 +1,7 @@
 package cn.hanabi.irc.server.handler;
 
 import cn.hanabi.irc.packets.impl.PacketMessage;
+import cn.hanabi.irc.server.utils.LogUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -31,7 +32,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
             IdleStateEvent ent = (IdleStateEvent) evt;
             switch (ent.state()) {
                 case ALL_IDLE:
-                    System.out.println("User" + ctx.channel().remoteAddress() + " Disconnected because of heart disease");
+                    LogUtil.info("User" + ctx.channel().remoteAddress() + " Disconnected because of heart disease");
                     ctx.close();
                     break;
             }
@@ -41,9 +42,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String o) throws Exception {
         Packet p = unpack(o, Packet.class);
-        if (ServerMain.debug) {
-            System.out.println("[DEBUG]" + p.type.name() + (p.content == null ? "" : p.content));
-        }
         if (p != null) {
             PacketHandler.handle(ctx, o);
         } else {
@@ -61,7 +59,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = ctx.channel();
         if (users.get(ctx) != null) {
             channelGroup.writeAndFlush(PacketUtil.pack(new PacketMessage(sdf.format(new Date()) + ": Client " + users.get(ctx).username + "§r exit IRC.")));
-            System.out.println(users.get(ctx).username + " exited - " + ctx.channel().remoteAddress());
+            LogUtil.info(users.get(ctx).username + " exited - " + ctx.channel().remoteAddress());
             users.remove(ctx);
             channelGroup.remove(channel);
         }

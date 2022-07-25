@@ -2,6 +2,7 @@ package cn.hanabi.irc.management;
 
 import cn.hanabi.irc.server.ServerMain;
 import cn.hanabi.irc.server.database.DBHelper;
+import cn.hanabi.irc.server.utils.LogUtil;
 import cn.hanabi.irc.utils.MD5Utils;
 
 public class User {
@@ -21,10 +22,8 @@ public class User {
 
     public String login() {
         password = MD5Utils.getMD5(password);
-        if (ServerMain.debug) {
-            System.out.println("[DEBUG]User login: " + username + " " + password);
-        }
         String res = DBHelper.login(username, password, hwid);
+        LogUtil.info(username + " tried to login:(" + res + ") Password:" + password + " HWID:" + hwid);
         if (res.equals("Admin")) {
             rank = RankManager.Ranks.Admin;
             rankInGame = "§c[DEV]§r";

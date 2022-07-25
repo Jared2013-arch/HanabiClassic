@@ -3,6 +3,7 @@ package cn.hanabi.irc.server;
 import cn.hanabi.irc.handler.DelimiterEncoder;
 import cn.hanabi.irc.server.handler.NettyServerHandler;
 import cn.hanabi.irc.server.database.DBHelper;
+import cn.hanabi.irc.server.utils.LogUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -73,13 +74,13 @@ public class ServerMain {
 
             try {
                 cf = bootstrap.bind(port).sync();
-                System.out.println("Server started!");
+                LogUtil.info("Server started!");
                 cf.channel().closeFuture().sync();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         } finally {
-            System.out.println("Server closed!");
+            LogUtil.info("Server closed!");
             group.shutdownGracefully();
         }
     }

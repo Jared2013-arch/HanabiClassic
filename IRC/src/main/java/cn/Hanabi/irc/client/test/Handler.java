@@ -26,7 +26,7 @@ public class Handler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelUnregistered(final ChannelHandlerContext ctx) throws InterruptedException {
         System.out.println("Reconnecting");
-        bootstrap.connect("localhost", 6668).sync();
+        bootstrap.connect("localhost", 5557).sync();
     }
 
     @Override
