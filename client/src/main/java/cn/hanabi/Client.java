@@ -8,11 +8,11 @@ import com.darkmagician6.eventapi.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import javax.swing.*;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Objects;
 
 public class Client {
     public static String username = "SuperSkidder";
@@ -55,22 +55,30 @@ public class Client {
 
     @Setup
     public static void Load() {
-        client = new IRCClient();
-        client.connect();
-
         //从本地socket获取账户密码
-        try {
-            ServerSocket socketServer = new ServerSocket(8912);
-            Socket accept = socketServer.accept();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(accept.getInputStream()));
-            String s = bufferedReader.readLine();
-            client.username = s.split("\247")[0];
-            client.password = s.split("\247")[0];
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        Hanabi.INSTANCE.println("Getting");
+//        Socket socket = null;
+//        try {
+//            socket = new Socket("localhost", 8912);
+//            socket.setSoTimeout(5000);
+//            DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+//            DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
+//            outputStream.writeUTF("FuckYou");
+//            while (!socket.isClosed()) {
+//                String received = Objects.requireNonNull(inputStream).readUTF();
+//                IRCClient.username = received.split("§")[0];
+//                IRCClient.password = received.split("§")[1];
+//            }
 
+        client = new IRCClient();
+//        client.username = JOptionPane.showInputDialog("username");
+//        client.password = JOptionPane.showInputDialog("password");
+        client.connect();
+        Hanabi.INSTANCE.println("Client loading");
         Hanabi.INSTANCE.startClient();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     public static void doLogin() {

@@ -24,6 +24,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
     public static ChannelHandlerContext context;
     private int rec;
+    public static long currentTime;
 
     @Override
     public void channelInactive(final ChannelHandlerContext ctx) {
@@ -36,22 +37,24 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
         if (rec < 10) {
             Hanabi.INSTANCE.println("IRC Reconnecting...");
             Client.client.reconnect();
+            Hanabi.INSTANCE.loggedIn = true;
             rec++;
         } else {
             Hanabi.INSTANCE.crash();
         }
-        ClientHandler.context.writeAndFlush(PacketUtil.pack(new PacketLogin(Client.client.username, Client.client.password, Check.getHWID())));
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         context = ctx;
-        ClientHandler.context.writeAndFlush(PacketUtil.pack(new PacketLogin(Client.client.username, Client.client.password, Check.getHWID())));
         new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
+                    if (System.currentTimeMillis() - currentTime > 2000) {
+                        Hanabi.INSTANCE.crash();
+                    }
                     ctx.writeAndFlush(PacketUtil.pack(new PacketHeartBeat(String.valueOf(System.currentTimeMillis()))));
                     try {
                         Thread.sleep(1000);
@@ -78,7 +81,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
                     GuiLogin.staus = "(" + packetLogin.content + ")";
                     Hanabi.INSTANCE.rank = packetLogin.content;
                     Hanabi.INSTANCE.loggedIn = true;
-
                     break;
                 case MESSAGE:
                     Hanabi.INSTANCE.println(p.content);
@@ -93,6 +95,9 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
                 case REGISTERREP:
                     PacketRegisterRep packetRegisterRep = PacketUtil.unpack(s, PacketRegisterRep.class);
                     GuiRegister.status = packetRegisterRep.content;
+                    break;
+                case HEARTBEATREP:
+                    currentTime = System.currentTimeMillis();
                     break;
             }
         }

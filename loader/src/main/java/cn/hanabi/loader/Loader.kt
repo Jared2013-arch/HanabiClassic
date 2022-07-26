@@ -6,19 +6,10 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import net.minecraft.launchwrapper.Launch
 import net.minecraft.launchwrapper.LaunchClassLoader
-import java.io.ByteArrayInputStream
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.FileWriter
-import java.io.InputStream
-import java.io.PrintWriter
-import java.lang.annotation.Native
+import java.io.*
+import java.net.ServerSocket
 import java.net.Socket
-import java.net.URLClassLoader
 import java.nio.charset.StandardCharsets
-import java.nio.file.Files
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import javax.swing.JOptionPane
@@ -113,8 +104,13 @@ object Loader {
         println(((System.currentTimeMillis() - currentTimeMillis) / 1000).toString() + "s")
 
 
-        var s: Socket = Socket("127.0.0.1", 8912);
-        PrintWriter(s.getOutputStream()).print("$username§$password")
+        val socketServer = ServerSocket(8912)
+        val accept = socketServer.accept()
+        var pw =PrintWriter(accept.getOutputStream())
+        pw.write("$username§$password")
+        pw.flush()
+        accept.close()
+        socketServer.close()
 //         replace classloader
 //        val newClassLoader = object : LaunchClassLoader(Launch.classLoader.urLs) {
 //            init {

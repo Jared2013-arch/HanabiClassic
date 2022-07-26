@@ -1,5 +1,7 @@
 package cn.hanabi.irc;
 
+import cn.hanabi.irc.handler.DESDecoder;
+import cn.hanabi.irc.handler.DESEncoder;
 import cn.hanabi.irc.handler.DelimiterEncoder;
 import cn.hanabi.utils.game.PlayerUtil;
 import com.eskid.annotation.Native;
@@ -18,16 +20,14 @@ import io.netty.handler.codec.string.StringEncoder;
 @Native
 public class IRCClient {
 
-    public String username;
-    public String password;
+    public static String username;
+    public static String password;
 
-    public String address = "101.43.166.241";
-    public int port = 4466;
+        public String address = "101.43.166.241";
+//    public String address = "localhost";
 
+    public int port = 5557;
 
-    public static void main(String[] args) {
-        new IRCClient().connect();
-    }
 
     public Bootstrap bootstrap;
 
@@ -42,9 +42,11 @@ public class IRCClient {
             @Override
             protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
                 nioSocketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.wrappedBuffer(delimiter.getBytes())));
+//                nioSocketChannel.pipeline().addLast(new DESDecoder());
                 nioSocketChannel.pipeline().addLast("decoder", new StringDecoder());
                 nioSocketChannel.pipeline().addLast("encoder", new StringEncoder());
                 nioSocketChannel.pipeline().addLast(new DelimiterEncoder(delimiter));
+//                nioSocketChannel.pipeline().addLast(new DESEncoder());
                 nioSocketChannel.pipeline().addLast(new ClientHandler());
             }
         });

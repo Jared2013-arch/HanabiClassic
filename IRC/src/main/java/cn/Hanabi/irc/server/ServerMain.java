@@ -1,5 +1,7 @@
 package cn.hanabi.irc.server;
 
+import cn.hanabi.irc.handler.DESDecoder;
+import cn.hanabi.irc.handler.DESEncoder;
 import cn.hanabi.irc.handler.DelimiterEncoder;
 import cn.hanabi.irc.server.handler.NettyServerHandler;
 import cn.hanabi.irc.server.database.DBHelper;
@@ -22,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ServerMain {
     public static ChannelFuture cf;
-    static int port = 6668;
+    static int port = 5557;
     public static String dbAddress, dbPort, dbName, dbUserName, dbPWD;
     public static boolean debug = false;
 
@@ -64,9 +66,11 @@ public class ServerMain {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,
                                     Unpooled.wrappedBuffer(delimiter.getBytes())));
+//                            socketChannel.pipeline().addLast(new DESDecoder());
                             socketChannel.pipeline().addLast("decoder", new StringDecoder());
                             socketChannel.pipeline().addLast("encoder", new StringEncoder());
                             socketChannel.pipeline().addLast(new DelimiterEncoder(delimiter));
+//                            socketChannel.pipeline().addLast(new DESEncoder());
                             socketChannel.pipeline().addLast(new IdleStateHandler(10, 10, 10, TimeUnit.SECONDS));
                             socketChannel.pipeline().addLast(new NettyServerHandler());
                         }

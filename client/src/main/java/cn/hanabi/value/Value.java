@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static cn.hanabi.irc.ClientHandler.currentTime;
+
 public class Value<T> {
     public static final List<Value<?>> list;
 
