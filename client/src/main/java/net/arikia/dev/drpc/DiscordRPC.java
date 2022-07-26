@@ -1,5 +1,6 @@
 package net.arikia.dev.drpc;
 
+import cn.hanabi.Hanabi;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 
@@ -153,7 +154,7 @@ public final class DiscordRPC {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Fatal Discord RPC exception occurred. Discord RPC will be unavailable for this session.");
+                Hanabi.INSTANCE.println("Fatal Discord RPC exception occurred. Discord RPC will be unavailable for this session.");
                 return;
             }
         }

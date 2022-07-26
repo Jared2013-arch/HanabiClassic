@@ -3,6 +3,8 @@
  */
 package cn.hanabi.gui.common.font.noway.ttfr;
 
+import cn.hanabi.Hanabi;
+
 import java.awt.*;
 import java.io.InputStream;
 
@@ -326,7 +328,7 @@ public class FontLoaders {
             font = font.deriveFont(0, size);
         } catch (Exception ex) {
             ex.printStackTrace();
-            System.out.println("Error loading font");
+            Hanabi.INSTANCE.println("Error loading font");
             font = new Font("default", 0, size);
         }
 
@@ -343,7 +345,7 @@ public class FontLoaders {
             font = font.deriveFont(0, size);
         } catch (Exception ex) {
             ex.printStackTrace();
-            System.out.println("Error loading font");
+            Hanabi.INSTANCE.println("Error loading font");
             font = new Font("default", 0, size);
         }
 

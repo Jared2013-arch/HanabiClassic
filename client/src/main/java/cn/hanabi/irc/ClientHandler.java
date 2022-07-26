@@ -25,13 +25,13 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelInactive(final ChannelHandlerContext ctx) {
-        System.out.println("Disconnected from server");
+        Hanabi.INSTANCE.println("Disconnected from server");
         Hanabi.INSTANCE.loggedIn = false;
     }
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
-        System.out.println("IRC Reconnecting...");
+        Hanabi.INSTANCE.println("IRC Reconnecting...");
         Hanabi.INSTANCE.client.reconnect();
         Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(null));
     }
@@ -69,12 +69,11 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
                 case LOGINREP:
                     PacketServerRep packetLogin = PacketUtil.unpack(s, PacketServerRep.class);
                     GuiLogin.staus = "(" + packetLogin.content + ")";
-                    System.out.println(packetLogin.userRank);
                     Hanabi.INSTANCE.rank = packetLogin.content;
                     Hanabi.INSTANCE.loggedIn = true;
                     break;
                 case MESSAGE:
-                    System.out.println(p.content);
+                    Hanabi.INSTANCE.println(p.content);
                     if (Minecraft.getMinecraft().thePlayer != null) {
                         PlayerUtil.tellPlayerWithoutPrefix(p.content);
                     }

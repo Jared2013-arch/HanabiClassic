@@ -108,7 +108,6 @@ public class GuiRegister extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         super.actionPerformed(button);
         try {
-            System.out.println(username.getText() +"    "+ password.getText());
             switch (button.id) {
                 case 1: {
                     if (username.getText().isEmpty() || password.getText().isEmpty()) {

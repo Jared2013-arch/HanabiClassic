@@ -14,7 +14,7 @@ public class FontUtils {
             font = Font.createFont(Font.PLAIN, is);
             font = font.deriveFont(Font.PLAIN, size);
         } catch (Exception ex) {
-            System.out.println("Error while loading font " + fontName + " - " + size + "!");
+            Hanabi.INSTANCE.println("Error while loading font " + fontName + " - " + size + "!");
             font = new Font("Arial", Font.PLAIN, (int) size);
         }
 
