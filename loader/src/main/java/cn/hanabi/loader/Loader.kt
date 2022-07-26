@@ -13,6 +13,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.FileWriter
 import java.io.InputStream
+import java.io.PrintWriter
 import java.lang.annotation.Native
 import java.net.Socket
 import java.net.URLClassLoader
@@ -21,6 +22,7 @@ import java.nio.file.Files
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import javax.swing.JOptionPane
+
 @com.eskid.annotation.Native
 object Loader {
 //URLClassLoader(arrayOf(), Launch.classLoader)
@@ -110,6 +112,9 @@ object Loader {
         println("Finished")
         println(((System.currentTimeMillis() - currentTimeMillis) / 1000).toString() + "s")
 
+
+        var s: Socket = Socket("127.0.0.1", 8912);
+        PrintWriter(s.getOutputStream()).print("$username§$password")
 //         replace classloader
 //        val newClassLoader = object : LaunchClassLoader(Launch.classLoader.urLs) {
 //            init {

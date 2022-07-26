@@ -18,6 +18,13 @@ import io.netty.handler.codec.string.StringEncoder;
 @Native
 public class IRCClient {
 
+    public String username;
+    public String password;
+
+    public String address = "101.43.166.241";
+    public int port = 4466;
+
+
     public static void main(String[] args) {
         new IRCClient().connect();
     }
@@ -42,7 +49,7 @@ public class IRCClient {
             }
         });
         try {
-            ChannelFuture cf = bootstrap.connect("101.43.166.241", 4466).sync();
+            ChannelFuture cf = bootstrap.connect(address, port).sync();
             cf.addListener(future -> {
                 if (future.cause() != null) {
                     PlayerUtil.tellPlayerWithoutPrefix("IRC failed to reconnect");
@@ -55,7 +62,7 @@ public class IRCClient {
 
     public ChannelFuture reconnect() {
         try {
-            return bootstrap.connect("101.43.166.241", 4466).sync();
+            return bootstrap.connect(address, port).sync();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

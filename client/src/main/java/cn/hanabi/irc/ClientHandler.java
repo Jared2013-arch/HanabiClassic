@@ -1,27 +1,29 @@
 package cn.hanabi.irc;
 
+import cn.hanabi.Client;
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.common.GuiLogin;
 import cn.hanabi.gui.common.GuiRegister;
 import cn.hanabi.irc.packets.Packet;
 import cn.hanabi.irc.packets.impl.PacketMessage;
 import cn.hanabi.irc.packets.impl.clientside.PacketHeartBeat;
-import cn.hanabi.irc.packets.impl.clientside.PacketRegister;
+import cn.hanabi.irc.packets.impl.clientside.PacketLogin;
 import cn.hanabi.irc.packets.impl.serverside.PacketGetRep;
 import cn.hanabi.irc.packets.impl.serverside.PacketRegisterRep;
 import cn.hanabi.irc.packets.impl.serverside.PacketServerRep;
 import cn.hanabi.irc.utils.PacketUtil;
+import cn.hanabi.utils.auth.Check;
 import cn.hanabi.utils.game.PlayerUtil;
 import com.eskid.annotation.Native;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import net.minecraft.client.Minecraft;
-import org.apache.commons.io.Charsets;
 
 @Native
 public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
     public static ChannelHandlerContext context;
+    private int rec;
 
     @Override
     public void channelInactive(final ChannelHandlerContext ctx) {
@@ -31,16 +33,21 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
-        Hanabi.INSTANCE.println("IRC Reconnecting...");
-        Hanabi.INSTANCE.client.reconnect();
-        Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(null));
+        if (rec < 10) {
+            Hanabi.INSTANCE.println("IRC Reconnecting...");
+            Client.client.reconnect();
+            rec++;
+        } else {
+            Hanabi.INSTANCE.crash();
+        }
+        ClientHandler.context.writeAndFlush(PacketUtil.pack(new PacketLogin(Client.client.username, Client.client.password, Check.getHWID())));
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         context = ctx;
-
+        ClientHandler.context.writeAndFlush(PacketUtil.pack(new PacketLogin(Client.client.username, Client.client.password, Check.getHWID())));
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -71,6 +78,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
                     GuiLogin.staus = "(" + packetLogin.content + ")";
                     Hanabi.INSTANCE.rank = packetLogin.content;
                     Hanabi.INSTANCE.loggedIn = true;
+
                     break;
                 case MESSAGE:
                     Hanabi.INSTANCE.println(p.content);

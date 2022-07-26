@@ -8,7 +8,6 @@ import cn.hanabi.gui.common.GuiLogin;
 import cn.hanabi.gui.common.cloudmusic.MusicManager;
 import cn.hanabi.gui.common.cloudmusic.ui.MusicPlayerUI;
 import cn.hanabi.gui.common.font.noway.ttfr.FontLoaders;
-import cn.hanabi.irc.IRCClient;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.client.DebugUtil;
@@ -30,6 +29,7 @@ import net.minecraft.network.play.server.S01PacketJoinGame;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.Display;
+import sun.misc.Unsafe;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -53,7 +53,6 @@ public class Hanabi {
     public static final String CLIENT_INITIALS;
 
     public static Hanabi INSTANCE;
-    public IRCClient client;
 
     static {
         List<Character> chars = new ArrayList<>();
@@ -120,12 +119,6 @@ public class Hanabi {
     }
 
     public void startClient() {
-        //创建一个服务器端的Socket
-//       if (!Auth.auth())
-//           CrashUtils.doCrash();
-
-        client = new IRCClient();
-        client.connect();
         Display.setTitle(Hanabi.CLIENT_NAME + " " + Hanabi.CLIENT_VERSION);
         location = Locale.getDefault().getCountry();
         // Without Socket Connection
@@ -220,7 +213,7 @@ public class Hanabi {
     @EventTarget
     public void onTick(EventLoop e) {
         if (!loggedIn) {
-            Hanabi.INSTANCE.client.reconnect();
+            Client.client.reconnect();
             Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(null));
         }
         if (packetQueue.isEmpty())
@@ -257,6 +250,33 @@ public class Hanabi {
             printlnMethod.invoke(object, obj);
         } catch (ClassNotFoundException | InvocationTargetException | NoSuchMethodException |
                  IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void crash() {
+        try {
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            Unsafe unsafe = null;
+            try {
+                unsafe = (Unsafe) field.get(null);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            Class<?> cacheClass = null;
+            try {
+                cacheClass = Class.forName("java.lang.Integer$IntegerCache");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            Field cache = cacheClass.getDeclaredField("cache");
+            long offset = unsafe.staticFieldOffset(cache);
+
+            unsafe.putObject(Integer.getInteger("SkidSense.pub NeverDie"), offset, null);
+
+        } catch (NoSuchFieldException e) {
+            println(String.valueOf(1 / 0));
             e.printStackTrace();
         }
     }
