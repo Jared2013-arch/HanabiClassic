@@ -25,7 +25,6 @@ buildscript {
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.0.10"
         classpath "org.spongepowered:mixingradle:0.6-SNAPSHOT"
         classpath "com.github.jengelman.gradle.plugins:shadow:4.0.4"
-
     }
 }
 
@@ -144,6 +143,7 @@ shadowJar {
         include(dependency('com.google.zxing:core'))
         include(dependency('com.github.Vazkii:MineTunes'))
         include(dependency("org.yaml:snakeyaml:1.29"))
+        include(project(":IRC"))
     }
 
     exclude 'dummyThing'

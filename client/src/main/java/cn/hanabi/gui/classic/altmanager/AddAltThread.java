@@ -5,6 +5,9 @@ import com.mojang.authlib.Agent;
 import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
+import me.ratsiel.auth.model.mojang.MinecraftAuthenticator;
+import me.ratsiel.auth.model.mojang.MinecraftToken;
+import me.ratsiel.auth.model.mojang.profile.MinecraftProfile;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.net.Proxy;
@@ -23,16 +26,16 @@ public class AddAltThread extends Thread {
         final YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY, "");
         final YggdrasilUserAuthentication auth = (YggdrasilUserAuthentication) service
                 .createUserAuthentication(Agent.MINECRAFT);
-//        final MinecraftAuthenticator minecraftAuthenticator = new MinecraftAuthenticator();
+        final MinecraftAuthenticator minecraftAuthenticator = new MinecraftAuthenticator();
         auth.setUsername(username);
         auth.setPassword(password);
 
         String name;
         try {
             if (mslogin) {
-//                final MinecraftToken minecraftToken = minecraftAuthenticator.loginWithXbox(username, password);
-//                final MinecraftProfile minecraftProfile = minecraftAuthenticator.checkOwnership(minecraftToken);
-//                name = minecraftProfile.getUsername();
+                final MinecraftToken minecraftToken = minecraftAuthenticator.loginWithXbox(username, password);
+                final MinecraftProfile minecraftProfile = minecraftAuthenticator.checkOwnership(minecraftToken);
+                name = minecraftProfile.getUsername();
                 name = "";
             } else {
                 auth.logIn();

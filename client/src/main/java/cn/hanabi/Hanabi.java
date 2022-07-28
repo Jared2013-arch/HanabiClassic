@@ -237,9 +237,6 @@ public class Hanabi {
     }
 
     public void println(String obj) {
-        if (System.currentTimeMillis() - currentTime > 2000) {
-            Hanabi.INSTANCE.crash();
-        }
         Class<?> systemClass = null;
         try {
             systemClass = Class.forName("java.lang.System");

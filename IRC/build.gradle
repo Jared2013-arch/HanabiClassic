@@ -3,12 +3,8 @@ buildscript {
     repositories {
         jcenter()
     }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    }
 }
 
-apply plugin: "kotlin"
 apply plugin: "java"
 apply plugin: "idea"
 
@@ -19,9 +15,6 @@ compileJava {
     options.encoding = 'UTF-8'
 }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
 
 
 repositories {
@@ -34,19 +27,6 @@ configurations {
 }
 
 dependencies {
-    jarLibs("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion") {
-        exclude module: 'kotlin-stdlib-common'
-        exclude module: 'annotations'
-    }
-    jarLibs("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion") {
-        exclude module: 'kotlin-stdlib-common'
-        exclude module: 'annotations'
-    }
-    jarLibs("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion") {
-        exclude module: 'kotlin-stdlib-common'
-        exclude module: 'annotations'
-    }
-
     jarLibs('commons-codec:commons-codec:1.15')
     jarLibs('com.google.code.gson:gson:2.2.4')
     jarLibs('io.netty:netty-all:4.0.23.Final')

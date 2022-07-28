@@ -24,7 +24,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
     public static ChannelHandlerContext context;
     private int rec;
-    public static long currentTime;
+    public static long currentTime = System.currentTimeMillis();;
 
     @Override
     public void channelInactive(final ChannelHandlerContext ctx) {

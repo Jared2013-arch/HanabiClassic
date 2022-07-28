@@ -37,7 +37,8 @@ public class DBHelper {
                         st.setString(1, hwid);
                         st.setInt(2, (int) System.currentTimeMillis());
                         st.setString(3, username);
-                        return "Your HWID has updated, please login again";
+                        st.execute();
+                        return rs.getString(3);
                     } else {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         return "HWID is unverified, and you can't update your HWID until " + sdf.format(new Date(rs.getInt(5)));
@@ -77,10 +78,12 @@ public class DBHelper {
             }
 
             //注册用户
-            preparedStatement = connection.prepareStatement("INSERT INTO `users` (`username`, `password_md5`, `rank`) VALUES ( ? , ? , ?);");
+            preparedStatement = connection.prepareStatement("INSERT INTO `users` (`username`, `password_md5`, `rank`, `hwid`, `updatetime`) VALUES ( ? , ? , ?, ?, ?);");
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, rank);
+            preparedStatement.setString(4, "");
+            preparedStatement.setLong(5, 0);
             boolean reg = preparedStatement.execute();
 
             //删除key

@@ -15,8 +15,6 @@ import java.net.Socket;
 import java.util.Objects;
 
 public class Client {
-    public static String username = "SuperSkidder";
-    public static String rank = "admin";
     public static boolean active = true;
     public static boolean onDebug = false;
 

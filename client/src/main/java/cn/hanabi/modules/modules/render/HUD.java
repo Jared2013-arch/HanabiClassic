@@ -9,6 +9,7 @@ import cn.hanabi.gui.common.cloudmusic.ui.MusicOverlayRenderer;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.gui.classic.tabgui.SubTab;
 import cn.hanabi.gui.classic.tabgui.Tab;
+import cn.hanabi.irc.IRCClient;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
@@ -260,7 +261,7 @@ public class HUD extends Mod {
                 font.drawString("PING:" + ((ping <= 0) ? "N/A" : ping) + "ms     FPS:" + Minecraft.getDebugFPS(), 16f, height - 16f, -1);
             }
 
-            String ez = "Hanabi Build " + Hanabi.CLIENT_VERSION + " - " + Client.username;
+            String ez = "Hanabi Build " + Hanabi.CLIENT_VERSION + " - " + IRCClient.username;
             Hanabi.INSTANCE.fontManager.wqy18.drawString(ez, sr.getScaledWidth() - font.getStringWidth(ez) - 5,
                     sr.getScaledHeight() - 16, -1);
 
