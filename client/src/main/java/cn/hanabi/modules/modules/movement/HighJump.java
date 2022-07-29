@@ -40,7 +40,7 @@ public class HighJump extends Mod {
 
     @EventTarget
     public void onPacket(EventPacket e) {
-        if ((mc.thePlayer.onGround) && (mc.gameSettings.keyBindForward.isPressed())
+        if ((mc.thePlayer.onGround) && (mc.gameSettings.keyBindJump.isPressed())
                 && (this.wait.isDelayComplete(500L) && mode.isCurrentMode("Vanilla"))) {
             mc.thePlayer.motionY = this.boost.getValueState();
             this.wait.reset();

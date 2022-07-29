@@ -4,7 +4,12 @@ import cn.hanabi.events.*;
 import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
+import cn.hanabi.modules.ModManager;
+import cn.hanabi.modules.modules.combat.KillAura;
+import cn.hanabi.modules.modules.combat.TargetStrafe;
 import cn.hanabi.utils.client.ClientUtil;
+import cn.hanabi.utils.game.MoveUtils;
+import cn.hanabi.utils.game.PlayerUtil;
 import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
@@ -24,6 +29,8 @@ public class Fly extends Mod {
     Value<String> mode = new Value<>("Fly", "Mode", 0);
     Value<Boolean> lagback = new Value<>("Fly", "Lag Back Checks", true);
     Value<Boolean> damage = new Value<>("Fly", "Damage", true);
+
+    public static Value<Boolean> down = new Value<>("Fly", "Down", false);
 
     Fly_Motion MotionFly = new Fly_Motion();
     Fly_Hypixel hypixelfly = new Fly_Hypixel();
@@ -83,12 +90,10 @@ public class Fly extends Mod {
             //disabler.onMove(event);
             return;
         }
-
-
-        if (mode.isCurrentMode("Motion")) {
+        if(mode.isCurrentMode("Motion")){
             this.setDisplayName("FMotion");
             MotionFly.onPre();
-
+            ModManager.getModule(TargetStrafe.class).preStrafing(event, KillAura.target, PlayerUtil.getSpeed());
         }
 
 
@@ -127,14 +132,17 @@ public class Fly extends Mod {
     public void onMove(EventMove event) {
         if (mode.isCurrentMode("Hypixel")) {
             nigga.onMove(event);
-            return;
         }
+
     }
 
     @Override
     public void onEnable() {
         if(mode.isCurrentMode("AACv5")){
             aacv5Fly.onEnable();
+        }
+        if(mode.isCurrentMode("Motion")){
+            mc.thePlayer.motionY = 0.1;
         }
         if(damage.getValue()){
             damagePlayer(1);

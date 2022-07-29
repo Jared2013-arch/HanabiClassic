@@ -2,6 +2,7 @@ package me.yarukon;
 
 import cn.hanabi.Client;
 import cn.hanabi.Hanabi;
+import cn.hanabi.irc.IRCClient;
 import cn.hanabi.modules.modules.combat.KillAura;
 import cn.hanabi.utils.math.TimeHelper;
 import me.yarukon.hud.window.HudWindowManager;
@@ -43,8 +44,8 @@ public class DiscordThread extends Thread {
                 int killed = KillAura.killCount;
                 int win = WindowSessInfo.win;
                 DiscordRichPresence.Builder presence = new DiscordRichPresence.Builder("Killed: " + killed + " Won:" + win);
-                presence.setBigImage("logo", "Hanabi " + Hanabi.CLIENT_VERSION + " [" + Client.rank + "]");
-                presence.setDetails("User: " + Client.username);
+                presence.setBigImage("logo", "Hanabi " + Hanabi.CLIENT_VERSION + " [" + Hanabi.INSTANCE.rank + "]");
+                presence.setDetails("User: " + IRCClient.username);
 
                 if (!Minecraft.getMinecraft().isSingleplayer() && Minecraft.getMinecraft().getCurrentServerData() != null) {
                     String ip = Minecraft.getMinecraft().getCurrentServerData().serverIP;

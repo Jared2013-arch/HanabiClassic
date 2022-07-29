@@ -3,6 +3,7 @@ package cn.hanabi.gui.common;
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.classic.altmanager.*;
 import cn.hanabi.irc.ClientHandler;
+import cn.hanabi.irc.IRCClient;
 import cn.hanabi.irc.packets.impl.clientside.PacketLogin;
 import cn.hanabi.irc.utils.PacketUtil;
 import cn.hanabi.utils.auth.Check;
@@ -29,6 +30,7 @@ public class GuiLogin extends GuiScreen {
         try {
             switch (button.id) {
                 case 0: {
+                    IRCClient.username = username.getText();
                     ClientHandler.context.writeAndFlush(PacketUtil.pack(new PacketLogin(username.getText(), password.getText(), Check.getHWID())));
                     break;
                 }

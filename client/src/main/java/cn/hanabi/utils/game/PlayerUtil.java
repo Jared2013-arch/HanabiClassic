@@ -5,6 +5,7 @@ import cn.hanabi.Hanabi;
 import cn.hanabi.events.EventMove;
 import cn.hanabi.injection.interfaces.IKeyBinding;
 import cn.hanabi.modules.ModManager;
+import cn.hanabi.modules.modules.player.Debug;
 import cn.hanabi.utils.client.DebugUtil;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.*;
@@ -287,14 +288,14 @@ public class PlayerUtil {
     }
 
     public static void debugChat(Object string) {
-        if (string != null && mc.thePlayer != null) {
+        if (string != null && mc.thePlayer != null && ModManager.getModule(Debug.class).isEnabled()) {
             mc.thePlayer.addChatMessage(new ChatComponentText("\247b[Hanabi] \247r " + string));
             //    Hanabi.INSTANCE.debugUtils.add(new DebugUtil(string , 1000 , DebugUtil.Type.NONE));
         }
     }
 
     public static void debug(Object string) {
-        if (string != null && mc.thePlayer != null && ModManager.getModule("Debug").isEnabled() && Client.rank.toLowerCase().contains("beta"))
+        if (string != null && mc.thePlayer != null && ModManager.getModule("Debug").isEnabled() && (Hanabi.INSTANCE.rank.toLowerCase().contains("beta")) || Hanabi.INSTANCE.rank.toLowerCase().contains("admin"))
             Hanabi.INSTANCE.debugUtils.add(new DebugUtil((String) string, 1000, DebugUtil.Type.ERROR));
     }
 

@@ -23,8 +23,7 @@ public class IRCClient {
     public static String username;
     public static String password;
 
-        public String address = "101.43.166.241";
-//    public String address = "localhost";
+    public String address = "101.43.166.241";
 
     public int port = 5557;
 

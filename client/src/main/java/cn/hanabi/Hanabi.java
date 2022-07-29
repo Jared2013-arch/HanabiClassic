@@ -8,9 +8,11 @@ import cn.hanabi.gui.common.GuiLogin;
 import cn.hanabi.gui.common.cloudmusic.MusicManager;
 import cn.hanabi.gui.common.cloudmusic.ui.MusicPlayerUI;
 import cn.hanabi.gui.common.font.noway.ttfr.FontLoaders;
+import cn.hanabi.irc.IRCClient;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.client.DebugUtil;
+import cn.hanabi.utils.client.SoundFxPlayer;
 import cn.hanabi.utils.game.NukerUtil;
 import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.utils.bypass.AESUtil;
@@ -158,7 +160,7 @@ public class Hanabi {
                     e.printStackTrace();
                 }
                 this.trayIcon.setImageAutoSize(true);
-                this.trayIcon.setToolTip("Hanabi Client " + " ~ " + Client.username);
+                this.trayIcon.setToolTip("Hanabi Client");
                 try {
                     SystemTray.getSystemTray().add(this.trayIcon);
                 } catch (AWTException var7) {
@@ -169,9 +171,8 @@ public class Hanabi {
             }
         }
 
-        //    new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.SPECIAL, -2);
-
-        //   new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.Startup, 0);
+//        new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.SPECIAL, -2);
+        new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.Startup, 0);
 
         try {
             this.ofFastRenderField = GameSettings.class.getDeclaredField("ofFastRender");

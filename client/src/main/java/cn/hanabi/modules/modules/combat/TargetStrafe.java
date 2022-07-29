@@ -2,6 +2,7 @@ package cn.hanabi.modules.modules.combat;
 
 import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.events.EventMove;
+import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.events.EventRender;
 import cn.hanabi.events.EventWorldChange;
 import cn.hanabi.modules.Category;
@@ -120,7 +121,68 @@ public class TargetStrafe extends Mod {
 
 
     }
+    public boolean preStrafing(EventPreMotion event, EntityLivingBase target, double moveSpeed) {
 
+        final boolean pressingSpace = !targetkey.getValue() || Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode());
+
+        if (!isEnabled() || target == null || moveSpeed == 0 || !pressingSpace) return true;
+
+        boolean aroundVoid = false;
+        for (int x = -1; x < 1; x++)
+            for (int z = -1; z < 1; z++)
+                if (isVoid(x, z))
+                    aroundVoid = true;
+
+        float yaw = RotationUtil.getRotationFromEyeHasPrev(target).getYaw();
+
+        boolean behindTarget = RotationUtil.getRotationDifference(MathHelper.wrapAngleTo180_float(yaw), MathHelper.wrapAngleTo180_float(target.rotationYaw)) <= 10;
+
+        if (mc.thePlayer.isCollidedHorizontally || (aroundVoid && voidCheck.getValue()) || (behindTarget && behindValue.getValue()))
+            strafe *= -1;
+
+        float targetStrafe = change.getValue() && mc.thePlayer.moveStrafing != 0 ? (mc.thePlayer.moveStrafing * strafe) : strafe;
+        if (PlayerUtil.isBlockUnder())
+            targetStrafe = 0;
+
+        final double rotAssist = 45F / getEnemyDistance(target), moveAssist = 45F / getStrafeDistance(target);
+
+        float mathStrafe = 0;
+
+        if (targetStrafe > 0) {
+
+            if ((target.getEntityBoundingBox().minY > mc.thePlayer.getEntityBoundingBox().maxY || target.getEntityBoundingBox().maxY < mc.thePlayer.getEntityBoundingBox().minY) && getEnemyDistance(target) < range.getValue().floatValue())
+                yaw += -rotAssist;
+
+            mathStrafe += -moveAssist;
+        } else if (targetStrafe < 0) {
+
+            if ((target.getEntityBoundingBox().minY > mc.thePlayer.getEntityBoundingBox().maxY || target.getEntityBoundingBox().maxY < mc.thePlayer.getEntityBoundingBox().minY) && getEnemyDistance(target) < range.getValue().floatValue())
+                yaw += rotAssist;
+
+            mathStrafe += moveAssist;
+        }
+
+
+        double[] doSomeMath = {
+                Math.cos(Math.toRadians(yaw + 90F + mathStrafe)),
+                Math.sin(Math.toRadians(yaw + 90F + mathStrafe))
+        };
+
+        double[] asLast = {
+                moveSpeed * doSomeMath[0],
+                moveSpeed * doSomeMath[1]
+        };
+
+        if (event != null) {
+            event.setX(mc.thePlayer.motionX = asLast[0]);
+            event.setZ(mc.thePlayer.motionZ =asLast[1]);
+        } else {
+            mc.thePlayer.motionX = asLast[0];
+            mc.thePlayer.motionZ = asLast[1];
+        }
+
+        return false;
+    }
 
     public boolean isStrafing(EventMove event, EntityLivingBase target, double moveSpeed) {
 

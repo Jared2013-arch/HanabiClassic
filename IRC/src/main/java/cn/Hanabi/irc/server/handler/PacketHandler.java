@@ -3,10 +3,7 @@ package cn.hanabi.irc.server.handler;
 import cn.hanabi.irc.packets.impl.PacketMessage;
 import cn.hanabi.irc.packets.impl.clientside.PacketGet;
 import cn.hanabi.irc.packets.impl.clientside.PacketLogin;
-import cn.hanabi.irc.packets.impl.serverside.PacketGetRep;
-import cn.hanabi.irc.packets.impl.serverside.PacketHeartBeatRep;
-import cn.hanabi.irc.packets.impl.serverside.PacketRegisterRep;
-import cn.hanabi.irc.packets.impl.serverside.PacketServerRep;
+import cn.hanabi.irc.packets.impl.serverside.*;
 import cn.hanabi.irc.server.ServerMain;
 import cn.hanabi.irc.server.utils.LogUtil;
 import io.netty.channel.Channel;
@@ -30,7 +27,6 @@ public class PacketHandler {
             case LOGIN:
                 PacketLogin packetLogin = PacketUtil.unpack(o, PacketLogin.class);
                 String rank = packetLogin.user.login();
-                channel.writeAndFlush(PacketUtil.pack(new PacketServerRep(rank, "1.0", String.valueOf(NettyServerHandler.users.size()), rank)));
                 if (rank.length() > 14) { //todo: WTF IS THIS
                     channel.close();
                     ctx.close();
@@ -39,6 +35,7 @@ public class PacketHandler {
                 } else {
                     NettyServerHandler.channelGroup.add(channel);
                     NettyServerHandler.users.put(ctx, packetLogin.user);
+                    channel.writeAndFlush(PacketUtil.pack(new PacketServerRep(rank, "1.0", String.valueOf(NettyServerHandler.users.size()), rank)));
                     NettyServerHandler.channelGroup.writeAndFlush(PacketUtil.pack(new PacketMessage("§6[IRC]" + packetLogin.user.rankInGame + packetLogin.user.username + "§r connected to the irc.")));
                     LogUtil.info("Login successfully: " + packetLogin.user.rank + " " + packetLogin.user.username + " ip:" + ctx.channel().remoteAddress());
                 }

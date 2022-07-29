@@ -191,7 +191,6 @@ public class KillAura extends Mod {
     private double hudHeight;
 
     public static int killCount = 0;
-    private ColorValue espcolor = new ColorValue("ESPColor", -1, 1, 1, 120, true, false, 1f);
 
     //other stuff
 
@@ -400,7 +399,6 @@ public class KillAura extends Mod {
     private void update() {
         if(!Hanabi.INSTANCE.loggedIn)
             return;
-
         // 初始化变量
         if (!targets.isEmpty() && index >= targets.size())
             index = 0; // 超过Switch限制
@@ -419,7 +417,6 @@ public class KillAura extends Mod {
         if (targets.size() == 0) { // 实体数量为0停止攻击
             target = null;
         } else {
-
             target = targets.get(index);// 设置攻击的Target
             if (mc.thePlayer.getDistanceToEntity(target) > reach.getValueState()) {
                 target = targets.get(0);
@@ -1418,7 +1415,7 @@ public class KillAura extends Mod {
             final double vecX = x + rad * Math.cos(i);
             final double vecZ = z + rad * Math.sin(i);
 
-            c = ColorUtils.intToColor(espcolor.getColor());
+            c = ColorUtils.intToColor(boxColor.getColor());
 
             if (shade) {
                 GL11.glColor4f(c.getRed() / 255.F,

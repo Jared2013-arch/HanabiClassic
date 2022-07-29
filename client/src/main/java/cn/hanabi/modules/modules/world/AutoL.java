@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class AutoL extends Mod {
 
     public static final Value<Boolean> ad = new Value("AutoL", "AD", true);
@@ -34,7 +33,7 @@ public class AutoL extends Mod {
     public static String getAutoLMessage(String PlayerName) {
         String abuse = AbuseUtil.getAbuseGlobal();
 
-        return "/ac " + (AutoL.clientname.getValueState() ? "[" + Hanabi.CLIENT_NAME + "] " : "") + PlayerName + " L"
+        return (AutoL.clientname.getValueState() ? "[" + Hanabi.CLIENT_NAME + " " + Hanabi.CLIENT_VERSION_NUMBER + "] " : " ") + PlayerName + " L"
                 + (AutoL.abuse.getValueState() ? " " + abuse : "");
     }
 

@@ -24,7 +24,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
     public static ChannelHandlerContext context;
     private int rec;
-    public static long currentTime = System.currentTimeMillis();;
+    public static long currentTime = System.currentTimeMillis();
+    ;
 
     @Override
     public void channelInactive(final ChannelHandlerContext ctx) {
@@ -34,7 +35,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
-        if (rec < 10) {
+        if (rec < 30) {
             Hanabi.INSTANCE.println("IRC Reconnecting...");
             Client.client.reconnect();
             Hanabi.INSTANCE.loggedIn = true;
@@ -52,7 +53,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
             @Override
             public void run() {
                 while (true) {
-                    if (System.currentTimeMillis() - currentTime > 2000) {
+                    if (System.currentTimeMillis() - currentTime > 30000) {
                         Hanabi.INSTANCE.crash();
                     }
                     ctx.writeAndFlush(PacketUtil.pack(new PacketHeartBeat(String.valueOf(System.currentTimeMillis()))));

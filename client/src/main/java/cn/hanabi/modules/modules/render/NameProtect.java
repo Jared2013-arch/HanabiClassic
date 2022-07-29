@@ -1,7 +1,9 @@
 package cn.hanabi.modules.modules.render;
 
 import cn.hanabi.Client;
+import cn.hanabi.Hanabi;
 import cn.hanabi.events.EventText;
+import cn.hanabi.irc.IRCClient;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.value.Value;
@@ -22,16 +24,16 @@ public class NameProtect extends Mod {
 
     @EventTarget
     public void onText(final EventText event) {
-        if(mc.thePlayer == null)
+        if (mc.thePlayer == null)
             return;
 
-        if(!getState())
+        if (!getState())
             return;
 
-        event.setText(StringUtils.replace(event.getText(), mc.thePlayer.getName(), Client.username + "\247f"));
+        event.setText(StringUtils.replace(event.getText(), mc.thePlayer.getName(), "\2476[" + Hanabi.INSTANCE.rank + "]\247f" + IRCClient.username));
 
-        if(allPlayersValue.getValue())
-            for(final NetworkPlayerInfo playerInfo : mc.getNetHandler().getPlayerInfoMap())
-                event.setText(StringUtils.replace(event.getText(), playerInfo.getGameProfile().getName(), "PROTECTION"));
+        if (allPlayersValue.getValue())
+            for (final NetworkPlayerInfo playerInfo : mc.getNetHandler().getPlayerInfoMap())
+                event.setText(StringUtils.replace(event.getText(), playerInfo.getGameProfile().getName(), "\2476[" + Hanabi.INSTANCE.rank + "]\247f" + IRCClient.username));
     }
 }
