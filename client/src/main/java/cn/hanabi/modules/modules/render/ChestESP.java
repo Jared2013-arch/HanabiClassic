@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 
 public class ChestESP extends Mod {
-    ArrayList<BlockPos> list = new ArrayList<>();
+    public static ArrayList<BlockPos> list = new ArrayList<>();
 
     public ChestESP() {
         super("ChestESP", Category.RENDER);

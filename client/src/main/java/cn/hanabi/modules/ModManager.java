@@ -146,6 +146,7 @@ public class ModManager {
         addModule(new AutoTools());
         addModule(new AutoGG());
         addModule(new AutoPlay());
+        addModule(new ChestAura());
         addModule(new Mod("NoCommand", Category.PLAYER) {
         });
         addModule(new TeleportBedFucker());

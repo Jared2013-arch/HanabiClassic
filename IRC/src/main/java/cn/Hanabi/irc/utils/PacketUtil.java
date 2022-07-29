@@ -25,6 +25,7 @@ public class PacketUtil {
     public static String pack(Packet packet) {
         Gson gson = new Gson();
         String s = gson.toJson(packet);
+
         if(packet.type != Packet.Type.HEARTBEATREP) {
             LogUtil.packet(" [Send] " + packet.type.name() + ":  " + s);
         }

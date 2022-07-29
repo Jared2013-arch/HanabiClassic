@@ -64,7 +64,7 @@ public class DBHelper {
                 return "User already exists";
             }
             // 检查key是否可用
-            String rank = "User";
+            String rank = "WTF";
             if (!key.isEmpty()) {
                 preparedStatement = connection.prepareStatement("SELECT * FROM `activekeys` WHERE `activekey` = ?");
                 preparedStatement.setString(1, key);
@@ -72,7 +72,7 @@ public class DBHelper {
                 while (rs.next()) {
                     rank = rs.getString(2);
                 }
-                if (rank.equals("User")) {
+                if (rank.equals("WTF")) {
                     return "wrong key";
                 }
             }

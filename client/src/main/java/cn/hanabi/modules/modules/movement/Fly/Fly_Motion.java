@@ -2,9 +2,11 @@ package cn.hanabi.modules.modules.movement.Fly;
 
 import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.injection.interfaces.IKeyBinding;
+import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.modules.modules.combat.KillAura;
 import cn.hanabi.modules.modules.combat.TargetStrafe;
+import cn.hanabi.modules.modules.player.Blink;
 import cn.hanabi.utils.game.MoveUtils;
 import cn.hanabi.utils.game.PlayerUtil;
 import net.minecraft.client.Minecraft;
@@ -24,15 +26,22 @@ public class Fly_Motion {
             PlayerUtil.setSpeed(0);
         }
         if (Fly.down.getValue() && mc.thePlayer.motionY == 0 && !mc.thePlayer.onGround && PlayerUtil.isMoving2()) {
-            mc.thePlayer.motionY -= 0.01;
-//            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY - 0.0001, mc.thePlayer.posZ, false));
+            mc.thePlayer.motionY -= 0.005;
+            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, true));
         }
+
+//        if (PlayerUtil.isMoving2() && mc.gameSettings.keyBindJump.isKeyDown()) {
+//            if (!ModManager.getModule(Blink.class).getState())
+//                ModManager.getModule(Blink.class).setState(true);
+//        } else {
+//            if (ModManager.getModule(Blink.class).getState())
+//                ModManager.getModule(Blink.class).setState(false);
+//        }
 
         if (((IKeyBinding) mc.gameSettings.keyBindSneak).getPress()) {
             mc.thePlayer.motionY -= 1;
         } else if (((IKeyBinding) mc.gameSettings.keyBindJump).getPress()) {
-            mc.thePlayer.jump();
-//            mc.thePlayer.motionY += 0.05;
+            mc.thePlayer.motionY += 0.42;
             mc.thePlayer.motionX = 0;
             mc.thePlayer.motionZ = 0;
         }

@@ -26,7 +26,7 @@ public class Handler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelUnregistered(final ChannelHandlerContext ctx) throws InterruptedException {
         System.out.println("Reconnecting");
-        bootstrap.connect("localhost", 5557).sync();
+        bootstrap.connect("101.43.166.241", 5557).sync();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Handler extends SimpleChannelInboundHandler<String> {
                             ctx.writeAndFlush(PacketUtil.pack(new PacketRegister(msg.split(" ")[1], msg.split(" ")[2], msg.length() == 4 ? msg.split(" ")[3] : "")));
                             break;
                         case "LOGIN":
-                            ctx.writeAndFlush(PacketUtil.pack(new PacketLogin(msg.split(" ")[1], msg.split(" ")[2], msg.split(" ")[3])));
+                            ctx.writeAndFlush(PacketUtil.pack(new PacketLogin("", "", "")));
                             break;
                     }
                 }

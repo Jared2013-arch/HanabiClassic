@@ -21,7 +21,7 @@ public class ClientTest {
     public static Bootstrap bootstrap;
 
     public void connect() {
-
+        System.out.println("HI");
         bootstrap = new Bootstrap();
         EventLoopGroup group = new NioEventLoopGroup();
         bootstrap.channel(NioSocketChannel.class);

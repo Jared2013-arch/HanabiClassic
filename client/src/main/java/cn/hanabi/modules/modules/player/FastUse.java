@@ -51,13 +51,13 @@ public class FastUse extends Mod {
                 Item usingItem = mc.thePlayer.getItemInUse().getItem();
                 if (usingItem instanceof ItemFood || usingItem instanceof ItemBucketMilk
                         || usingItem instanceof ItemPotion) {
-                    if (timer.hasReached(750)) {
+                    if (timer.hasReached(300)) {
                         mc.getNetHandler()
                                 .addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                         mc.getNetHandler()
                                 .addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getItemInUse()));
                         for (int i = 0; i < 39; ++i) {
-                            mc.getNetHandler().addToSendQueue(new C03PacketPlayer(mc.thePlayer.onGround));
+                            mc.getNetHandler().addToSendQueue(new C03PacketPlayer(true));
                         }
                         mc.getNetHandler().addToSendQueue(new C07PacketPlayerDigging(
                                 C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));

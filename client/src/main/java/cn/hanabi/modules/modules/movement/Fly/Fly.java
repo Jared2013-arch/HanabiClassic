@@ -75,10 +75,10 @@ public class Fly extends Mod {
     public void onPacket(EventPacket e) {
         Packet packet = e.getPacket();
 
-        if(mode.isCurrentMode("AACv5")){
+        if (mode.isCurrentMode("AACv5")) {
             aacv5Fly.onPacket(e);
         }
-        if(mode.isCurrentMode("Hypixel")){
+        if (mode.isCurrentMode("Hypixel")) {
             nigga.onPacket(e);
         }
     }
@@ -90,7 +90,7 @@ public class Fly extends Mod {
             //disabler.onMove(event);
             return;
         }
-        if(mode.isCurrentMode("Motion")){
+        if (mode.isCurrentMode("Motion")) {
             this.setDisplayName("FMotion");
             MotionFly.onPre();
             ModManager.getModule(TargetStrafe.class).preStrafing(event, KillAura.target, PlayerUtil.getSpeed());
@@ -114,7 +114,7 @@ public class Fly extends Mod {
 
     @EventTarget
     public void onUpdate(EventUpdate event) {
-        if(mode.isCurrentMode("AACv5")){
+        if (mode.isCurrentMode("AACv5")) {
             aacv5Fly.onUpdate();
         }
     }
@@ -138,13 +138,13 @@ public class Fly extends Mod {
 
     @Override
     public void onEnable() {
-        if(mode.isCurrentMode("AACv5")){
+        if (mode.isCurrentMode("AACv5")) {
             aacv5Fly.onEnable();
         }
-        if(mode.isCurrentMode("Motion")){
+        if (mode.isCurrentMode("Motion")) {
             mc.thePlayer.motionY = 0.1;
         }
-        if(damage.getValue()){
+        if (damage.getValue()) {
             damagePlayer(1);
         }
         super.onEnable();
@@ -156,8 +156,12 @@ public class Fly extends Mod {
             nigga.onDisable();
             return;
         }
-        if(mode.isCurrentMode("AACv5")){
+        if (mode.isCurrentMode("AACv5")) {
             aacv5Fly.onDisable();
+        }
+        if (mode.isCurrentMode("Motion")) {
+            mc.thePlayer.motionX = 0;
+            mc.thePlayer.motionZ = 0;
         }
         super.onDisable();
     }
