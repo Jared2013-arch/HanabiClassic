@@ -5,6 +5,7 @@ import cn.hanabi.irc.packets.Packet;
 
 public class PacketLogin extends Packet {
     public User user;
+    public String version;
 
     public PacketLogin(String username, String password, String hwid) {
         super(Packet.Type.LOGIN);

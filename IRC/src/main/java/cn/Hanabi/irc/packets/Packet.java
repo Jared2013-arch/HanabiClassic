@@ -19,8 +19,10 @@ public class Packet {
         LOGIN, LOGINREP,
         EXIT,
         MESSAGE,
-        HEARTBEAT,
-        COMMAND, HEARTBEATREP,
-        REGISTER,REGISTERREP,
+        HEARTBEAT, HEARTBEATREP,
+
+        COMMAND, COMMAND_REP,
+
+        REGISTER, REGISTERREP,
     }
 }

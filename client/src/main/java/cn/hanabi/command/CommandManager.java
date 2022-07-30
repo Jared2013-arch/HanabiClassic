@@ -39,6 +39,7 @@ public class CommandManager {
         addCommand(new IRCCommand());
         addCommand(new HideCommand());
         addCommand(new SkinChangeCommand());
+        addCommand(new CommandIRCCommand());
     }
 
     public void addCommand(Command cmd) {

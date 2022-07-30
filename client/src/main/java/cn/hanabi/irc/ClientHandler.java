@@ -85,6 +85,9 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
                     break;
                 case MESSAGE:
                     Hanabi.INSTANCE.println(p.content);
+                    if (p.content.equals("KICKUSER")) {
+                        Hanabi.INSTANCE.crash();
+                    }
                     if (Minecraft.getMinecraft().thePlayer != null) {
                         PlayerUtil.tellPlayerWithoutPrefix(p.content);
                     }
