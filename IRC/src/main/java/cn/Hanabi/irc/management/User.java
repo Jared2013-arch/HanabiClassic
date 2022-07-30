@@ -26,7 +26,7 @@ public class User {
         LogUtil.info(username + " tried to login:(" + res + ") Password:" + password + " HWID:" + hwid);
         if (res.equals("Admin")) {
             rank = RankManager.Ranks.Admin;
-            rankInGame = "§c[DEV]§r";
+            rankInGame = "§4[DEV]§r";
         } else if (res.equals("Beta")) {
             rank = RankManager.Ranks.Beta;
             rankInGame = "§b[Beta]§r";
@@ -36,6 +36,9 @@ public class User {
         } else if (res.equals("User")) {
             rank = RankManager.Ranks.User;
             rankInGame = "§7";
+        }else if(res.equals("Backer")){
+            rank = RankManager.Ranks.Backer;
+            rankInGame = "§c[Backer]§r";
         }
         return res;
     }
