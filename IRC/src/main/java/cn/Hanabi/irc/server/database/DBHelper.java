@@ -140,4 +140,16 @@ public class DBHelper {
             throw new RuntimeException(e);
         }
     }
+
+    public static void record(String username, String ip, String time) {
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = connection.prepareStatement("INSERT INTO `ip_record` (`username`, `ip`, `time`) VALUES ( ? , ? , ?);");
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, ip);
+            preparedStatement.setString(3, time);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package cn.hanabi.irc.server.handler;
 
 import cn.hanabi.irc.packets.impl.PacketMessage;
+import cn.hanabi.irc.packets.impl.clientside.PacketCommand;
 import cn.hanabi.irc.packets.impl.clientside.PacketGet;
 import cn.hanabi.irc.packets.impl.clientside.PacketLogin;
 import cn.hanabi.irc.packets.impl.serverside.*;
@@ -14,7 +15,9 @@ import cn.hanabi.irc.packets.Packet;
 import cn.hanabi.irc.packets.impl.clientside.PacketRegister;
 import cn.hanabi.irc.server.database.DBHelper;
 import cn.hanabi.irc.utils.PacketUtil;
+import javafx.beans.binding.Bindings;
 
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import static cn.hanabi.irc.utils.PacketUtil.unpack;
@@ -35,12 +38,24 @@ public class PacketHandler {
                 } else {
                     NettyServerHandler.channelGroup.add(channel);
                     NettyServerHandler.users.put(ctx, packetLogin.user);
-                    channel.writeAndFlush(PacketUtil.pack(new PacketServerRep(rank, "1.0", String.valueOf(NettyServerHandler.users.size()), rank)));
+                    channel.writeAndFlush(PacketUtil.pack(new PacketServerRep(rank, "1.2", String.valueOf(NettyServerHandler.users.size()), rank)));
                     NettyServerHandler.channelGroup.writeAndFlush(PacketUtil.pack(new PacketMessage("§6[IRC]" + packetLogin.user.rankInGame + packetLogin.user.username + "§r connected to the irc.")));
                     LogUtil.info("Login successfully: " + packetLogin.user.rank + " " + packetLogin.user.username + " ip:" + ctx.channel().remoteAddress());
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    DBHelper.record(packetLogin.user.username, ctx.channel().remoteAddress().toString(), sdf.format(System.currentTimeMillis()));
                 }
                 break;
             case COMMAND:
+                PacketCommand packetCommand = PacketUtil.unpack(o, PacketCommand.class);
+                if (packetCommand.command[0].equals("kick")) {
+                    NettyServerHandler.users.forEach((key, value) -> {
+                        if (value.username.equals(packetCommand.command[1])) {
+                            key.channel().writeAndFlush(PacketUtil.pack(new PacketMessage("KICKUSER")));
+                            NettyServerHandler.channelGroup.writeAndFlush(PacketUtil.pack(new PacketMessage("§6[IRC]" + NettyServerHandler.users.get(ctx).username + "Kicked" + packetCommand.command[1])));
+                            key.close();
+                        }
+                    });
+                }
                 break;
             case EXIT:
                 ctx.close();
