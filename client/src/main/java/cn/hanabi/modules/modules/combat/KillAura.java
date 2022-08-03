@@ -4,7 +4,9 @@ import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
+import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.newStyle.notification.CenterNotification;
 import cn.hanabi.injection.interfaces.IEntityPlayer;
 import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.modules.Category;
@@ -13,6 +15,7 @@ import cn.hanabi.modules.ModManager;
 import cn.hanabi.modules.modules.world.AntiBot;
 import cn.hanabi.modules.modules.world.AutoL;
 import cn.hanabi.modules.modules.world.Teams;
+import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.client.FriendManager;
 import cn.hanabi.utils.client.TargetManager;
 import cn.hanabi.utils.color.ColorUtils;
@@ -199,7 +202,7 @@ public class KillAura extends Mod {
         priority.LoadValue(new String[]{"Angle", "Range", "Armor", "Health", "Fov", "Hurt Time"});
         hudMode.LoadValue(new String[]{"Simple", "Fancy", "Flat", "Test"});
         EspMode.LoadValue(new String[]{"Box", "Circle", "New", "Cylinder", "ExeterCross", "Jello"});
-        blockMode.LoadValue(new String[]{"Simple", "Always", "Exploit"});
+        blockMode.LoadValue(new String[]{"Simple", "Always", "Exploit", "Hypixel"});
         SensitivityMode.LoadValue(new String[]{"None", "Normal", "Prefect"});
         attacked = new ArrayList<>();
     }
@@ -397,7 +400,7 @@ public class KillAura extends Mod {
     }
 
     private void update() {
-        if(!Hanabi.INSTANCE.loggedIn)
+        if (!Hanabi.INSTANCE.loggedIn)
             return;
         // 初始化变量
         if (!targets.isEmpty() && index >= targets.size())
@@ -503,7 +506,9 @@ public class KillAura extends Mod {
                         mc.thePlayer.renderYawOffset = event.getYaw();
                     }
                 }
-
+                if (isBlocking) {
+                    mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+                }
             } else {
                 targets.clear();
                 if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword
@@ -575,7 +580,7 @@ public class KillAura extends Mod {
                 return;
             }
 
-            if (blockMode.isCurrentMode("Exploit") || (blockMode.isCurrentMode("Simple") && PlayerUtil.isMoving2())) {
+            if (blockMode.isCurrentMode("Exploit") || blockMode.isCurrentMode("Hypixel") || (blockMode.isCurrentMode("Simple") && PlayerUtil.isMoving2())) {
                 if (mc.thePlayer.isBlocking() || mc.thePlayer.getHeldItem() != null
                         && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && autoBlock.getValueState() && isBlocking) { // 格挡
                     unBlock(!mc.thePlayer.isBlocking() && !autoBlock.getValueState()
@@ -734,6 +739,7 @@ public class KillAura extends Mod {
         attacked = new ArrayList<>();
         lastRotations = new float[]{mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch};
         super.onEnable();
+        ClientUtil.sendNotification(new Notification("333", Notification.Type.SUCCESS));
     }
 
     @Override

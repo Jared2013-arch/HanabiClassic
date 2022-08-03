@@ -1,8 +1,7 @@
 package cn.hanabi.irc.management;
 
-import cn.hanabi.irc.server.ServerMain;
 import cn.hanabi.irc.server.database.DBHelper;
-import cn.hanabi.irc.server.utils.LogUtil;
+import cn.hanabi.irc.utils.LogUtil;
 import cn.hanabi.irc.utils.MD5Utils;
 
 public class User {

@@ -27,7 +27,6 @@ public class GuiNewMainMenu extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
         ScaledResolution sr = new ScaledResolution(mc);
-//        RenderUtil.drawImage(new ResourceLocation("Client/new/mainmenu/bg.png"), 0, 0, sr.getScaledWidth(), sr.getScaledHeight());
         RenderUtil.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), -1);
         ParticleUtils.drawParticles(mouseX, mouseY);
 
@@ -36,7 +35,6 @@ public class GuiNewMainMenu extends GuiScreen {
         Hanabi.INSTANCE.fontManager.wqy16.drawString("[+] Bypasses", 50, 85, new Color(160, 160, 160).getRGB());
         Hanabi.INSTANCE.fontManager.wqy16.drawString("[+] Verify fix", 50, 100, new Color(160, 160, 160).getRGB());
         Hanabi.INSTANCE.fontManager.wqy16.drawString("[~] Bug fixes", 50, 115, new Color(160, 160, 160).getRGB());
-//        Hanabi.INSTANCE.fontManager.wqy16.drawString("[~] Bug fixes", 50, 130, new Color(160, 160, 160).getRGB());
 
 
         RenderUtil.drawImage(new ResourceLocation("Client/new/loading/logo.png"), sr.getScaledWidth() / 2f - 128 / 4f, sr.getScaledHeight() / 2f - 148, 128 / 2f, 128 / 2f);
@@ -52,6 +50,9 @@ public class GuiNewMainMenu extends GuiScreen {
         int y = y1;
         GlStateManager.disableBlend();
         RenderUtil.drawCustomImage2(x - 10, selectionAnimY, 309 / 2f, height2, new ResourceLocation("Client/new/mainmenu/selection.png"));
+        if (selectionAnimY == 0) {
+            selectionAnimY = y - 10;
+        }
         selectionAnimY = AnimationUtil.moveUD(selectionAnimY, (float) i1, 0.4f, 0.3f);
 
         for (int i = 0; i < 4; i++) {

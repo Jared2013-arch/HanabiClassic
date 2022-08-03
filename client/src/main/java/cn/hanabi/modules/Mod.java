@@ -3,6 +3,7 @@ package cn.hanabi.modules;
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.gui.classic.notifications.Notification;
+import cn.hanabi.gui.newStyle.notification.CenterNotification;
 import cn.hanabi.modules.modules.render.HUD;
 import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.client.SoundFxPlayer;
@@ -243,6 +244,7 @@ public abstract class Mod {
                         mc.thePlayer.playSound("random.click", 0.2F, 0.6F);
 
                     ClientUtil.sendClientMessage(name + " Enabled", Notification.Type.SUCCESS);
+
                 }
             }
             if (!isReg) {

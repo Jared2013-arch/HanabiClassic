@@ -24,6 +24,7 @@ public class Disabler extends Mod {
     private final Value<String> DisablerMode = new Value<String>("Disabler", "DisableMode", 0)
             .LoadValue(new String[]{"Hypixel", "VulcanCombat",});
 
+    private final Value<Double> delay = new Value<>("Disabler", "Delay", 400d, 0d, 2000d, 10);
     //Vulcan
     public static final LinkedList<Packet<INetHandlerPlayServer>> packett = new LinkedList<Packet<INetHandlerPlayServer>>();
     public static final List<Packet<?>> packet = new ArrayList();
@@ -88,13 +89,11 @@ public class Disabler extends Mod {
             return;
         }
         if (DisablerMode.isCurrentMode("Hypixel")) {
-            if (hypTimer.isDelayComplete(600) && disabled) {
+            if (hypTimer.isDelayComplete(delay.getValue()) && disabled) {
                 while (!packets.isEmpty()) {
                     Packet remove = packets.remove(0);
                     sendPacketNoEvent(remove);
-                    System.out.println(((C0FPacketConfirmTransaction) remove).getUid() + "  " + ((C0FPacketConfirmTransaction) remove).getWindowId());
                 }
-                System.out.println("Relased");
                 hypTimer.reset();
             }
 
@@ -130,16 +129,17 @@ public class Disabler extends Mod {
         if (DisablerMode.isCurrentMode("Hypixel")) {
             if (p instanceof C0FPacketConfirmTransaction) {
                 cout++;
-                if (((C0FPacketConfirmTransaction) p).getUid() < -691 && cout > 7) {
-                    if (!disabled)
+                if (((C0FPacketConfirmTransaction) p).getUid() < 0 && cout > 7) {
+                    if (!disabled) {
                         ClientUtil.sendClientMessage("WatchDog: Disabled Hypixel", Notification.Type.SUCCESS);
-                    disabled = true;
+                        disabled = true;
+                    }
                     packets.add(p);
                     event.setCancelled(true);
                 }
             }
             if (p instanceof C00PacketKeepAlive) {
-                if (disabled) {
+                if (((C00PacketKeepAlive) p).getKey() >= 20) {
                     packets.add(p);
                     event.setCancelled(true);
                 }

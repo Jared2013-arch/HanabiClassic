@@ -1,4 +1,4 @@
-package cn.hanabi.irc.server.utils;
+package cn.hanabi.irc.utils;
 
 import cn.hanabi.irc.server.ServerMain;
 

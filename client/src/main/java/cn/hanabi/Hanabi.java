@@ -43,8 +43,6 @@ import java.util.Queue;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static cn.hanabi.irc.ClientHandler.currentTime;
-
 @Native
 public class Hanabi {
     @NotNull
@@ -52,7 +50,7 @@ public class Hanabi {
 
     public static final double CLIENT_VERSION_NUMBER = 4.0;
     @NotNull
-    public static final String CLIENT_VERSION = CLIENT_VERSION_NUMBER + " preview";
+    public static final String CLIENT_VERSION = CLIENT_VERSION_NUMBER + " preview 2";
     @NotNull
     public static final String CLIENT_INITIALS;
 

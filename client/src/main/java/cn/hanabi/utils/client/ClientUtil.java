@@ -2,6 +2,7 @@ package cn.hanabi.utils.client;
 
 import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.gui.classic.notifications.Notification.Type;
+import cn.hanabi.gui.newStyle.notification.CenterNotification;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockVine;
@@ -25,18 +26,12 @@ public enum ClientUtil {
     public static void sendClientMessage(String message, Type type) {
         if (notifications.size() > 8) notifications.remove(0);
 
-        // HANABI_VERIFY
-        // HANABI_VERIFY
-        /*
-         * try { if
-         * (!Hanabi.AES_UTILS.decrypt(Hanabi.HWID_VERIFY).contains(Wrapper.getHWID())) {
-         * FMLCommonHandler.instance().exitJava(0, true); Client.sleep = true; } } catch
-         * (Exception e) { FMLCommonHandler.instance().exitJava(0, true); Client.sleep =
-         * true; }
-         *
-         */
-
         notifications.add(new Notification(message, type));
+    }
+
+    public static void sendNotification(Notification notification) {
+        if (notifications.size() > 8) notifications.remove(0);
+        notifications.add(notification);
     }
 
     public static int reAlpha(int color, float alpha) {
@@ -87,12 +82,20 @@ public enum ClientUtil {
     public void drawNotifications() {
         ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
         double startY = res.getScaledHeight() - 25;
+        double startY2 = res.getScaledHeight() - 45;
         final double lastY = startY;
+        final double lastY2 = startY2;
+
 
         notifications.removeIf(Notification::shouldDelete);
         for (Notification not : notifications) {
-            not.draw(startY, lastY);
-            startY -= not.getHeight() + 1;
+            if(!(not instanceof CenterNotification)) {
+                not.draw(startY, lastY);
+                startY -= not.getHeight() + 1;
+            } else {
+                ((CenterNotification) not).draw(startY2, lastY2);
+                startY2 -= not.getHeight() + 1;
+            }
         }
     }
 

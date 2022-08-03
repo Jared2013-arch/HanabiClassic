@@ -1,7 +1,7 @@
 package cn.hanabi.irc.server.handler;
 
 import cn.hanabi.irc.packets.impl.PacketMessage;
-import cn.hanabi.irc.server.utils.LogUtil;
+import cn.hanabi.irc.utils.LogUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -11,7 +11,6 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import cn.hanabi.irc.management.User;
 import cn.hanabi.irc.packets.Packet;
-import cn.hanabi.irc.server.ServerMain;
 import cn.hanabi.irc.utils.PacketUtil;
 
 import java.text.SimpleDateFormat;

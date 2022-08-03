@@ -1,6 +1,5 @@
 package cn.hanabi.irc.utils;
 
-import cn.hanabi.irc.server.utils.LogUtil;
 import com.google.gson.Gson;
 import cn.hanabi.irc.packets.Packet;
 

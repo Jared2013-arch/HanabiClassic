@@ -9,11 +9,23 @@ import java.text.SimpleDateFormat;
 public class DBHelper {
     static Connection connection;
 
+    public static String address;
+    public static String port;
+    public static String name;
+    public static String userName;
+    public static String pwd;
+
     public static void init(String address, String port, String dbName, String user, String pwd) {
+        DBHelper.address = address;
+        DBHelper.port = port;
+        DBHelper.name = dbName;
+        DBHelper.userName = user;
+        DBHelper.pwd = pwd;
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             System.out.println("jdbc:mysql://" + address + ":" + port + "/" + dbName);
-            connection = DriverManager.getConnection("jdbc:mysql://" + address + ":" + port + "/" + dbName + "?serverTimezone=UTC", user, pwd);
+            connection = DriverManager.getConnection("jdbc:mysql://" + address + ":" + port + "/" + dbName + "?serverTimezone=UTC&autoReconnect=true&autoReconnectForPools=true", user, pwd);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -22,7 +34,17 @@ public class DBHelper {
         }
     }
 
+    public static void reconnect(){
+        try {
+            connection.close();
+            connection = DriverManager.getConnection("jdbc:mysql://" + address + ":" + port + "/" + name + "?serverTimezone=UTC&autoReconnect=true&autoReconnectForPools=true", userName, pwd);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static String login(String username, String password, String hwid) {
+        reconnect();
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM `users` WHERE `username` = ? AND `password_md5` = ?");
             statement.setString(1, username);
@@ -54,6 +76,7 @@ public class DBHelper {
     }
 
     public static String register(String username, String password, String key) {
+        reconnect();
         password = MD5Utils.getMD5(password);
         try {
             // 检查用户是否已存在
@@ -108,38 +131,6 @@ public class DBHelper {
         return "Unknown error";
     }
 
-
-    public static void execute(String sql) {
-        Statement stmt = null;
-        try {
-            stmt = connection.createStatement();
-            stmt.execute(sql);
-            stmt.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static ResultSet executeQuery(String sql) {
-        Statement stmt = null;
-        ResultSet rs;
-        try {
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(sql);
-            stmt.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return rs;
-    }
-
-    public static void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static void record(String username, String ip, String time) {
         PreparedStatement preparedStatement;

@@ -50,6 +50,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class RenderUtil {
     public static float delta;
     private static final Map<Integer, Boolean> glCapMap = new HashMap<>();
+
     public static double interpolate(double newPos, double oldPos) {
         return oldPos + (newPos - oldPos) * Wrapper.getTimer().renderPartialTicks;
     }
@@ -1720,6 +1721,36 @@ public class RenderUtil {
         GL11.glEnd();
         GL11.glPopMatrix();
 
+        GL11.glEnable(3553);
+        GL11.glDisable(3042);
+        GL11.glDisable(2848);
+        GL11.glShadeModel(7424);
+        GL11.glColor4d(255, 255, 255, 255);
+    }
+
+    public static void drawRoundRect3(float x, float y, float x1, float y1, float round, int color) {
+        float f = (color >> 24 & 0xFF) / 255.0F;
+        float f1 = (color >> 16 & 0xFF) / 255.0F;
+        float f2 = (color >> 8 & 0xFF) / 255.0F;
+        float f3 = (color & 0xFF) / 255.0F;
+        GL11.glEnable(3042);
+        GL11.glDisable(3553);
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(2848);
+        GL11.glShadeModel(7425);
+        GL11.glPushMatrix();
+        GL11.glBegin(5);
+        GL11.glColor4f(f1, f2, f3, f);
+        GL11.glVertex2f(x + round, y);
+        GL11.glVertex2f(x1 - round, y);
+        GL11.glVertex2f(x1, y + round);
+        GL11.glVertex2f(x1, y1 - round);
+        GL11.glVertex2f(x1 - round, y1);
+        GL11.glVertex2f(x + round, y1);
+        GL11.glVertex2f(x, y1 - round);
+        GL11.glVertex2f(x, y + round);
+        GL11.glEnd();
+        GL11.glPopMatrix();
         GL11.glEnable(3553);
         GL11.glDisable(3042);
         GL11.glDisable(2848);

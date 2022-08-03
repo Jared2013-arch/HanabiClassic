@@ -5,8 +5,7 @@ import cn.hanabi.irc.packets.impl.clientside.PacketCommand;
 import cn.hanabi.irc.packets.impl.clientside.PacketGet;
 import cn.hanabi.irc.packets.impl.clientside.PacketLogin;
 import cn.hanabi.irc.packets.impl.serverside.*;
-import cn.hanabi.irc.server.ServerMain;
-import cn.hanabi.irc.server.utils.LogUtil;
+import cn.hanabi.irc.utils.LogUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import cn.hanabi.irc.management.RankManager;
@@ -15,7 +14,6 @@ import cn.hanabi.irc.packets.Packet;
 import cn.hanabi.irc.packets.impl.clientside.PacketRegister;
 import cn.hanabi.irc.server.database.DBHelper;
 import cn.hanabi.irc.utils.PacketUtil;
-import javafx.beans.binding.Bindings;
 
 import java.text.SimpleDateFormat;
 import java.util.Map;
