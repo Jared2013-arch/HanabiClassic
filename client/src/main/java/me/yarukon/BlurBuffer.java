@@ -1,6 +1,6 @@
 package me.yarukon;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.injection.interfaces.IShaderGroup;
@@ -19,7 +19,6 @@ import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 
 
-@ObfuscationClass
 
 public class BlurBuffer {
 	private static ShaderGroup blurShader;

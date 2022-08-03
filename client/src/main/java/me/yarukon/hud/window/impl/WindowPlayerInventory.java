@@ -1,7 +1,6 @@
 package me.yarukon.hud.window.impl;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
-import cn.hanabi.modules.modules.render.HUD;
+
 import me.yarukon.hud.window.HudWindow;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,8 +14,6 @@ import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-
-@ObfuscationClass
 
 public class WindowPlayerInventory extends HudWindow {
     public WindowPlayerInventory() {

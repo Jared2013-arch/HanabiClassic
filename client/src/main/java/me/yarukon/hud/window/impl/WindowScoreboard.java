@@ -1,6 +1,6 @@
 package me.yarukon.hud.window.impl;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Hanabi;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -15,8 +15,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-@ObfuscationClass
 
 public class WindowScoreboard extends HudWindow {
     public WindowScoreboard() {

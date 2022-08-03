@@ -1,13 +1,13 @@
 package cn.hanabi.modules.modules.movement.Speed;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.*;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.modules.modules.combat.KillAura;
 import cn.hanabi.modules.modules.combat.TargetStrafe;
-import cn.hanabi.utils.math.MathUtils;
 import cn.hanabi.utils.game.MoveUtils;
 import cn.hanabi.utils.game.PlayerUtil;
+import cn.hanabi.utils.math.MathUtils;
 import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.value.Value;
 import net.minecraft.block.Block;
@@ -26,7 +26,6 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-@ObfuscationClass
 public class Speed_Hypixel {
 
     public static Value<String[]> Friction = new Value<String[]>("Speed", "Friction Mode", 0)

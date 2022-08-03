@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.world;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
@@ -10,8 +10,6 @@ import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.network.play.client.C03PacketPlayer;
 
-
-@ObfuscationClass
 
 public class AntiFall extends Mod {
 

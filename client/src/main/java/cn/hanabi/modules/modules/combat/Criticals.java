@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.combat;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.*;
 import cn.hanabi.injection.interfaces.IC03PacketPlayer;
 import cn.hanabi.modules.Category;
@@ -23,7 +23,6 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-@ObfuscationClass
 public class Criticals extends Mod {
     public static boolean isReadyToCritical = false;
     public static Value<String> modes = new Value<String>("Criticals", "Mode", 0)

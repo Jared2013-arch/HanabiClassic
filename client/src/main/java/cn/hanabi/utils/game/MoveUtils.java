@@ -1,6 +1,6 @@
 package cn.hanabi.utils.game;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventMove;
 import cn.hanabi.events.EventPreMotion;
@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 
 
-@ObfuscationClass
 public class MoveUtils {
     public static final double BUNNY_SLOPE = 0.6625;
     public static final double WATCHDOG_BUNNY_SLOPE = BUNNY_SLOPE * 0.96;

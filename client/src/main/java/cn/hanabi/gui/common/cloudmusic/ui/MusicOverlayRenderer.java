@@ -1,21 +1,21 @@
 package cn.hanabi.gui.common.cloudmusic.ui;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.common.cloudmusic.MusicManager;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.modules.modules.render.HUD;
 import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.color.Colors;
-import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.math.TimeHelper;
+import cn.hanabi.utils.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-@ObfuscationClass
+
 public enum MusicOverlayRenderer {
     INSTANCE;
 

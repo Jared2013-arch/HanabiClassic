@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.movement.Speed;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
 import cn.hanabi.gui.classic.notifications.Notification;
@@ -17,7 +17,6 @@ import io.netty.util.internal.ThreadLocalRandom;
 import org.lwjgl.input.Keyboard;
 
 
-@ObfuscationClass
 public class Speed extends Mod {
 
     public static Value<String[]> mode = new Value<String[]>("Speed", "Mode", 1)

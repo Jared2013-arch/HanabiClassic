@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.player;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventTick;
 import cn.hanabi.injection.interfaces.IItemSword;
 import cn.hanabi.injection.interfaces.IItemTools;
@@ -21,7 +21,6 @@ import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
-@ObfuscationClass
 
 public class InvCleaner extends Mod {
     public static Value<Boolean> keepTools = new Value<>("InvCleaner", "Tools", false);

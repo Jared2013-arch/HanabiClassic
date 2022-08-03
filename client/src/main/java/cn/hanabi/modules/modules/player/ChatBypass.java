@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.player;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.injection.interfaces.IC01PacketChatMessage;
 import cn.hanabi.injection.interfaces.IS02PacketChat;
@@ -16,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Random;
 
 
-@ObfuscationClass
 public class ChatBypass extends Mod {
 
     private final Value chatbypass = new Value("ChatBypass", "Bypass", 0);

@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.player;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventChat;
 import cn.hanabi.events.EventWorldChange;
 import cn.hanabi.gui.classic.notifications.Notification;
@@ -13,7 +13,6 @@ import net.minecraft.event.ClickEvent;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.util.IChatComponent;
 
-@ObfuscationClass
 
 public class AutoPlay extends Mod {
     public Value<Double> delay = new Value<>("AutoPlay", "Delay", 5d, 1d, 10d, 1d);

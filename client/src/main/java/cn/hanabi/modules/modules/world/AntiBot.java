@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.world;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.events.EventUpdate;
 import cn.hanabi.modules.Category;
@@ -16,8 +16,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
-@ObfuscationClass
 
 public class AntiBot extends Mod {
     private static final Value mode = new Value("AntiBot", "Mode", 0);

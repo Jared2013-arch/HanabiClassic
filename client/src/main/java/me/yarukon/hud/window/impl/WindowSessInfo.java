@@ -1,6 +1,5 @@
 package me.yarukon.hud.window.impl;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventPacket;
@@ -12,8 +11,6 @@ import me.yarukon.hud.window.HudWindow;
 import me.yarukon.hud.window.HudWindowManager;
 import net.minecraft.network.play.server.S45PacketTitle;
 
-
-@ObfuscationClass
 
 public class WindowSessInfo extends HudWindow {
 

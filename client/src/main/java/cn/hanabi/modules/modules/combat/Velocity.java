@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.combat;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventJump;
 import cn.hanabi.events.EventPacket;
@@ -23,7 +23,6 @@ import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S27PacketExplosion;
 
 
-@ObfuscationClass
 public class Velocity extends Mod {
     public final static Value<String> modes = new Value<String>("Velocity", "Mode", 0)
             .LoadValue(new String[]{"Cancel", "Packet", "AAC", "AAC4.4.0", "AAC4", "Intave", "RedeSky", "RedeSkyHVH", "RedeSkyPacket", "AAC5"});

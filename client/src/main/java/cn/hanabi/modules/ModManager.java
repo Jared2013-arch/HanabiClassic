@@ -1,9 +1,8 @@
 package cn.hanabi.modules;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Hanabi;
 import cn.hanabi.events.EventKey;
-import cn.hanabi.modules.modules.render.HUD;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.modules.modules.combat.*;
 import cn.hanabi.modules.modules.ghost.*;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@ObfuscationClass
 public class ModManager {
 
     @NotNull

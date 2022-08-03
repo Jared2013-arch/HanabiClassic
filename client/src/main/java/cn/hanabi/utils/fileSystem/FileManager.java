@@ -1,6 +1,6 @@
 package cn.hanabi.utils.fileSystem;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.classic.altmanager.GuiAltManager;
 import cn.hanabi.gui.classic.notifications.Notification;
@@ -19,7 +19,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.io.*;
 
-@ObfuscationClass
+
 public class FileManager {
 
     public final String fileDir;

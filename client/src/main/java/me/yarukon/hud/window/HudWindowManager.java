@@ -1,6 +1,6 @@
 package me.yarukon.hud.window;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Hanabi;
 import cn.hanabi.events.EventTick;
 import cn.hanabi.modules.ModManager;
@@ -20,8 +20,6 @@ import org.lwjgl.input.Mouse;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-
-@ObfuscationClass
 
 public class HudWindowManager {
 

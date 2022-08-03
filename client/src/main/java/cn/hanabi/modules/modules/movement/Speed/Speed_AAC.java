@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.movement.Speed;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.injection.interfaces.IEntityPlayer;
@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.C03PacketPlayer;
 
 
-@ObfuscationClass
 public class Speed_AAC {
     static Value<String> mode = new Value<>("Speed", "AACMode", 0);
     public Value<Double> hytSpeed = new Value<>("Speed", "Hyt Speed", 1.0, 0.3, 8.0, 0.1);

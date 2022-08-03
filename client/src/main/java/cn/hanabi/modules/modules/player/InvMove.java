@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.player;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventGui;
 import cn.hanabi.events.EventUpdate;
 import cn.hanabi.modules.Category;
@@ -17,7 +17,6 @@ import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import org.lwjgl.input.Keyboard;
 
 
-@ObfuscationClass
 public class InvMove extends Mod {
 
     private final Value mode = new Value("InvMove", "Mode", 0);

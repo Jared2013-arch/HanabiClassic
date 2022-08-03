@@ -1,6 +1,6 @@
 package cn.hanabi.utils.client;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
@@ -17,7 +17,6 @@ import java.util.Set;
  */
 
 
-@ObfuscationClass
 public class HttpUtil {
 
     private static HttpURLConnection createUrlConnection(URL url) throws IOException {

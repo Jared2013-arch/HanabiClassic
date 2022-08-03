@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.movement.LongJump;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventMove;
 import cn.hanabi.events.EventPostMotion;
 import cn.hanabi.events.EventPreMotion;
@@ -20,7 +20,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
 
-@ObfuscationClass
 public class LongJump_Bow {
 
     final Minecraft mc = Minecraft.getMinecraft();

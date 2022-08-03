@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.player;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventRender;
 import cn.hanabi.events.EventUpdate;
@@ -21,7 +21,6 @@ import net.minecraft.util.BlockPos;
 import java.util.ArrayList;
 
 
-@ObfuscationClass
 public class TeleportBedFucker extends Mod {
     public BlockPos playerBed;
     public BlockPos fuckingBed;

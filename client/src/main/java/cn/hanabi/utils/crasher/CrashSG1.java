@@ -1,7 +1,6 @@
 package cn.hanabi.utils.crasher;
 
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -10,7 +9,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
 
-@ObfuscationClass
+
 public class CrashSG1 {
 
     public static void start(int packets) {

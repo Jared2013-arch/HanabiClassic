@@ -1,6 +1,6 @@
 package cn.hanabi.gui.common.cloudmusic.ui;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.common.cloudmusic.MusicManager;
 import cn.hanabi.gui.common.cloudmusic.impl.Track;
@@ -8,7 +8,7 @@ import cn.hanabi.utils.render.RenderUtil;
 
 import java.awt.*;
 
-@ObfuscationClass
+
 public class TrackSlot {
 	
 	public Track track;

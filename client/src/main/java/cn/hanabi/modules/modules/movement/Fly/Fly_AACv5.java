@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.movement.Fly;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.utils.game.MoveUtils;
 import net.minecraft.client.Minecraft;
@@ -10,7 +10,6 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 import java.util.ArrayList;
 
 
-@ObfuscationClass
 public class Fly_AACv5 {
     Minecraft mc = Minecraft.getMinecraft();
 

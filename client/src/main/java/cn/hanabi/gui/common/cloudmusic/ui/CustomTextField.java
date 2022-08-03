@@ -1,6 +1,6 @@
 package cn.hanabi.gui.common.cloudmusic.ui;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Hanabi;
 import cn.hanabi.utils.render.RenderUtil;
 import net.minecraft.client.gui.GuiScreen;
@@ -13,7 +13,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 
-@ObfuscationClass
+
 public class CustomTextField {
 
 	public String textString;

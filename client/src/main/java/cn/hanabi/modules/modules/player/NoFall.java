@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.player;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.events.EventPostMotion;
@@ -22,7 +22,6 @@ import net.minecraft.util.BlockPos;
 import java.util.ArrayList;
 
 
-@ObfuscationClass
 public class NoFall extends Mod {
     public static Value<Double> falls = new Value<>("NoFall", "Fall Distance", 2.5d, 1.5d, 4.0d, 0.01d);
     public static Value<Double> caneled = new Value<>("NoFall", "Canceled Distance", 1.0d, 0.0d, 3.0d, 0.1d);

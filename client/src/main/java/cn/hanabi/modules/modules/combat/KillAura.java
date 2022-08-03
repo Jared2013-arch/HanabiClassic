@@ -1,12 +1,11 @@
 package cn.hanabi.modules.modules.combat;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
 import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
-import cn.hanabi.gui.newStyle.notification.CenterNotification;
 import cn.hanabi.injection.interfaces.IEntityPlayer;
 import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.modules.Category;
@@ -20,9 +19,9 @@ import cn.hanabi.utils.client.FriendManager;
 import cn.hanabi.utils.client.TargetManager;
 import cn.hanabi.utils.color.ColorUtils;
 import cn.hanabi.utils.color.Colors;
+import cn.hanabi.utils.game.PlayerUtil;
 import cn.hanabi.utils.math.AnimationUtil;
 import cn.hanabi.utils.math.TimeHelper;
-import cn.hanabi.utils.game.PlayerUtil;
 import cn.hanabi.utils.render.PaletteUtil;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.rotation.Rotation;
@@ -72,7 +71,7 @@ import java.util.stream.Stream;
 
 import static org.lwjgl.opengl.GL11.*;
 
-@ObfuscationClass
+
 public class KillAura extends Mod {
     // 客户端设置
     public static Value<Boolean> autoBlock = new Value<>("KillAura", "AutoBlock", true);

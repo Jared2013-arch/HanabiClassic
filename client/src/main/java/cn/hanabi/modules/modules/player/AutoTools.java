@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.player;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
@@ -19,7 +19,6 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 
-@ObfuscationClass
 
 public class AutoTools extends Mod {
     public Value<Boolean> sword = new Value<>("AutoTools", "Sword", false);

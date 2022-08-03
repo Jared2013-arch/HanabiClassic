@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.world;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.events.EventPostMotion;
 import cn.hanabi.events.EventPreMotion;
@@ -28,7 +28,6 @@ import net.minecraft.world.WorldSettings;
 import org.lwjgl.input.Keyboard;
 
 
-@ObfuscationClass
 public class UhcHelper extends Mod {
 
     public static int movement;

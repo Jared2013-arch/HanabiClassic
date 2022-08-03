@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.combat;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventMove;
 import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.events.EventRender;
@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-@ObfuscationClass
+
 public class TargetStrafe extends Mod {
 
     // SkidSense

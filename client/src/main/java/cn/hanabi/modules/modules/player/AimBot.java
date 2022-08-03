@@ -1,14 +1,14 @@
 package cn.hanabi.modules.modules.player;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.events.EventRender;
 import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.utils.game.PlayerUtil;
-import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.game.WorldUtil;
+import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.rotation.RotationUtil;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
@@ -28,7 +28,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ObfuscationClass
+
 public class AimBot extends Mod {
 
     public static Value<Boolean> players = new Value<>("AimBot", "Players", false);

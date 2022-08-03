@@ -1,13 +1,12 @@
 package cn.hanabi.modules.modules.movement.Fly;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventMove;
 import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.utils.math.TimeHelper;
 import net.minecraft.client.Minecraft;
 
 
-@ObfuscationClass
 public class Fly_Hypixel {
     Minecraft mc = Minecraft.getMinecraft();
 

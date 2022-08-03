@@ -1,6 +1,6 @@
 package me.yarukon.hud.window.impl;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Wrapper;
 import cn.hanabi.modules.modules.world.Teams;
 import cn.hanabi.utils.color.Colors;
@@ -10,8 +10,6 @@ import me.yarukon.YRenderUtil;
 import me.yarukon.hud.window.HudWindow;
 import net.minecraft.entity.player.EntityPlayer;
 
-
-@ObfuscationClass
 
 public class WindowRadar extends HudWindow {
 

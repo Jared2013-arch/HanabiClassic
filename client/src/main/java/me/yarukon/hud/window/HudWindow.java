@@ -1,6 +1,6 @@
 package me.yarukon.hud.window;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Hanabi;
 import cn.hanabi.utils.color.Colors;
 import me.yarukon.BlurBuffer;
@@ -10,8 +10,6 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.Display;
-
-@ObfuscationClass
 
 public class HudWindow {
     public float x;

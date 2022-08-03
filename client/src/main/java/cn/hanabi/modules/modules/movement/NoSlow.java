@@ -1,25 +1,21 @@
 package cn.hanabi.modules.modules.movement;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.events.EventPostMotion;
 import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.events.EventUpdate;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.game.PlayerUtil;
 import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.network.play.client.*;
-import net.minecraft.network.play.server.S30PacketWindowItems;
 import net.minecraft.util.BlockPos;
 
 import static cn.hanabi.Wrapper.sendPacketNoEvent;
 
 
-
-@ObfuscationClass
 public class NoSlow extends Mod {
     public Value<String> mode = new Value<String>("NoSlow", "Mode", 0)
             .LoadValue(new String[]{"Vanilla", "NCP", "Vulcan", "AAC5"});

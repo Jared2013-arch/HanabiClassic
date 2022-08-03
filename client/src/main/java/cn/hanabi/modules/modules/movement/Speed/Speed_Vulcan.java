@@ -1,19 +1,16 @@
 package cn.hanabi.modules.modules.movement.Speed;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Wrapper;
-import cn.hanabi.events.EventMove;
-import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.events.EventUpdate;
 import cn.hanabi.injection.interfaces.IKeyBinding;
 import cn.hanabi.utils.game.MoveUtils;
 import cn.hanabi.utils.game.PlayerUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 
 import static cn.hanabi.Wrapper.mc;
 
-@ObfuscationClass
+
 public class Speed_Vulcan {
 
     public void onUpdate(EventUpdate e){

@@ -1,6 +1,6 @@
 package cn.hanabi.modules.modules.movement.Speed;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationClass;
+
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventPreMotion;
 import cn.hanabi.modules.ModManager;
@@ -10,7 +10,6 @@ import cn.hanabi.utils.game.PlayerUtil;
 import net.minecraft.client.Minecraft;
 
 
-@ObfuscationClass
 public class Speed_GudHop {
     Minecraft mc = Minecraft.getMinecraft();
 
