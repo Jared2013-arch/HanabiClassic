@@ -1,22 +1,21 @@
 package cn.hanabi;
 
-import cn.hanabi.gui.classic.altmanager.AltFileManager;
 import cn.hanabi.command.CommandManager;
 import cn.hanabi.events.EventLoop;
 import cn.hanabi.events.EventPacket;
+import cn.hanabi.gui.classic.altmanager.AltFileManager;
 import cn.hanabi.gui.common.GuiLogin;
 import cn.hanabi.gui.common.cloudmusic.MusicManager;
 import cn.hanabi.gui.common.cloudmusic.ui.MusicPlayerUI;
 import cn.hanabi.gui.common.font.noway.ttfr.FontLoaders;
-import cn.hanabi.irc.IRCClient;
 import cn.hanabi.modules.ModManager;
+import cn.hanabi.utils.bypass.AESUtil;
 import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.client.DebugUtil;
 import cn.hanabi.utils.client.SoundFxPlayer;
+import cn.hanabi.utils.fileSystem.FileManager;
 import cn.hanabi.utils.game.NukerUtil;
 import cn.hanabi.utils.math.TimeHelper;
-import cn.hanabi.utils.bypass.AESUtil;
-import cn.hanabi.utils.fileSystem.FileManager;
 import cn.hanabi.utils.waypoints.WaypointManager;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
@@ -50,7 +49,7 @@ public class Hanabi {
 
     public static final double CLIENT_VERSION_NUMBER = 4.0;
     @NotNull
-    public static final String CLIENT_VERSION = CLIENT_VERSION_NUMBER + " preview 2";
+    public static final String CLIENT_VERSION = CLIENT_VERSION_NUMBER + " preview 3";
     @NotNull
     public static final String CLIENT_INITIALS;
 
