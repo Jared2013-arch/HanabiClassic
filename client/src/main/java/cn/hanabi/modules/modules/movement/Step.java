@@ -1,6 +1,5 @@
 package cn.hanabi.modules.modules.movement;
 
-import aLph4anTi1eaK_cN.Annotation.ObfuscationMethod;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventStep;
 import cn.hanabi.events.EventUpdate;
@@ -18,7 +17,6 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
 
 
-@ObfuscationMethod
 public class Step extends Mod {
     public Value<String> mode = new Value<>("Step", "Mode", 0);
     public Value<Double> height = new Value<>("Step", "Height", 1.0D, 1.0D, 1.5D, 0.5D);
@@ -89,7 +87,6 @@ public class Step extends Mod {
     }
 
 
-    @ObfuscationMethod
     private void doNCPStep(double height) {
 
         final double posX = mc.thePlayer.posX, posY = mc.thePlayer.posY, posZ = mc.thePlayer.posZ;
