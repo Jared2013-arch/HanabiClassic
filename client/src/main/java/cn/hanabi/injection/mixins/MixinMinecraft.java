@@ -11,6 +11,8 @@ import cn.hanabi.injection.interfaces.IMinecraft;
 import cn.hanabi.utils.client.IconUtils;
 import cn.hanabi.utils.client.OSUtils;
 import cn.hanabi.utils.game.PacketHelper;
+import cn.hanabi.utils.math.AnimationUtil;
+import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.utils.render.RenderUtil;
 import com.darkmagician6.eventapi.EventManager;
 import net.minecraft.block.material.Material;
@@ -20,6 +22,7 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.LanguageManager;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.*;
@@ -217,41 +220,67 @@ public abstract class MixinMinecraft implements IMinecraft {
         }
     }
 
-    short stage;
+    short stage = -1;
+
+    /**
+     * @author SuperSkidder
+     * @reason splash
+     */
+    @Overwrite
+    public void drawSplashScreen(TextureManager p_drawSplashScreen_1_) {
+        this.drawSplashScreen(0, 4, "Loading");
+    }
 
     @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/common/ProgressManager$ProgressBar;step(Ljava/lang/String;)V", shift = At.Shift.AFTER))
     public void drawSplash(CallbackInfo ci) {
         stage++;
-        this.drawSplashScreen(stage, 5, "Loading");
+        this.drawSplashScreen(stage, 4, "Loading");
     }
 
+    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/client/SplashProgress;drawVanillaScreen(Lnet/minecraft/client/renderer/texture/TextureManager;)V", shift = At.Shift.AFTER))
+    public void drawVanillaSplash(CallbackInfo ci) {
+        this.drawSplashScreen(0, 4, "Loading");
+    }
+
+    float pos = 0;
+    TimeHelper timerhelper = new TimeHelper();
+
     private void drawSplashScreen(int stage, int totalStage, String arg) {
-        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-        int i = sr.getScaleFactor();
-        Framebuffer framebuffer = new Framebuffer(sr.getScaledWidth() * i, sr.getScaledHeight() * i, true);
-        framebuffer.bindFramebuffer(false);
-        GlStateManager.matrixMode(5889);
-        GlStateManager.loadIdentity();
-        GlStateManager.ortho(0.0D, sr.getScaledWidth(), sr.getScaledHeight(), 0.0D, 1000.0D, 3000.0D);
-        GlStateManager.matrixMode(5888);
-        GlStateManager.loadIdentity();
-        GlStateManager.translate(0.0F, 0.0F, -2000.0F);
-        GlStateManager.disableLighting();
-        GlStateManager.disableFog();
-        GlStateManager.resetColor();
-        Gui.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(255, 255, 255).getRGB());
-        float i1 = sr.getScaledWidth() / 2f;
-        float i2 = sr.getScaledHeight() / 2f;
-        RenderUtil.drawRoundedRect(i1 - 60, i2 + 60, i1 + 60, i2 + 63, 1, new Color(222, 222, 222).getRGB());
-        RenderUtil.drawRoundedRect(i1 - 60, i2 + 60, i1 - 60 + stage / (float)totalStage * 120, i2 + 63, 1, new Color(61,155,239).getRGB());
-        RenderUtil.drawImage(new ResourceLocation("Client/logo128.png"), sr.getScaledWidth() / 2f - 128 / 4f, sr.getScaledHeight() / 2f - 128 / 2, 128 / 2f, 128 / 2f);
-        GlStateManager.disableLighting();
-        GlStateManager.disableFog();
-        framebuffer.unbindFramebuffer();
-        framebuffer.framebufferRender(sr.getScaledWidth() * i, sr.getScaledHeight() * i);
-        GlStateManager.enableAlpha();
-        GlStateManager.alphaFunc(516, 0.1F);
-        Minecraft.getMinecraft().updateDisplay();
+        if (stage < 0)
+            return;
+        float posF = stage / (float) totalStage * 120;
+        while (pos < posF) {
+            if (timerhelper.isDelayComplete(20f)) {
+                pos = AnimationUtil.moveUD(pos, posF, 0.2f, 0.1f);
+                ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+                int i = sr.getScaleFactor();
+                Framebuffer framebuffer = new Framebuffer(sr.getScaledWidth() * i, sr.getScaledHeight() * i, true);
+                framebuffer.bindFramebuffer(false);
+                GlStateManager.matrixMode(5889);
+                GlStateManager.loadIdentity();
+                GlStateManager.ortho(0.0D, sr.getScaledWidth(), sr.getScaledHeight(), 0.0D, 1000.0D, 3000.0D);
+                GlStateManager.matrixMode(5888);
+                GlStateManager.loadIdentity();
+                GlStateManager.translate(0.0F, 0.0F, -2000.0F);
+                GlStateManager.disableLighting();
+                GlStateManager.disableFog();
+                GlStateManager.resetColor();
+                Gui.drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(255, 255, 255).getRGB());
+                float i1 = sr.getScaledWidth() / 2f;
+                float i2 = sr.getScaledHeight() / 2f;
+                RenderUtil.drawRoundedRect(i1 - 60, i2 + 60, i1 + 60, i2 + 64, 1, new Color(222, 222, 222).getRGB());
+                RenderUtil.drawRoundedRect(i1 - 60, i2 + 60, i1 - 60 + pos, i2 + 64, 1, new Color(61, 155, 239).getRGB());
+                RenderUtil.drawImage(new ResourceLocation("Client/new/loading/logo.png"), sr.getScaledWidth() / 2f - 128 / 4f, sr.getScaledHeight() / 2f - 128 / 2, 128 / 2f, 128 / 2f);
+                GlStateManager.disableLighting();
+                GlStateManager.disableFog();
+                framebuffer.unbindFramebuffer();
+                framebuffer.framebufferRender(sr.getScaledWidth() * i, sr.getScaledHeight() * i);
+                GlStateManager.enableAlpha();
+                GlStateManager.alphaFunc(516, 0.1F);
+                Minecraft.getMinecraft().updateDisplay();
+                timerhelper.reset();
+            }
+        }
     }
 
     /**

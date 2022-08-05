@@ -52,6 +52,7 @@ public class GuiNewMainMenu extends GuiScreen {
         RenderUtil.drawCustomImage2(x - 10, selectionAnimY, 309 / 2f, height2, new ResourceLocation("Client/new/mainmenu/selection.png"));
         if (selectionAnimY == 0) {
             selectionAnimY = y - 10;
+            i1 = (int) selectionAnimY;
         }
         selectionAnimY = AnimationUtil.moveUD(selectionAnimY, (float) i1, 0.4f, 0.3f);
 

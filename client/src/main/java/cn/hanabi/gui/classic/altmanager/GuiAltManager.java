@@ -2,6 +2,7 @@ package cn.hanabi.gui.classic.altmanager;
 
 import cn.hanabi.Client;
 import cn.hanabi.Hanabi;
+import cn.hanabi.injection.interfaces.IMinecraft;
 import cn.hanabi.utils.render.ParticleUtils;
 import cn.hanabi.utils.render.RenderUtil;
 import com.thealtening.auth.TheAlteningAuthentication;
@@ -12,6 +13,7 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Session;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -19,7 +21,6 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -75,6 +76,23 @@ public class GuiAltManager extends GuiScreen {
                 mc.displayGuiScreen(new GuiAltManager());
                 break;
             }
+            case 4: {
+                String data = null;
+                try {
+                    data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+                } catch (Exception ignored) {
+                    break;
+                }
+                if (data != null) {
+                    String[] split = data.split("\n");
+                    String[] a = new String[3];
+                    for (int i = 0; i < split.length; i++) {
+                        a[i] = split[i].split(": ")[1];
+                    }
+                    ((IMinecraft) mc).setSession(new Session(a[1], a[0], a[2], Session.Type.MOJANG.name()));
+                }
+                break;
+            }
             case 5: {
                 ArrayList<Alt> registry = AltManager.registry;
                 Random random = new Random();
@@ -113,21 +131,6 @@ public class GuiAltManager extends GuiScreen {
                 TheAlteningAuthentication.theAltening().updateService(AlteningServiceType.MOJANG);
                 break;
             }
-            case 12: {
-                if (Desktop.isDesktopSupported()) {
-                    try {
-                        URI uri = URI.create("http://anwen.love");
-                        Desktop dp = Desktop.getDesktop();
-                        if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
-                            dp.browse(uri);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                break;
-            }
             case 13: {
                 Hanabi.INSTANCE.hypixelBypass = !Hanabi.INSTANCE.hypixelBypass;
                 mc.displayGuiScreen(new GuiAltManager());
@@ -153,6 +156,7 @@ public class GuiAltManager extends GuiScreen {
                 break;
             }
         }
+
     }
 
     private float currentX;
@@ -370,7 +374,7 @@ public class GuiAltManager extends GuiScreen {
         //this.buttonList.add(this.login = new GuiButton(1, this.width / 2 - 122, this.height - 48, 100, 20, "Login"));
         //this.buttonList.add(this.remove = new GuiButton(2, this.width / 2 - 16, this.height - 24, 100, 20, "Remove"));
         // this.buttonList.add(new CustomGuiButton(3, this.width / 2 + 4 + 40, this.height - 48, 100, 20, "Add"));
-        this.buttonList.add(new CustomGuiButton(4, this.width / 2 - 122, this.height - 48, 100, 20, "Direct Login"));
+        this.buttonList.add(new CustomGuiButton(4, this.width / 2 - 122, this.height - 48, 100, 20, "Token Login"));
         this.buttonList.add(new CustomGuiButton(5, this.width / 2 - 122, this.height - 24, 100, 20, "Random"));
         //this.buttonList.add(this.rename = new GuiButton(6, this.width / 2 + 90, this.height - 24, 100, 20, "Edit"));
         this.buttonList.add(new CustomGuiButton(7, this.width / 2 - 200, this.height - 24, 70, 20, "Back"));
@@ -386,11 +390,11 @@ public class GuiAltManager extends GuiScreen {
 
         seatchField = new CustomGuiTextField(99998, mc.fontRendererObj, "Search Alt", 65, this.height - 14 - 60, 200, 14);
 
-        add_UserNameField = new CustomGuiTextField(99997, mc.fontRendererObj, "Username", (width / 2) + 20, 60, width-(width / 2+80), 14);
-        add_PassWordField = new CustomGuiTextField(99996, mc.fontRendererObj, "Password", (width / 2) + 20, 80, width-(width / 2+80), 14);
+        add_UserNameField = new CustomGuiTextField(99997, mc.fontRendererObj, "Username", (width / 2) + 20, 60, width - (width / 2 + 80), 14);
+        add_PassWordField = new CustomGuiTextField(99996, mc.fontRendererObj, "Password", (width / 2) + 20, 80, width - (width / 2 + 80), 14);
 
-        edit_UserNameField = new CustomGuiTextField(99995, mc.fontRendererObj, "Select an alt to edit", (width / 2) + 20, 145, width-(width / 2+80), 14);
-        edit_PassWordField = new CustomGuiTextField(99994, mc.fontRendererObj, "", (width / 2) + 20, 165, width-(width / 2+80), 14);
+        edit_UserNameField = new CustomGuiTextField(99995, mc.fontRendererObj, "Select an alt to edit", (width / 2) + 20, 145, width - (width / 2 + 80), 14);
+        edit_PassWordField = new CustomGuiTextField(99994, mc.fontRendererObj, "", (width / 2) + 20, 165, width - (width / 2 + 80), 14);
     }
 
     @Override

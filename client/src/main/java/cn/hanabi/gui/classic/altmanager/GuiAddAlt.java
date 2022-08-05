@@ -30,7 +30,7 @@ public class GuiAddAlt extends GuiScreen {
         this.manager = manager;
     }
 
-    static /* synthetic */ void access$0(final GuiAddAlt guiAddAlt, final String status) {
+    static void access$0(final GuiAddAlt guiAddAlt, final String status) {
         guiAddAlt.status = status;
     }
 

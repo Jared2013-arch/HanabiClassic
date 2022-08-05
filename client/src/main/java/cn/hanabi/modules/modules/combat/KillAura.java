@@ -4,7 +4,6 @@ package cn.hanabi.modules.modules.combat;
 import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
-import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.injection.interfaces.IEntityPlayer;
 import cn.hanabi.injection.interfaces.IRenderManager;
@@ -14,7 +13,6 @@ import cn.hanabi.modules.ModManager;
 import cn.hanabi.modules.modules.world.AntiBot;
 import cn.hanabi.modules.modules.world.AutoL;
 import cn.hanabi.modules.modules.world.Teams;
-import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.client.FriendManager;
 import cn.hanabi.utils.client.TargetManager;
 import cn.hanabi.utils.color.ColorUtils;
@@ -738,7 +736,6 @@ public class KillAura extends Mod {
         attacked = new ArrayList<>();
         lastRotations = new float[]{mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch};
         super.onEnable();
-        ClientUtil.sendNotification(new Notification("333", Notification.Type.SUCCESS));
     }
 
     @Override
