@@ -19,6 +19,9 @@ buildscript {
             name = 'SpongePowered'
             url = 'https://repo.spongepowered.org/repository/maven-public/'
         }
+        maven {
+            url = 'https://maven.minecraftforge.net'
+        }
     }
 
     dependencies {
