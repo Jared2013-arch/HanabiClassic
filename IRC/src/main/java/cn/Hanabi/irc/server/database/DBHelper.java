@@ -1,6 +1,5 @@
 package cn.hanabi.irc.server.database;
 
-import cn.hanabi.irc.server.ServerMain;
 import cn.hanabi.irc.utils.MD5Utils;
 
 import java.sql.*;
@@ -139,6 +138,7 @@ public class DBHelper {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, ip);
             preparedStatement.setString(3, time);
+            preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
