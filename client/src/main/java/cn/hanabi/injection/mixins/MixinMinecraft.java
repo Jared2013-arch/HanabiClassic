@@ -22,7 +22,6 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.LanguageManager;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.*;
@@ -123,7 +122,7 @@ public abstract class MixinMinecraft implements IMinecraft {
 
     @Inject(method = "startGame", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;ingameGUI:Lnet/minecraft/client/gui/GuiIngame;", shift = At.Shift.AFTER))
     private void startGame(CallbackInfo ci) {
-        Client.Load();
+        Client.makeSense();
     }
 
     @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/client/SplashProgress;clearVanillaResources(Lnet/minecraft/client/renderer/texture/TextureManager;Lnet/minecraft/util/ResourceLocation;)V", shift = At.Shift.BEFORE))
@@ -221,27 +220,6 @@ public abstract class MixinMinecraft implements IMinecraft {
     }
 
     short stage = -1;
-
-    /**
-     * @author SuperSkidder
-     * @reason splash
-     */
-    @Overwrite
-    public void drawSplashScreen(TextureManager p_drawSplashScreen_1_) {
-        this.drawSplashScreen(0, 4, "Loading");
-    }
-
-    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/common/ProgressManager$ProgressBar;step(Ljava/lang/String;)V", shift = At.Shift.AFTER))
-    public void drawSplash(CallbackInfo ci) {
-        stage++;
-        this.drawSplashScreen(stage, 4, "Loading");
-    }
-
-    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/client/SplashProgress;drawVanillaScreen(Lnet/minecraft/client/renderer/texture/TextureManager;)V", shift = At.Shift.AFTER))
-    public void drawVanillaSplash(CallbackInfo ci) {
-        this.drawSplashScreen(0, 4, "Loading");
-    }
-
     float pos = 0;
     TimeHelper timerhelper = new TimeHelper();
 

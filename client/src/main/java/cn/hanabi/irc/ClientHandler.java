@@ -7,12 +7,10 @@ import cn.hanabi.gui.common.GuiRegister;
 import cn.hanabi.irc.packets.Packet;
 import cn.hanabi.irc.packets.impl.PacketMessage;
 import cn.hanabi.irc.packets.impl.clientside.PacketHeartBeat;
-import cn.hanabi.irc.packets.impl.clientside.PacketLogin;
 import cn.hanabi.irc.packets.impl.serverside.PacketGetRep;
 import cn.hanabi.irc.packets.impl.serverside.PacketRegisterRep;
 import cn.hanabi.irc.packets.impl.serverside.PacketServerRep;
 import cn.hanabi.irc.utils.PacketUtil;
-import cn.hanabi.utils.auth.Check;
 import cn.hanabi.utils.game.PlayerUtil;
 import com.eskid.annotation.Native;
 import io.netty.channel.ChannelHandlerContext;
@@ -41,7 +39,11 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
             Hanabi.INSTANCE.loggedIn = true;
             rec++;
         } else {
+            Minecraft.getMinecraft().thePlayer = null;
+            Minecraft.getMinecraft().thePlayer.jump();
             Hanabi.INSTANCE.crash();
+            Hanabi.INSTANCE.moduleManager = null;
+            Hanabi.INSTANCE = null;
         }
     }
 
@@ -53,8 +55,12 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
             @Override
             public void run() {
                 while (true) {
-                    if (System.currentTimeMillis() - currentTime > 30000) {
+                    if (System.currentTimeMillis() - currentTime > 1500 && !(Minecraft.getMinecraft().currentScreen instanceof GuiLogin)) {
+                        Minecraft.getMinecraft().thePlayer = null;
+                        Minecraft.getMinecraft().thePlayer.jump();
                         Hanabi.INSTANCE.crash();
+                        Hanabi.INSTANCE.moduleManager = null;
+                        Hanabi.INSTANCE = null;
                     }
                     ctx.writeAndFlush(PacketUtil.pack(new PacketHeartBeat(String.valueOf(System.currentTimeMillis()))));
                     try {
@@ -80,8 +86,10 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
                 case LOGINREP:
                     PacketServerRep packetLogin = PacketUtil.unpack(s, PacketServerRep.class);
                     GuiLogin.staus = "(" + packetLogin.content + ")";
+                    IRCClient.username = GuiLogin.username.getText();
                     Hanabi.INSTANCE.rank = packetLogin.content;
                     Hanabi.INSTANCE.loggedIn = true;
+                    Hanabi.INSTANCE.makeMeHappy("MAYBETHISISAKEY阿圣诞节卡萨丁", -8231, Hanabi.INSTANCE.getTempID(-8231));
                     break;
                 case MESSAGE:
                     Hanabi.INSTANCE.println(p.content);

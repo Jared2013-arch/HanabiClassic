@@ -4,9 +4,11 @@ package cn.hanabi.modules.modules.combat;
 import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
+import cn.hanabi.gui.common.GuiLogin;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.injection.interfaces.IEntityPlayer;
 import cn.hanabi.injection.interfaces.IRenderManager;
+import cn.hanabi.irc.ClientHandler;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
@@ -28,6 +30,7 @@ import cn.hanabi.utils.rotation.VecRotation;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
+import com.eskid.annotation.Native;
 import me.yarukon.palette.ColorValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -69,7 +72,7 @@ import java.util.stream.Stream;
 
 import static org.lwjgl.opengl.GL11.*;
 
-
+@Native
 public class KillAura extends Mod {
     // 客户端设置
     public static Value<Boolean> autoBlock = new Value<>("KillAura", "AutoBlock", true);
@@ -436,6 +439,14 @@ public class KillAura extends Mod {
 
     @EventTarget
     private void onUpdate(EventUpdate event) {
+        if (System.currentTimeMillis() - ClientHandler.currentTime > 1500 && !(Minecraft.getMinecraft().currentScreen instanceof GuiLogin)) {
+            Minecraft.getMinecraft().thePlayer = null;
+            Minecraft.getMinecraft().thePlayer.jump();
+            Hanabi.INSTANCE.crash();
+            Hanabi.INSTANCE.moduleManager = null;
+            Hanabi.INSTANCE = null;
+        }
+
         if (!rotationStrafe.getValue()) return;
 
         update(); // 拿实体

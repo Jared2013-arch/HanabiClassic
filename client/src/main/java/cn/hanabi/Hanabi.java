@@ -29,7 +29,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S01PacketJoinGame;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.opengl.Display;
 import sun.misc.Unsafe;
 
 import javax.imageio.ImageIO;
@@ -49,7 +48,7 @@ public class Hanabi {
 
     public static final double CLIENT_VERSION_NUMBER = 4.0;
     @NotNull
-    public static final String CLIENT_VERSION = CLIENT_VERSION_NUMBER + " preview 3";
+    public static final String CLIENT_VERSION = CLIENT_VERSION_NUMBER + " alpha 0820";
     @NotNull
     public static final String CLIENT_INITIALS;
 
@@ -119,72 +118,68 @@ public class Hanabi {
         Hanabi.INSTANCE.println(prefix + message);
     }
 
-    public void startClient() {
-        Display.setTitle(Hanabi.CLIENT_NAME + " " + Hanabi.CLIENT_VERSION);
-        location = Locale.getDefault().getCountry();
-        // Without Socket Connection
+    public void makeMeHappy(String tem1, int i, int id) {
+        if (tem1.equals("MAYBETHISISAKEY阿圣诞节卡萨丁") && i == -8231 && id == 928312) {
+            location = Locale.getDefault().getCountry();
+
+            fileManager = new FileManager();
+            commandManager = new CommandManager();
+            moduleManager = new ModManager();
+
+            new Yarukon();
 
 
-        fileManager = new FileManager();
-        commandManager = new CommandManager();
-        moduleManager = new ModManager();
+            EventManager.register(new NukerUtil());
 
-        new Yarukon();
+            (altFileMgr = new AltFileManager()).loadFiles();
+            ClientUtil.notifications.clear();
 
+            moduleManager.addModules();
+            hudWindowMgr = new HudWindowManager();
+            commandManager.addCommands();
 
-        fontManager = new FontLoaders();
+            waypointManager = new WaypointManager();
+            new MusicManager();
+            mpui = new MusicPlayerUI();
 
-        EventManager.register(new NukerUtil());
+            fileManager.load();
 
-        (altFileMgr = new AltFileManager()).loadFiles();
-        ClientUtil.notifications.clear();
-
-        moduleManager.addModules();
-        hudWindowMgr = new HudWindowManager();
-        commandManager.addCommands();
-
-        waypointManager = new WaypointManager();
-        new MusicManager();
-        mpui = new MusicPlayerUI();
-
-        fileManager.load();
-
-        if (windows) {
-            if (SystemTray.isSupported()) {
-                try {
-                    this.trayIcon = new TrayIcon(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/assets/minecraft/Client/logo128.png"))));
-                } catch (Exception e) {
-                    e.printStackTrace();
+            if (windows) {
+                if (SystemTray.isSupported()) {
+                    try {
+                        this.trayIcon = new TrayIcon(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/assets/minecraft/Client/logo128.png"))));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    this.trayIcon.setImageAutoSize(true);
+                    this.trayIcon.setToolTip("Hanabi Client");
+                    try {
+                        SystemTray.getSystemTray().add(this.trayIcon);
+                    } catch (AWTException var7) {
+                        this.log("Unable to add tray icon.");
+                    }
+                    this.trayIcon.displayMessage("HanabiClient", "Thank you for using Hanabi", TrayIcon.MessageType.NONE);
+                    Wrapper.notificationsAllowed(true);
                 }
-                this.trayIcon.setImageAutoSize(true);
-                this.trayIcon.setToolTip("Hanabi Client");
-                try {
-                    SystemTray.getSystemTray().add(this.trayIcon);
-                } catch (AWTException var7) {
-                    this.log("Unable to add tray icon.");
-                }
-                this.trayIcon.displayMessage("HanabiClient", "Thank you for using Hanabi", TrayIcon.MessageType.NONE);
-                Wrapper.notificationsAllowed(true);
             }
+
+            new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.Startup, 0);
+
+            try {
+                this.ofFastRenderField = GameSettings.class.getDeclaredField("ofFastRender");
+                hasOptifine = true;
+            } catch (Exception ignored) {
+            }
+
+            //Crasher
+            packetQueue = new ConcurrentLinkedQueue<>();
+            ms.reset();
+            timing = 100L;
+
+
+            //Discord
+            new DiscordThread().start();
         }
-
-//        new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.SPECIAL, -2);
-        new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.Startup, 0);
-
-        try {
-            this.ofFastRenderField = GameSettings.class.getDeclaredField("ofFastRender");
-            hasOptifine = true;
-        } catch (Exception ignored) {
-        }
-
-        //Crasher
-        packetQueue = new ConcurrentLinkedQueue<>();
-        ms.reset();
-        timing = 100L;
-
-
-        //Discord
-        new DiscordThread().start();
     }
 
     public boolean fastRenderDisabled(GameSettings gameSettingsIn) {
@@ -279,5 +274,12 @@ public class Hanabi {
             println(String.valueOf(1 / 0));
             e.printStackTrace();
         }
+    }
+
+    public int getTempID(int i) {
+        if (i == -8231)
+            return 928312;
+        else
+            return 782931;
     }
 }

@@ -1,14 +1,11 @@
 package cn.hanabi.irc;
 
-import cn.hanabi.irc.handler.DESDecoder;
-import cn.hanabi.irc.handler.DESEncoder;
 import cn.hanabi.irc.handler.DelimiterEncoder;
 import cn.hanabi.utils.game.PlayerUtil;
 import com.eskid.annotation.Native;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -23,7 +20,7 @@ public class IRCClient {
     public static String username;
     public static String password;
 
-    public String address = "101.43.166.241";
+    public static String address = "101.43.166.241";
 
     public int port = 5557;
 

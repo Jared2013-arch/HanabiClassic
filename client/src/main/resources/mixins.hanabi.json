@@ -56,10 +56,7 @@
     "MixinStatList",
     "MixinVisGraph",
     "MixinWorld",
-    "MixinWorldRenderer",
-    "MixinSplashProgress"
-
-
+    "MixinWorldRenderer"
   ],
   "client": [
     "MixinAbstractClientPlayer",

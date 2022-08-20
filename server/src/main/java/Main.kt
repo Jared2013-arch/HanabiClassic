@@ -1,11 +1,8 @@
-import java.io.BufferedInputStream
-import java.io.ByteArrayInputStream
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.FileInputStream
+import java.io.*
 import java.net.ServerSocket
 import java.net.Socket
 import java.net.SocketException
+import java.util.*
 
 var CLIENT_PATH = ""
 
@@ -25,7 +22,7 @@ fun main() {
         client.start()
     }
 }
-
+var randomString = ""
 class Client(private val clientSocket: Socket) : Thread() {
 
     override fun run() {
@@ -40,10 +37,16 @@ class Client(private val clientSocket: Socket) : Thread() {
             }
             clientSocket.inetAddress.hostAddress ?: return
             val ip = clientSocket.inetAddress.hostAddress.toString()
-
-            if (received.contains("§")) {//登录。。
+            decrypt("Cracker nigger".toByteArray(Charsets.UTF_8), received.toByteArray(Charsets.UTF_8))
+            if (received.contains("§")) {//登录
                 if (verify(received)) {
-                    output.writeUTF("U2FsdGVkX19mdvTKKe9cnW3d881zwWCJea5qVu60d9zcbiQruJL1L46MFZoljN0r6i4UtYE84l+gegxkqhN/fOZLeov95hENaMBVEPbVyCo=")
+                    randomString = getRandomString(24)
+                    output.writeUTF(
+                        RSAUtil.publicEncrypt(
+                            randomString.toByteArray(Charsets.UTF_8),
+                            RSAUtil.getPublicKey(received.split("§")[3])
+                        ).toString()
+                    )
                     println("Sending file to $ip(${received.split("§"[0])})...")
                     sendFile(clientSocket, output, System.nanoTime(), received.split("§")[3])
                 }
@@ -62,10 +65,23 @@ class Client(private val clientSocket: Socket) : Thread() {
     }
 
 
+    // 取随机字符串
+    fun getRandomString(length: Int): String {
+        val str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        val random = Random()
+        val sb = StringBuffer()
+        for (i in 0 until length) {
+            val number = random.nextInt(62)
+            sb.append(str[number])
+        }
+        return sb.toString()
+    }
+
+
     private fun sendFile(socket: Socket, output: DataOutputStream, startTime: Long, key: String) {
         //每次都讀取一下端文件, 如果你不想每次都讀取可以搞個Field存到内存
         var bufferedInputStream = BufferedInputStream(FileInputStream(CLIENT_PATH))
-        var publicEncrypt = RSAUtil.publicEncrypt(bufferedInputStream.readBytes(), RSAUtil.getPublicKey(key))
+        var publicEncrypt = encrypt(randomString.toByteArray(Charsets.UTF_8), bufferedInputStream.readBytes())
         val fileStream = DataInputStream(ByteArrayInputStream(publicEncrypt))
         val bufferSize = 8192
         val buf = ByteArray(bufferSize)

@@ -52,23 +52,25 @@ object Loader {
         keyMap = RSAUtil.createKeys(1024);// 生成秘钥对
         var publicKey = keyMap["publicKey"]
         var privateKey = keyMap["privateKey"]
-        outputF.writeUTF("$username§$password§" + Check.getHWID() + "§$publicKey")//发送信息
+        outputF.writeUTF(
+            encrypt(
+                "Cracker nigger".toByteArray(Charsets.UTF_8),
+                ("$username§$password§" + Check.getHWID() + "§$publicKey").toByteArray(Charsets.UTF_8)
+            ).toString()
+        )//发送信息
 
-        if (inputF.readUTF()
-                .equals("U2FsdGVkX19mdvTKKe9cnW3d881zwWCJea5qVu60d9zcbiQruJL1L46MFZoljN0r6i4UtYE84l+gegxkqhN/fOZLeov95hENaMBVEPbVyCo=")//校验
-        ) {
-            passed = true
-        }
+        var aeskey =
+            RSAUtil.privateDecrypt(inputF.readUTF().toByteArray(Charsets.UTF_8), RSAUtil.getPrivateKey(privateKey))
+
         var currentTimeMillis = System.currentTimeMillis()
         println("Started to read")
-        if (passed) {
-            var bytes = inputF.readBytes()
-            bytes = RSAUtil.privateDecrypt(bytes, RSAUtil.getPrivateKey(privateKey))
-            var input: InputStream = ByteArrayInputStream(bytes)
-            ZipInputStream(input).use { zipStream ->
-                var zipEntry: ZipEntry?
-                while (zipStream.nextEntry.also { zipEntry = it } != null) {
-                    var name = zipEntry!!.name
+        var bytes = inputF.readBytes()
+        bytes = decrypt(aeskey, bytes)
+        var input: InputStream = ByteArrayInputStream(bytes)
+        ZipInputStream(input).use { zipStream ->
+            var zipEntry: ZipEntry?
+            while (zipStream.nextEntry.also { zipEntry = it } != null) {
+                var name = zipEntry!!.name
                     if (name.endsWith(".class")) {
                         name = name.removeSuffix(".class")
                         name = name.replace('/', '.')
@@ -84,7 +86,6 @@ object Loader {
                         }
                     }
                 }
-            }
             val mixinConfig: JsonObject =
                 Gson().fromJson(String(mixinByte, StandardCharsets.UTF_8), JsonObject::class.java)
             mixinConfig.getAsJsonArray("client").forEach {
@@ -95,10 +96,6 @@ object Loader {
             }
             shouldInit = true
             fileSocket.close()
-        } else {
-            val shutDownMethod = Class.forName("java.lang.Shutdown").getDeclaredMethod("exit", Integer.TYPE)
-            shutDownMethod.isAccessible = true
-            shutDownMethod.invoke(null, 0)
         }
         println("Finished")
         println(((System.currentTimeMillis() - currentTimeMillis) / 1000).toString() + "s")

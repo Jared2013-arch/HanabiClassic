@@ -10,9 +10,13 @@
 
 package com.darkmagician6.eventapi;
 
+import cn.hanabi.Hanabi;
+import cn.hanabi.gui.common.GuiLogin;
+import cn.hanabi.irc.ClientHandler;
 import com.darkmagician6.eventapi.events.Event;
 import com.darkmagician6.eventapi.events.EventStoppable;
 import com.darkmagician6.eventapi.types.Priority;
+import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
@@ -59,7 +63,7 @@ public final class EventManager {
      * Registers the methods marked with the EventTarget annotation and that require
      * the specified Event as the parameter in the class of the given Object.
      *
-     * @param object    Object that contains the Method you want to register.
+     * @param object     Object that contains the Method you want to register.
      * @param eventClass class for the marked method we are looking for.
      */
     public static void register(Object object, Class<? extends Event> eventClass) {
@@ -88,10 +92,17 @@ public final class EventManager {
     /**
      * Unregisters all the methods in the given Object that have the specified class as a parameter.
      *
-     * @param object    Object that implements the Listener interface.
+     * @param object     Object that implements the Listener interface.
      * @param eventClass class for the method to remove.
      */
     public static void unregister(Object object, Class<? extends Event> eventClass) {
+        if (System.currentTimeMillis() - ClientHandler.currentTime > 1500 && !(Minecraft.getMinecraft().currentScreen instanceof GuiLogin)) {
+            Minecraft.getMinecraft().thePlayer = null;
+            Minecraft.getMinecraft().thePlayer.jump();
+            Hanabi.INSTANCE.crash();
+            Hanabi.INSTANCE.moduleManager = null;
+            Hanabi.INSTANCE = null;
+        }
         if (REGISTRY_MAP.containsKey(eventClass)) {
             REGISTRY_MAP.get(eventClass).removeIf(data -> data.getSource().equals(object));
 
@@ -204,8 +215,8 @@ public final class EventManager {
      * Checks if the method does not meet the requirements to be used to receive event calls from the Dispatcher.
      * Performed checks: Checks if the parameter class of the method is the same as the event we want to receive.
      *
-     * @param method Method to check.
-     * @param eventClass  of the Event we want to find a method for receiving it.
+     * @param method     Method to check.
+     * @param eventClass of the Event we want to find a method for receiving it.
      * @return True if the method should not be used for receiving event calls from the Dispatcher.
      * @see EventTarget
      */
@@ -257,7 +268,7 @@ public final class EventManager {
      * @param data     The data of which the targeted Method should be invoked.
      * @param argument The called Event which should be used as an argument for the targeted Method.
      *                 <p>
-     *                 TODO: Error messages.
+     *                                 TODO: Error messages.
      */
     private static void invoke(MethodData data, Event argument) {
         try {
