@@ -1,13 +1,13 @@
 package cn.hanabi.irc.client.test;
 
+import cn.hanabi.irc.packets.Packet;
 import cn.hanabi.irc.packets.impl.PacketMessage;
 import cn.hanabi.irc.packets.impl.clientside.PacketGet;
-import cn.hanabi.irc.packets.impl.clientside.PacketLogin;
-import cn.hanabi.irc.packets.impl.serverside.PacketServerRep;
-import cn.hanabi.irc.packets.Packet;
 import cn.hanabi.irc.packets.impl.clientside.PacketHeartBeat;
+import cn.hanabi.irc.packets.impl.clientside.PacketLogin;
 import cn.hanabi.irc.packets.impl.clientside.PacketRegister;
 import cn.hanabi.irc.packets.impl.serverside.PacketGetRep;
+import cn.hanabi.irc.packets.impl.serverside.PacketServerRep;
 import cn.hanabi.irc.utils.PacketUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -50,7 +50,7 @@ public class Handler extends SimpleChannelInboundHandler<String> {
                             ctx.writeAndFlush(PacketUtil.pack(new PacketRegister(msg.split(" ")[1], msg.split(" ")[2], msg.length() == 4 ? msg.split(" ")[3] : "")));
                             break;
                         case "LOGIN":
-                            ctx.writeAndFlush(PacketUtil.pack(new PacketLogin("", "", "")));
+                            ctx.writeAndFlush(PacketUtil.pack(new PacketLogin("", "", "", "")));
                             break;
                     }
                 }

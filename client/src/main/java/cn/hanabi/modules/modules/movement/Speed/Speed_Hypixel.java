@@ -219,7 +219,7 @@ public class Speed_Hypixel {
 
                     y = ThreadLocalRandom.current().nextDouble(0.39999998688698, 0.4000199999);
 
-                    event.setY(mc.thePlayer.motionY = y + (PlayerUtil.getJumpEffect() * 0.1));
+                    event.setY(mc.thePlayer.motionY = 0.4073412 + (PlayerUtil.getJumpEffect() * 0.1));
                 } else if (stage >= 3) {
                     if (mc.thePlayer.isCollidedVertically) {
                         speed = getBaseSpeed();

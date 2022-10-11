@@ -7,8 +7,9 @@ public class PacketLogin extends Packet {
     public User user;
     public String version;
 
-    public PacketLogin(String username, String password, String hwid) {
+
+    public PacketLogin(String username, String password, String hwid, String text) {
         super(Packet.Type.LOGIN);
-        user = new User(username, password, hwid);
+        user = new User(username, password, hwid, text);
     }
 }

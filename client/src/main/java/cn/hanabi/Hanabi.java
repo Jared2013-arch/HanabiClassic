@@ -89,7 +89,7 @@ public class Hanabi {
     public String location;
 
     public boolean hypixelBypass = false;
-    public boolean mslogin = false;
+    public boolean mslogin = true;
 
     public HudWindowManager hudWindowMgr;
     public boolean customScoreboard = false;
