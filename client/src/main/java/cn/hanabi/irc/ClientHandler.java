@@ -55,7 +55,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
             @Override
             public void run() {
                 while (true) {
-                    if (System.currentTimeMillis() - currentTime > 1500 && !(Minecraft.getMinecraft().currentScreen instanceof GuiLogin)) {
+                    if (System.currentTimeMillis() - currentTime > 60500 && !(Minecraft.getMinecraft().currentScreen instanceof GuiLogin)) {
                         Minecraft.getMinecraft().thePlayer = null;
                         Minecraft.getMinecraft().thePlayer.jump();
                         Hanabi.INSTANCE.crash();

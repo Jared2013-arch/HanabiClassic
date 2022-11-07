@@ -46,9 +46,9 @@ public class Hanabi {
     @NotNull
     public static final String CLIENT_NAME = "Hanabi";
 
-    public static final double CLIENT_VERSION_NUMBER = 4.0;
+    public static final double CLIENT_VERSION_NUMBER = 4.1;
     @NotNull
-    public static final String CLIENT_VERSION = CLIENT_VERSION_NUMBER + " alpha 0820";
+    public static final String CLIENT_VERSION = CLIENT_VERSION_NUMBER + " beta";
     @NotNull
     public static final String CLIENT_INITIALS;
 

@@ -74,6 +74,8 @@ public class Scaffold extends Mod {
 
     //OTHER
     private final Value<Double> sneakAfter = new Value<>("Scaffold", "Sneak Tick", 1d, 1d, 10d, 1d);
+    private final Value<Boolean> packetSneak = new Value<>("Scaffold", "packetSneak", false);
+
     private final Value<Boolean> moveTower = new Value<>("Scaffold", "Move Tower", true);
     private final Value<Boolean> hypixel = new Value<>("Scaffold", "Hypixel", true);
     private final Value<Double> timer = new Value<>("Scaffold", "Timer Speed", 1.0, 0.1, 5.0, 0.01);
@@ -236,8 +238,26 @@ public class Scaffold extends Mod {
                 break;
             }
             case "Hypixel": {
-                event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
-                event.setPitch(angles[1]);
+//                float rotationYaw = mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw;
+//                if (this.data.face.getName().equalsIgnoreCase("north"))
+//                    rotationYaw = -400;
+//
+//                if (this.data.face.getName().equalsIgnoreCase("south"))
+//                    rotationYaw = 150;
+//
+//                if (this.data.face.getName().equalsIgnoreCase("west"))
+//                    rotationYaw = -150;
+//
+//                if (this.data.face.getName().equalsIgnoreCase("east"))
+//                    rotationYaw = 150;
+
+                if (!mc.gameSettings.keyBindJump.isKeyDown()) {
+                    event.setPitch(angles[1]);
+                    event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
+                } else {
+                    event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
+                    event.setPitch(angles[1]);
+                }
                 break;
             }
             case "Hyt": {
@@ -263,35 +283,35 @@ public class Scaffold extends Mod {
             }
         }
 
-            final BlockPos blockUnder = getBlockUnder();
-            data = getBlockData(blockUnder);
+        final BlockPos blockUnder = getBlockUnder();
+        data = getBlockData(blockUnder);
 
-            if (data == null) data = getBlockData(blockUnder.offset(EnumFacing.DOWN));
+        if (data == null) data = getBlockData(blockUnder.offset(EnumFacing.DOWN));
 
-            if (data != null) {
-                // If ray trace fails hit vec will be null
-                if (validateReplaceable(data) && data.hitVec != null) {
-                    // Calculate rotations to hit vec
-                    angles = RotationUtil.getRotations(new float[]{((IEntityPlayerSP) mc.thePlayer).getLastReportedYaw(), ((IEntityPlayerSP) mc.thePlayer).getLastReportedPitch()},
-                            15.5f, RotationUtil.getHitOrigin(mc.thePlayer), data.hitVec);
-                }
+        if (data != null) {
+            // If ray trace fails hit vec will be null
+            if (validateReplaceable(data) && data.hitVec != null) {
+                // Calculate rotations to hit vec
+                angles = RotationUtil.getRotations(new float[]{((IEntityPlayerSP) mc.thePlayer).getLastReportedYaw(), ((IEntityPlayerSP) mc.thePlayer).getLastReportedPitch()},
+                        15.5f, RotationUtil.getHitOrigin(mc.thePlayer), data.hitVec);
             }
+        }
 
-            if (rotate != null) {
-                if (angles == null || lastPlacement == null) {
-                    // Get the last rotations (EntityPlayerSP#rotationYaw/rotationPitch)
-                    final float[] lastAngles = this.angles != null ? this.angles : new float[]{event.getYaw(), event.getPitch()};
-                    // Get the opposite direct that you are moving
-                    final float moveDir = MoveUtils.getMovementDirection();
-                    // Desired rotations
-                    final float[] dstRotations = new float[]{moveDir + MathUtil.randomFloat(178, 180), 87.5f + MoveUtils.getRandomHypixelValuesFloat()};
-                    // Smooth to opposite
-                    RotationUtil.applySmoothing(lastAngles, 15.5f, dstRotations);
-                    // Apply GCD fix (just for fun)
-                    // RotationUtil.applyGCD(dstRotations, lastAngles);
-                    angles = dstRotations;
-                }
+        if (rotate != null) {
+            if (angles == null || lastPlacement == null) {
+                // Get the last rotations (EntityPlayerSP#rotationYaw/rotationPitch)
+                final float[] lastAngles = this.angles != null ? this.angles : new float[]{event.getYaw(), event.getPitch()};
+                // Get the opposite direct that you are moving
+                final float moveDir = MoveUtils.getMovementDirection();
+                // Desired rotations
+                final float[] dstRotations = new float[]{moveDir + MathUtil.randomFloat(178, 180), 87.5f + MoveUtils.getRandomHypixelValuesFloat()};
+                // Smooth to opposite
+                RotationUtil.applySmoothing(lastAngles, 15.5f, dstRotations);
+                // Apply GCD fix (just for fun)
+                // RotationUtil.applyGCD(dstRotations, lastAngles);
+                angles = dstRotations;
             }
+        }
 
         // Set rotations to persistent rotations
 
@@ -415,9 +435,17 @@ public class Scaffold extends Mod {
             ((IKeyBinding) mc.gameSettings.keyBindSprint).setPress(sprint.getValue());
 
             if (sneak.getValue() && sneakCount >= sneakAfter.getValue())
-                ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(true);
+                if (packetSneak.getValue()) {
+                    mc.getNetHandler().addToSendQueue(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.START_SNEAKING));
+                } else {
+                    ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(true);
+                }
             else if (sneakCount < sneakAfter.getValue())
-                ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
+                if (packetSneak.getValue()) {
+                    mc.getNetHandler().addToSendQueue(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.STOP_SNEAKING));
+                } else {
+                    ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
+                }
 
 //            mc.thePlayer.rotationYaw = rotation[0];
 //            mc.thePlayer.rotationPitch = rotation[1];
@@ -428,7 +456,7 @@ public class Scaffold extends Mod {
             curPitch = rotation[1];
 
             MovingObjectPosition ray = PlayerUtil.rayCastedBlock(curYaw, curPitch);
-            if (mc.thePlayer.onGround && PlayerUtil.isMoving()){
+            if (mc.thePlayer.onGround && PlayerUtil.isMoving()) {
                 if (jump.getValue()) {
                     mc.thePlayer.motionY = 0.3544999999;
                 }
@@ -507,6 +535,13 @@ public class Scaffold extends Mod {
     public void onDisable() {
         if (silent.getValue() && slot != mc.thePlayer.inventory.currentItem)
             mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange((slot = mc.thePlayer.inventory.currentItem)));
+
+        if (mc.gameSettings.keyBindSneak.isKeyDown()) {
+            ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
+
+        }
+        if(packetSneak.getValue())
+            mc.getNetHandler().addToSendQueue(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.STOP_SNEAKING));
 
         if (Wrapper.getTimer().timerSpeed != 1)
             Wrapper.getTimer().timerSpeed = 1.0f;
@@ -749,6 +784,7 @@ public class Scaffold extends Mod {
 
         return slot;
     }
+
     private static class BlockData {
 
         private final BlockPos pos;

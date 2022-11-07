@@ -194,6 +194,7 @@ public class KillAura extends Mod {
     private double hudHeight;
 
     public static int killCount = 0;
+    private Value<Boolean> onlyOnAim = new Value<>("KillAura", "Only On Aim", true);
 
     //other stuff
 
@@ -609,11 +610,29 @@ public class KillAura extends Mod {
                     && autoBlock.getValueState() || mc.thePlayer.isBlocking())
                     && !isBlocking) { // 格挡
                 if (new Random().nextInt(100) <= blockRate.getValue() && (!hurtBlock.getValue() || mc.thePlayer.hurtResistantTime > 0)) { //HurtTime Check && BlockRate
-                    if (!blockMode.isCurrentMode("Vanilla"))
-                        doBlock(true);
+                    if (!blockMode.isCurrentMode("Vanilla")) {
+                        float[] neededRotations1 = getNeededRotations(target, mc.thePlayer);
+                        if (((Math.abs(neededRotations1[0] - target.rotationYaw % 360) + Math.abs(neededRotations1[1] - target.rotationPitch % 360)) < 90) || !onlyOnAim.getValue() && mc.thePlayer.hurtTime < 1) {
+                            if (mc.thePlayer.hurtTime < 2) {
+                                doBlock(true);
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+
+
+    public float[] getNeededRotations(EntityLivingBase from, EntityLivingBase to) {
+        double d0 = to.posX - from.posX;
+        double d1 = to.posZ - from.posZ;
+        double d2 = to.posY + to.getEyeHeight() - (mc.thePlayer.getEntityBoundingBox().minY + from.getEyeHeight());
+
+        double d3 = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
+        float f = (float) (MathHelper.atan2(d1, d0) * 180.0D / Math.PI) - 90.0F;
+        float f1 = (float) (-(MathHelper.atan2(d2, d3) * 180.0D / Math.PI));
+        return new float[]{f, f1};
     }
 
     public void rotation(float[] realLastRot) {
@@ -718,9 +737,9 @@ public class KillAura extends Mod {
     private void doBlock(boolean setItemUseInCount) {
         if (setItemUseInCount)
             ((IEntityPlayer) mc.thePlayer).setItemInUseCount(mc.thePlayer.getHeldItem().getMaxItemUseDuration());
-
-        mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-
+//        mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+        if (target != null && target.getDistanceToEntity(mc.thePlayer) < 3.1)
+            mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0f, 0f, 0f));
         isBlocking = true;
     }
 

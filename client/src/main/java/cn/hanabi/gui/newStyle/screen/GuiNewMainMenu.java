@@ -31,9 +31,9 @@ public class GuiNewMainMenu extends GuiScreen {
         ParticleUtils.drawParticles(mouseX, mouseY);
 
         RenderUtil.drawImage(new ResourceLocation("Client/new/mainmenu/changelog.png"), 30, 30, 284 / 2, 263 / 2);
-        Hanabi.INSTANCE.fontManager.wqy16.drawString("[+] Design improvement", 50, 70, new Color(160, 160, 160).getRGB());
-        Hanabi.INSTANCE.fontManager.wqy16.drawString("[+] Bypasses", 50, 85, new Color(160, 160, 160).getRGB());
-        Hanabi.INSTANCE.fontManager.wqy16.drawString("[+] Verify fix", 50, 100, new Color(160, 160, 160).getRGB());
+        Hanabi.INSTANCE.fontManager.wqy16.drawString("[~] Fix Scaffold", 50, 70, new Color(160, 160, 160).getRGB());
+        Hanabi.INSTANCE.fontManager.wqy16.drawString("[~] Fix AutoBlock", 50, 85, new Color(160, 160, 160).getRGB());
+        Hanabi.INSTANCE.fontManager.wqy16.drawString("[~] Fix Verify", 50, 100, new Color(160, 160, 160).getRGB());
         Hanabi.INSTANCE.fontManager.wqy16.drawString("[~] Bug fixes", 50, 115, new Color(160, 160, 160).getRGB());
 
 
