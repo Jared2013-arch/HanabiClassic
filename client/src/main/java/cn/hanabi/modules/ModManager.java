@@ -185,6 +185,7 @@ public class ModManager {
         addModule(new WorldTime());
         addModule(new WorldWeather());
         addModule(new AntiEffects());
+//        addModule(new MusicWave());
 
         // WORLD
         addModule(new AntiBot());

@@ -772,6 +772,7 @@ public class KillAura extends Mod {
     public void onDisable() {
         if (isBlocking) { // 格挡
             unBlock(true);
+            isBlocking = false;
         }
         targets.clear();
         target = null; // 清空目标 (AutoBlock动画修复)

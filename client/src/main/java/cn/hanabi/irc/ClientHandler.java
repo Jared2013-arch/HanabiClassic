@@ -89,7 +89,6 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
                     IRCClient.username = GuiLogin.username.getText();
                     Hanabi.INSTANCE.rank = packetLogin.content;
                     Hanabi.INSTANCE.loggedIn = true;
-                    Hanabi.INSTANCE.makeMeHappy("MAYBETHISISAKEY阿圣诞节卡萨丁", -8231, Hanabi.INSTANCE.getTempID(-8231));
                     break;
                 case MESSAGE:
                     Hanabi.INSTANCE.println(p.content);

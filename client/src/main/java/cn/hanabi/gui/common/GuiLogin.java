@@ -89,8 +89,8 @@ public class GuiLogin extends GuiScreen {
         this.password = new PasswordField(this.mc.fontRendererObj, this.width / 2 - 100, 100, 200, 20);
 
 //        this.buttonList.add(new GuiButton(3, this.width / 2 - 60, var3 - 72, "Europe"));
-        this.buttonList.add(new GuiButton(4, this.width / 2 - 60, var3 - 72, 40, 20, "America"));
-        this.buttonList.add(new GuiButton(5, this.width / 2 + 60, var3 - 72, 40, 20, "China"));
+        this.buttonList.add(new GuiButton(4, 10, 10, 50, 20, "America"));
+        this.buttonList.add(new GuiButton(5, 10, 40, 50, 20, "China"));
 
         this.username.setFocused(true);
         Keyboard.enableRepeatEvents(true);

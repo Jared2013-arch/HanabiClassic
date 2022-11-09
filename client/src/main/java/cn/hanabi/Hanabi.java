@@ -46,7 +46,7 @@ public class Hanabi {
     @NotNull
     public static final String CLIENT_NAME = "Hanabi";
 
-    public static final double CLIENT_VERSION_NUMBER = 4.1;
+    public static final double CLIENT_VERSION_NUMBER = 4.11;
     @NotNull
     public static final String CLIENT_VERSION = CLIENT_VERSION_NUMBER + " beta";
     @NotNull
@@ -111,75 +111,70 @@ public class Hanabi {
     public Hanabi() {
         INSTANCE = this;
         EventManager.register(this);
+        location = Locale.getDefault().getCountry();
+
+        fileManager = new FileManager();
+        commandManager = new CommandManager();
+        moduleManager = new ModManager();
+
+        new Yarukon();
+
+
+        EventManager.register(new NukerUtil());
+
+        (altFileMgr = new AltFileManager()).loadFiles();
+        ClientUtil.notifications.clear();
+
+        moduleManager.addModules();
+        hudWindowMgr = new HudWindowManager();
+        commandManager.addCommands();
+
+        waypointManager = new WaypointManager();
+        new MusicManager();
+        mpui = new MusicPlayerUI();
+
+        fileManager.load();
+
+        if (windows) {
+            if (SystemTray.isSupported()) {
+                try {
+                    this.trayIcon = new TrayIcon(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/assets/minecraft/Client/logo128.png"))));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                this.trayIcon.setImageAutoSize(true);
+                this.trayIcon.setToolTip("Hanabi Client");
+                try {
+                    SystemTray.getSystemTray().add(this.trayIcon);
+                } catch (AWTException var7) {
+                    this.log("Unable to add tray icon.");
+                }
+                this.trayIcon.displayMessage("HanabiClient", "Thank you for using Hanabi", TrayIcon.MessageType.NONE);
+                Wrapper.notificationsAllowed(true);
+            }
+        }
+
+        new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.Startup, 0);
+
+        try {
+            this.ofFastRenderField = GameSettings.class.getDeclaredField("ofFastRender");
+            hasOptifine = true;
+        } catch (Exception ignored) {
+        }
+
+        //Crasher
+        packetQueue = new ConcurrentLinkedQueue<>();
+        ms.reset();
+        timing = 100L;
+
+
+        //Discord
+        new DiscordThread().start();
     }
 
     public void log(String message) {
         String prefix = "[" + CLIENT_NAME + "] ";
         Hanabi.INSTANCE.println(prefix + message);
-    }
-
-    public void makeMeHappy(String tem1, int i, int id) {
-        if (tem1.equals("MAYBETHISISAKEY阿圣诞节卡萨丁") && i == -8231 && id == 928312) {
-            location = Locale.getDefault().getCountry();
-
-            fileManager = new FileManager();
-            commandManager = new CommandManager();
-            moduleManager = new ModManager();
-
-            new Yarukon();
-
-
-            EventManager.register(new NukerUtil());
-
-            (altFileMgr = new AltFileManager()).loadFiles();
-            ClientUtil.notifications.clear();
-
-            moduleManager.addModules();
-            hudWindowMgr = new HudWindowManager();
-            commandManager.addCommands();
-
-            waypointManager = new WaypointManager();
-            new MusicManager();
-            mpui = new MusicPlayerUI();
-
-            fileManager.load();
-
-            if (windows) {
-                if (SystemTray.isSupported()) {
-                    try {
-                        this.trayIcon = new TrayIcon(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/assets/minecraft/Client/logo128.png"))));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    this.trayIcon.setImageAutoSize(true);
-                    this.trayIcon.setToolTip("Hanabi Client");
-                    try {
-                        SystemTray.getSystemTray().add(this.trayIcon);
-                    } catch (AWTException var7) {
-                        this.log("Unable to add tray icon.");
-                    }
-                    this.trayIcon.displayMessage("HanabiClient", "Thank you for using Hanabi", TrayIcon.MessageType.NONE);
-                    Wrapper.notificationsAllowed(true);
-                }
-            }
-
-            new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.Startup, 0);
-
-            try {
-                this.ofFastRenderField = GameSettings.class.getDeclaredField("ofFastRender");
-                hasOptifine = true;
-            } catch (Exception ignored) {
-            }
-
-            //Crasher
-            packetQueue = new ConcurrentLinkedQueue<>();
-            ms.reset();
-            timing = 100L;
-
-
-            //Discord
-            new DiscordThread().start();
-        }
     }
 
     public boolean fastRenderDisabled(GameSettings gameSettingsIn) {
