@@ -7,6 +7,7 @@ import cn.hanabi.events.*;
 import cn.hanabi.gui.common.GuiLogin;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.injection.interfaces.IEntityPlayer;
+import cn.hanabi.injection.interfaces.IKeyBinding;
 import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.irc.ClientHandler;
 import cn.hanabi.modules.Category;
@@ -747,6 +748,7 @@ public class KillAura extends Mod {
         if (setItemUseInCount)
             ((IEntityPlayer) mc.thePlayer).setItemInUseCount(0);
 
+        ((IKeyBinding) mc.gameSettings.keyBindUseItem).setPress(false);
         double blockvalue = -1;
 
         if (!PlayerUtil.isMoving2() && dynamic.getValue())

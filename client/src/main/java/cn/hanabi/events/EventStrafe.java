@@ -1,5 +1,6 @@
 package cn.hanabi.events;
 
+import cn.hanabi.modules.modules.movement.Speed.Speed;
 import com.darkmagician6.eventapi.events.callables.EventCancellable;
 
 import static cn.hanabi.Wrapper.mc;
@@ -17,7 +18,7 @@ public class EventStrafe extends EventCancellable {
         this.yaw = yaw;
     }
 
-    public void setFriction(float friction){
+    public void setFriction(float friction) {
         this.friction = friction;
     }
 
@@ -38,7 +39,7 @@ public class EventStrafe extends EventCancellable {
             friction *= 0.91;
         if (mc.thePlayer.onGround) {
             setMotion(friction);
-        } else {
+        } else if (!Speed.dmg.getValue() || mc.thePlayer.hurtTime > 0) {
             mc.thePlayer.motionX *= strafeComponent;
             mc.thePlayer.motionZ *= strafeComponent;
             setFriction(friction * remainder);

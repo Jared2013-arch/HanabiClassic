@@ -18,6 +18,7 @@ import net.minecraft.item.ItemSword;
 public class AutoSword extends Mod {
     public static TimeHelper publicItemTimer = new TimeHelper();
     public Value<Double> slot = new Value<>("AutoSword", "Slot", 1d, 1d, 9d, 1d);
+    public Value<Boolean> inv = new Value<Boolean>("AutoSword", "In Inv", true);
     TimeHelper time = new TimeHelper();
 
     public AutoSword() {
@@ -26,9 +27,14 @@ public class AutoSword extends Mod {
 
     @EventTarget
     public void onUpdate(EventUpdate event) {
+        this.setDisplayName("Slot " + slot.getValueState().intValue());
+
+        if (inv.getValueState() && !(mc.currentScreen instanceof GuiInventory)) {
+            return;
+        }
+
         if (!publicItemTimer.isDelayComplete(300)) return;
 
-        this.setDisplayName("Slot " + slot.getValueState().intValue());
         if (!time.isDelayComplete(1000L) || (mc.currentScreen != null && !(mc.currentScreen instanceof GuiInventory)))
             return;
 
