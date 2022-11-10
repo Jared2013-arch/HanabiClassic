@@ -24,6 +24,8 @@ public class GuiLogin extends GuiScreen {
     private PasswordField password;
     public static GuiTextField username;
     public static String status;
+    public static String area = "China";
+
     public GuiScreen per;
 
     public GuiLogin(GuiScreen per) {
@@ -48,10 +50,12 @@ public class GuiLogin extends GuiScreen {
                 }
                 case 4: {
                     IRCClient.address = "96.45.170.41";
+                    area = "America";
                     break;
                 }
                 case 5: {
                     IRCClient.address = "101.43.166.241";
+                    area = "China";
                     break;
                 }
             }
@@ -69,7 +73,7 @@ public class GuiLogin extends GuiScreen {
         RenderUtil.drawRect(0, 0, res.getScaledWidth(), res.getScaledHeight(), 0);
         this.username.drawTextBox();
         this.password.drawTextBox();
-        this.drawCenteredString(this.mc.fontRendererObj, "Hanabi Login", this.width / 2, 20, -1);
+        this.drawCenteredString(this.mc.fontRendererObj, "Hanabi Login(" + area + ")", this.width / 2, 20, -1);
         this.drawCenteredString(this.mc.fontRendererObj, status, this.width / 2, 29, -1);
         if (this.username.getText().isEmpty()) {
             this.drawString(this.mc.fontRendererObj, "Username", this.width / 2 - 96, 66, -7829368);

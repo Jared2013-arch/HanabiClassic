@@ -131,7 +131,7 @@ public class ClickUINew extends GuiScreen {
 
         //画搜索栏
         boolean searchHover = isHover(mouseX, mouseY, width / 2 - 60, 0, width / 2 + 60, 20) && currentMod == null;
-        RenderUtil.drawRoundedRect(width / 2 - 60, 2, width / 2 + 60, 18, 2, new Color(searchHover ? 255 : 245, searchHover ? 255 : 245, searchHover ? 255 : 245).getRGB());
+        RenderUtil.drawRoundedRect(width / 2 - 60, 2, width / 2 + 60, 18, 1, new Color(searchHover ? 255 : 245, searchHover ? 255 : 245, searchHover ? 255 : 245).getRGB());
         GL11.glPushMatrix();
         GL11.glEnable(3089);
         RenderUtil.startGlScissor(width / 2 - 55, 0, 110, 20);
@@ -146,7 +146,7 @@ public class ClickUINew extends GuiScreen {
 
         //画Reset按钮
         boolean resetHover = isHover(mouseX, mouseY, width / 2 + 80, 0, width / 2 + 130, 20) && currentMod == null;
-        RenderUtil.drawRoundedRect(width / 2 + 80, 2, width / 2 + 130, 18, 2, new Color(resetHover ? 255 : 245, resetHover ? 255 : 245, resetHover ? 255 : 245).getRGB());
+        RenderUtil.drawRoundedRect(width / 2 + 80, 2, width / 2 + 130, 18, 1, new Color(resetHover ? 255 : 245, resetHover ? 255 : 245, resetHover ? 255 : 245).getRGB());
         Hanabi.INSTANCE.fontManager.wqy18.drawCenteredString("Reset Gui", width / 2 + 105, 6, new Color(155, 155, 155, 255).getRGB());
 
         //设定Value的Panel的动画
@@ -165,7 +165,7 @@ public class ClickUINew extends GuiScreen {
             BlurUtil.doBlur(7);
             //画ValuePanel
 
-            RenderUtil.drawRoundRect(startX, startY, startX + 240, startY + 280, 2, new Color(255, 255, 255, 255).getRGB());
+            RenderUtil.drawRoundRect(startX, startY, startX + 240, startY + 280, 1, new Color(255, 255, 255, 255).getRGB());
             if (currentMod != null) {
                 //画Value
                 drawValue(mouseX, mouseY, startX, startY);

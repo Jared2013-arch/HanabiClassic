@@ -77,20 +77,20 @@ public class GuiAltManager extends GuiScreen {
                 break;
             }
             case 4: {
-                String data = null;
-                try {
-                    data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-                } catch (Exception ignored) {
-                    break;
-                }
-                if (data != null) {
-                    String[] split = data.split("\n");
-                    String[] a = new String[3];
-                    for (int i = 0; i < split.length; i++) {
-                        a[i] = split[i].split(": ")[1];
-                    }
-                    ((IMinecraft) mc).setSession(new Session(a[1], a[0], a[2], Session.Type.MOJANG.name()));
-                }
+//                String data = null;
+//                try {
+//                    data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+//                } catch (Exception ignored) {
+//                    break;
+//                }
+//                if (data != null) {
+//                    String[] split = data.split("\n");
+//                    String[] a = new String[3];
+//                    for (int i = 0; i < split.length; i++) {
+//                        a[i] = split[i].split(": ")[1];
+//                    }
+//                    ((IMinecraft) mc).setSession(new Session(a[1], a[0], a[2], Session.Type.MOJANG.name()));
+//                }
                 break;
             }
             case 5: {

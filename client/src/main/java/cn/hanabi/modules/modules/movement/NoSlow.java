@@ -42,7 +42,7 @@ public class NoSlow extends Mod {
             return;
 
         if (mode.isCurrentMode("NCP")) {
-            mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange((mc.thePlayer.inventory.currentItem + 1 > 8) ? 0 : (mc.thePlayer.inventory.currentItem + 1)));
+            mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange((mc.thePlayer.inventory.currentItem + 3 > 8) ? 0 : (mc.thePlayer.inventory.currentItem + 1)));
             mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
         }
     }

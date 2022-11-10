@@ -36,6 +36,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
         if (rec < 30) {
             Hanabi.INSTANCE.println("IRC Reconnecting...");
             Client.client.reconnect();
+            Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(Minecraft.getMinecraft().currentScreen));
             Hanabi.INSTANCE.loggedIn = true;
             rec++;
         } else {

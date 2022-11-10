@@ -1,6 +1,7 @@
 package cn.hanabi.gui.newStyle.screen;
 
 import cn.hanabi.Hanabi;
+import cn.hanabi.modules.modules.render.HUD;
 import cn.hanabi.utils.math.AnimationUtil;
 import cn.hanabi.utils.render.ParticleUtils;
 import cn.hanabi.utils.render.RenderUtil;
@@ -39,6 +40,7 @@ public class GuiSwitcher extends GuiScreen {
             box1Anim = AnimationUtil.moveUD(box1Anim, end, smoothSpeed, minSpeed);
             if (Mouse.isButtonDown(0)) {
                 mc.displayGuiScreen(new GuiCustomMainMenu());
+                HUD.Theme.setValueState("3.x");
                 Hanabi.INSTANCE.newStyle = false;
                 Hanabi.INSTANCE.selected = true;
             }
@@ -52,6 +54,7 @@ public class GuiSwitcher extends GuiScreen {
             box2Anim = AnimationUtil.moveUD(box2Anim, end, smoothSpeed, minSpeed);
             if (Mouse.isButtonDown(0)) {
                 mc.displayGuiScreen(new GuiNewMainMenu());
+                HUD.Theme.setValueState("4.x");
                 Hanabi.INSTANCE.newStyle = true;
                 Hanabi.INSTANCE.selected = true;
             }

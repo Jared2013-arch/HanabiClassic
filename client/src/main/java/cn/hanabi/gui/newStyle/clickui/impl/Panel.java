@@ -66,20 +66,20 @@ public class Panel {
         x = desX;
         y = desY + 10 - yani;
 
-        HFontRenderer titlefont = Hanabi.INSTANCE.fontManager.usans24;
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway20;
+        HFontRenderer titlefont = Hanabi.INSTANCE.fontManager.usans22;
+        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
         HFontRenderer icon = Hanabi.INSTANCE.fontManager.icon30;
 
-        float mstartY = y + 40;
-        float maddY = 22;
+        float mstartY = y + 30;
+        float maddY = 18;
 
         //Panel背景
-        RenderUtil.drawRoundRect(x, y, x + 140, y + 260, 2, new Color(255, 255, 255, (int) (255 * alpha)).getRGB());
-        RenderUtil.drawRoundRect(x, y, x + 140, y + 26, 2, new Color(72, 151, 244, (int) (255 * alpha)).getRGB());
+        RenderUtil.drawRoundRect(x, y, x + 100, y + 180, 2, new Color(255, 255, 255, (int) (255 * alpha)).getRGB());
+        RenderUtil.drawRoundRect(x, y, x + 100, y + 20, 2, new Color(72, 151, 244, (int) (255 * alpha)).getRGB());
 
 
         //Panel标题
-        titlefont.drawString(this.name, x + 30, y + 11, new Color(255, 255, 255, (int) (255 * alpha)).getRGB());
+        titlefont.drawString(this.name, x + 30, y + 8, new Color(255, 255, 255, (int) (255 * alpha)).getRGB());
         String iconstr = "";
         switch (category.toString()) {
             case "Combat": {
@@ -107,30 +107,30 @@ public class Panel {
                 break;
             }
         }
-        icon.drawString(iconstr, x + 10, y + 13, new Color(255, 255, 255, (int) (255 * alpha)).getRGB());
+        icon.drawString(iconstr, x + 10, y + 8, new Color(255, 255, 255, (int) (255 * alpha)).getRGB());
 
         //Mod显示
         GL11.glPushMatrix();
         GL11.glEnable(3089);
-        RenderUtil.doGlScissor((int) x, (int) mstartY - 4, 140, (int) (y + 260 - 5 - (mstartY - 4)));
+        RenderUtil.doGlScissor((int) x, (int) mstartY - 4, 100, (int) (y + 180 - 5 - (mstartY - 4)));
         float modY = translate.getX();
         for (Mod m : ModManager.getModules(category)) {
             //判断搜索栏
             if (ClickUINew.isSearching && !ClickUINew.searchcontent.equalsIgnoreCase("") && ClickUINew.searchcontent != null) {
                 if (!m.getName().toLowerCase().contains(ClickUINew.searchcontent.toLowerCase())) continue;
             }
-            boolean mhover = ClickUINew.currentMod == null && ClickUINew.isHover(mouseX, mouseY, x, mstartY + modY - 4, x + 140, mstartY + modY + 17) && ClickUINew.isHover(mouseX, mouseY, x, mstartY - 4, x + 140, y + 260 - 5);
+            boolean mhover = ClickUINew.currentMod == null && ClickUINew.isHover(mouseX, mouseY, x, mstartY + modY - 4, x + 100, mstartY + modY + 17) && ClickUINew.isHover(mouseX, mouseY, x, mstartY - 4, x + 100, y + 180 - 5);
             if (mhover) {
-                RenderUtil.drawRect(x, mstartY + modY - 8, x + 140, mstartY + modY + maddY - 8, new Color(249, 249, 249, (int) (255 * alpha)).getRGB());
+                RenderUtil.drawRect(x, mstartY + modY - 8, x + 100, mstartY + modY + maddY - 8, new Color(249, 249, 249, (int) (255 * alpha)).getRGB());
             }
             if (m.isEnabled()) {
-                Hanabi.INSTANCE.fontManager.micon15.drawString("B", x + 12, mstartY + modY + 1, new Color(180, 180, 180, (int) (255 * alpha)).getRGB());
-                font.drawString(m.getName(), x + 25, mstartY + modY, new Color(72, 151, 244, (int) (255 * alpha)).getRGB());
+//                Hanabi.INSTANCE.fontManager.micon15.drawString("B", x + 12, mstartY + modY + 1, new Color(180, 180, 180, (int) (255 * alpha)).getRGB());
+                font.drawString(m.getName(), x + 10, mstartY + modY - 4, new Color(72, 151, 244, (int) (255 * alpha)).getRGB());
             } else {
-                font.drawString(m.getName(), x + 25, mstartY + modY, new Color(165, 165, 165, (int) (255 * alpha)).getRGB());
+                font.drawString(m.getName(), x +10, mstartY + modY -4, new Color(165, 165, 165, (int) (255 * alpha)).getRGB());
             }
             if (m.hasValues())
-                font.drawString(">", x + 120, mstartY + modY, new Color(165, 165, 165, (int) (255 * alpha)).getRGB());
+                font.drawString(">", x + 80, mstartY + modY, new Color(165, 165, 165, (int) (255 * alpha)).getRGB());
 
             modY += maddY;
         }
@@ -139,7 +139,7 @@ public class Panel {
 
         //处理滚动
         float moduleHeight = modY - translate.getX() - 1;
-        if (Mouse.hasWheel() && ClickUINew.isHover(mouseX, mouseY, x, mstartY - 4, x + 140, y + 260 - 5) && ClickUINew.currentMod == null) {
+        if (Mouse.hasWheel() && ClickUINew.isHover(mouseX, mouseY, x, mstartY - 4, x + 100, y + 180 - 5) && ClickUINew.currentMod == null) {
             if ((ClickUINew.real > 0 && wheel < 0)) {
                 for (int i = 0; i < 5; i++) {
                     if (!(wheel < 0))
@@ -148,7 +148,7 @@ public class Panel {
                 }
             } else {
                 for (int i = 0; i < 5; i++) {
-                    if (!(ClickUINew.real < 0 && moduleHeight > y + 260 - 5 - (mstartY - 4) && Math.abs(wheel) < (moduleHeight - (y + 260 - 5 - (mstartY - 4)))))
+                    if (!(ClickUINew.real < 0 && moduleHeight > y + 180 - 5 - (mstartY - 4) && Math.abs(wheel) < (moduleHeight - (y + 180 - 5 - (mstartY - 4)))))
                         break;
                     wheel -= 5;
                 }
@@ -157,24 +157,24 @@ public class Panel {
         translate.interpolate(wheel, 0, 20.0E-2f);
 
         //滚动条
-        float sliderh = Math.min(y + 260 - 5 - (mstartY - 4), (y + 260 - 5 - (mstartY - 4)) * (y + 260 - 5 - (mstartY - 4)) / moduleHeight);
-        float slidert = -(y + 260 - 5 - (mstartY - 4) - sliderh) * (translate.getX()) / (moduleHeight - (y + 260 - 5 - (mstartY - 4)));
-        if (sliderh < y + 260 - 5 - (mstartY - 4)) {
+        float sliderh = Math.min(y + 180 - 5 - (mstartY - 4), (y + 180 - 5 - (mstartY - 4)) * (y + 180 - 5 - (mstartY - 4)) / moduleHeight);
+        float slidert = -(y + 180 - 5 - (mstartY - 4) - sliderh) * (translate.getX()) / (moduleHeight - (y + 180 - 5 - (mstartY - 4)));
+        if (sliderh < y + 180 - 5 - (mstartY - 4)) {
             GL11.glPushMatrix();
             GL11.glEnable(3089);
-            RenderUtil.doGlScissor((int) x + 137, (int) mstartY - 4, 1, (int) (y + 260 - 5 - (mstartY - 4)));
-            RenderUtil.drawRect(x + 137, mstartY - 4 + slidert, x + 138, mstartY - 4 + slidert + sliderh, new Color(220, 220, 220, (int) (255 * alpha)).getRGB());
+            RenderUtil.doGlScissor((int) x + 137, (int) mstartY - 4, 1, (int) (y + 180 - 5 - (mstartY - 4)));
+            RenderUtil.drawRect(x + 107, mstartY - 4 + slidert, x + 108, mstartY - 4 + slidert + sliderh, new Color(0, 0, 0, (int) (255 * alpha)).getRGB());
             GL11.glDisable(3089);
             GL11.glPopMatrix();
         }
     }
 
     public void handleMouseClicked(float mouseX, float mouseY, int key) {
-        float mstartY = y + 40;
-        float maddY = 22;
+        float mstartY = y + 30;
+        float maddY = 18;
 
         //处理拖动
-        boolean tophover = ClickUINew.currentMod == null && ClickUINew.isHover(mouseX, mouseY, x, y, x + 140, mstartY);
+        boolean tophover = ClickUINew.currentMod == null && ClickUINew.isHover(mouseX, mouseY, x, y, x + 100, mstartY);
         if (tophover && key == 0) {
             dragX = mouseX - desX;
             dragY = mouseY - desY;
@@ -188,7 +188,7 @@ public class Panel {
             if (ClickUINew.isSearching && !ClickUINew.searchcontent.equalsIgnoreCase("") && ClickUINew.searchcontent != null) {
                 if (!m.getName().toLowerCase().contains(ClickUINew.searchcontent.toLowerCase())) continue;
             }
-            boolean mhover = ClickUINew.currentMod == null && ClickUINew.isHover(mouseX, mouseY, x, modY - 4, x + 140, modY + 17) && ClickUINew.isHover(mouseX, mouseY, x, mstartY - 4, x + 140, y + 260 - 5);
+            boolean mhover = ClickUINew.currentMod == null && ClickUINew.isHover(mouseX, mouseY, x, modY - 4, x + 100, modY + 17) && ClickUINew.isHover(mouseX, mouseY, x, mstartY - 4, x + 100, y + 180 - 5);
             if (mhover) {
                 if (key == 0) m.set(!m.isEnabled(), false);
                 if (key == 1 && m.hasValues()) {
@@ -206,7 +206,7 @@ public class Panel {
         float mstartY = y + 40;
 
         //处理拖动
-        boolean tophover = ClickUINew.currentMod == null && ClickUINew.isHover(mouseX, mouseY, x, y, x + 140, mstartY);
+        boolean tophover = ClickUINew.currentMod == null && ClickUINew.isHover(mouseX, mouseY, x, y, x + 100, mstartY);
         if (tophover && key == 0) {
             dragX = mouseX - desX;
             dragY = mouseY - desY;

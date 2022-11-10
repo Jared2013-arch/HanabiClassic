@@ -49,9 +49,6 @@ public class Speed extends Mod {
 
     @EventTarget
     public void onPacket(EventPacket e) {
-        if (dmg.getValue() && mc.thePlayer.hurtTime == 0)
-            return;
-
         if (mode.isCurrentMode("Hypixel")) {
             modeGlobalHypixel.onPacket(e);
         }
@@ -59,9 +56,6 @@ public class Speed extends Mod {
 
     @EventTarget
     public void onStep(EventStep e) {
-        if (dmg.getValue() && mc.thePlayer.hurtTime == 0)
-            return;
-
         if (mode.isCurrentMode("Hypixel")) {
             modeGlobalHypixel.onStep(e);
         }
@@ -69,9 +63,6 @@ public class Speed extends Mod {
 
     @EventTarget
     public void onUpdate(EventUpdate e) {
-
-        if (dmg.getValue() && mc.thePlayer.hurtTime == 0)
-            return;
 
         if (mode.isCurrentMode("Vulcan")) {
             modeVulcan.onUpdate(e);
@@ -81,8 +72,6 @@ public class Speed extends Mod {
     @EventTarget
     public void onPre(EventPreMotion e) {
         this.setDisplayName(mode.getModeAt(mode.getCurrentMode()));
-        if (dmg.getValue() && mc.thePlayer.hurtTime == 0)
-            return;
 
         Wrapper.getTimer().timerSpeed = mc.thePlayer.fallDistance < 2 ? (float) (toggle.getValue() ? (float) (Keyboard.isKeyDown(Keyboard.KEY_LMENU) ? (1f + (ThreadLocalRandom.current().nextDouble(fall.getValue() - 1, fall.getValue() - 0.89f))) : 1.0f) : (1f + (ThreadLocalRandom.current().nextDouble(fall.getValue() - 1, fall.getValue() - 0.89f)))) : 1.0F;
 
@@ -100,9 +89,6 @@ public class Speed extends Mod {
 
     @EventTarget
     public void onPost(EventPostMotion e) {
-        if (dmg.getValue() && mc.thePlayer.hurtTime == 0)
-            return;
-
         if (mode.isCurrentMode("Hypixel")) {
             modeGlobalHypixel.onPost(e);
         }
@@ -110,9 +96,6 @@ public class Speed extends Mod {
 
     @EventTarget
     public void onJump(EventJump e) {
-        if (dmg.getValue() && mc.thePlayer.hurtTime == 0)
-            return;
-
         if (mode.isCurrentMode("Hypixel")) {
             modeGlobalHypixel.onJump(e);
         }
@@ -135,8 +118,6 @@ public class Speed extends Mod {
 
     @EventTarget
     public void onLoop(EventLoop e) {
-        if (dmg.getValue() && mc.thePlayer.hurtTime == 0)
-            return;
 
         if (mode.isCurrentMode("Hypixel")) {
             modeGlobalHypixel.onLoop(e);
@@ -145,6 +126,8 @@ public class Speed extends Mod {
 
     @EventTarget
     public void onStrafe(EventStrafe em) {
+        if ((!Speed.dmg.getValue() || mc.thePlayer.hurtTime != 0))
+            return;
         if (mode.isCurrentMode("Hypixel")) {
             modeGlobalHypixel.onStrafe(em);
         }
@@ -152,9 +135,6 @@ public class Speed extends Mod {
 
     @EventTarget
     public void onMove(EventMove em) {
-        if (dmg.getValue() && mc.thePlayer.hurtTime == 0)
-            return;
-
         if (mode.isCurrentMode("Hypixel")) {
             modeGlobalHypixel.onMove(em);
         } else if (mode.isCurrentMode("Verus")) {

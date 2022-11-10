@@ -73,7 +73,7 @@ public class Speed_Hypixel {
         if (forward == 0 && strafe == 0) {
             em.setX(0);
             em.setZ(0);
-        } else {
+        } else if ((!Speed.dmg.getValue() || mc.thePlayer.hurtTime != 0)){
             if (forward != 0) {
                 if (strafe > 0) {
                     yaw += (float) (forward > 0 ? -45 : 45);
@@ -132,14 +132,17 @@ public class Speed_Hypixel {
             mc.thePlayer.lastTickPosY -= mc.thePlayer.posY - mc.thePlayer.lastTickPosY;
         }
 
-        if (MoveUtils.isMoving())
-            e.setYaw((float) (Math.toDegrees(Math.atan2(zDist, xDist)) - 90.0));
+//        if (MoveUtils.isMoving())
+//            e.setYaw((float) (Math.toDegrees(Math.atan2(zDist, xDist)) - 90.0));
 
         if (MoveUtils.isMoving() && !e.isOnGround() && mc.thePlayer.motionY > 0.06 && groundspoof.getValue())
             e.setOnGround(true);
     }
 
     public void onPost(EventPostMotion e) {
+        if(mc.thePlayer.onGround && isMoving2()){
+            mc.thePlayer.jump();
+        }
     }
 
     public void onJump(EventJump e) {
@@ -192,62 +195,64 @@ public class Speed_Hypixel {
         final KillAura killAura = ModManager.getModule(KillAura.class);
         final TargetStrafe targetStrafe = ModManager.getModule(TargetStrafe.class);
 
-        if (!motion.isCurrentMode("New")) {
-            //low hop moment
-            if (motion.isCurrentMode("LowHop") || motion.isCurrentMode("OnGround")) {
-                if (rounded == MathUtils.round(0.4D, 3.0D)) {
-                    event.y = mc.thePlayer.motionY = 0.31D;
-                } else if (rounded == MathUtils.round(0.71D, 3.0D)) {
-                    event.y = mc.thePlayer.motionY = 0.04D;
-                } else if (rounded == MathUtils.round(0.75D, 3.0D)) {
-                    event.y = mc.thePlayer.motionY = -0.2D;
-                } else if (rounded == MathUtils.round(0.55D, 3.0D)) {
-                    event.y = mc.thePlayer.motionY = -0.14D;
-                } else if (rounded == MathUtils.round(0.41D, 3.0D)) {
-                    event.y = mc.thePlayer.motionY = -0.2D;
-                }
-            }
-
-            if (stage > 0) {
-                if (stage == 1 && mc.thePlayer.onGround && MoveUtils.isMoving())
-                    stage += 1;
-
-                if (stage == 2 && mc.thePlayer.onGround && MoveUtils.isMoving()) {
-
-                    if (tp.getValue())
-                        mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.001 * Math.random(), mc.thePlayer.posZ);
-
-                    y = ThreadLocalRandom.current().nextDouble(0.39999998688698, 0.4000199999);
-
-                    event.setY(mc.thePlayer.motionY = 0.4073412 + (PlayerUtil.getJumpEffect() * 0.1));
-                } else if (stage >= 3) {
-                    if (mc.thePlayer.isCollidedVertically) {
-                        speed = getBaseSpeed();
-                        lastDist = 0.0;
-                        stage = 0;
-                    }
-                }
-            } else {
-                stage = 0;
-            }
-
-            if (event.y < 0)
-                event.y *= 1 - glideValue.getValue();
-
-            if (boostMode.isCurrentMode("Boost"))
-                onHypixelSpeed();
-            else
-                getHypixelBest();
-
-            ++stage;
-
-            double add = mc.thePlayer.isBurning() ? 0 : mc.thePlayer.hurtResistantTime < 8 ? mc.thePlayer.hurtResistantTime * damageBoost.getValue() * 0.008 : mc.thePlayer.hurtResistantTime * damageBoost.getValue() * .01;
-            speed *= 1 + (boost.getValue() ? add : 0);
-
-        }
+//        if (!motion.isCurrentMode("New")) {
+//            //low hop moment
+//            if (motion.isCurrentMode("LowHop") || motion.isCurrentMode("OnGround")) {
+//                if (rounded == MathUtils.round(0.4D, 3.0D)) {
+//                    event.y = mc.thePlayer.motionY = 0.31D;
+//                } else if (rounded == MathUtils.round(0.71D, 3.0D)) {
+//                    event.y = mc.thePlayer.motionY = 0.04D;
+//                } else if (rounded == MathUtils.round(0.75D, 3.0D)) {
+//                    event.y = mc.thePlayer.motionY = -0.2D;
+//                } else if (rounded == MathUtils.round(0.55D, 3.0D)) {
+//                    event.y = mc.thePlayer.motionY = -0.14D;
+//                } else if (rounded == MathUtils.round(0.41D, 3.0D)) {
+//                    event.y = mc.thePlayer.motionY = -0.2D;
+//                }
+//            }
+//
+//            if (stage > 0) {
+//                if (stage == 1 && mc.thePlayer.onGround && MoveUtils.isMoving())
+//                    stage += 1;
+//
+//                if (stage == 2 && mc.thePlayer.onGround && MoveUtils.isMoving()) {
+//
+//                    if (tp.getValue())
+//                        mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.001 * Math.random(), mc.thePlayer.posZ);
+//
+//                    y = ThreadLocalRandom.current().nextDouble(0.39999998688698, 0.4000199999);
+//
+////                    mc.thePlayer.jump();
+//                    event.setY(mc.thePlayer.motionY = 0.4093412 + (PlayerUtil.getJumpEffect() * 0.1));
+//                } else if (stage >= 3) {
+//                    if (mc.thePlayer.isCollidedVertically) {
+//                        speed = getBaseSpeed();
+//                        lastDist = 0.0;
+//                        stage = 0;
+//                    }
+//                }
+//            } else {
+//                stage = 0;
+//            }
+//
+////            if (event.y < 0)
+////                event.y *= 1 - glideValue.getValue();
+//
+//            if (boostMode.isCurrentMode("Boost"))
+//                onHypixelSpeed();
+//            else
+//                getHypixelBest();
+//
+//            ++stage;
+//
+//            double add = mc.thePlayer.isBurning() ? 0 : mc.thePlayer.hurtResistantTime < 8 ? mc.thePlayer.hurtResistantTime * damageBoost.getValue() * 0.008 : mc.thePlayer.hurtResistantTime * damageBoost.getValue() * .01;
+//            speed *= 1 + (boost.getValue() ? add : 0);
+//
+//        }
         if (MoveUtils.isMoving()) {
-            if (targetStrafe.isStrafing(event, killAura.target, speed))
+//            if (targetStrafe.isStrafing(event, killAura.target, speed))
                 setMotion(event, speed);
+
         } else {
             setMotion(event, 0.0);
             stage = 0;

@@ -35,11 +35,13 @@ public class TargetStrafe extends Mod {
 
     public static Value<Boolean> change = new Value<>("TargetStrafe", "Direction", true);
     public static Value<Boolean> render = new Value<>("TargetStrafe", "Render", true);
+    public static Value<Boolean> hurt = new Value<>("TargetStrafe", "Hurt", true);
 
     public static boolean direction = true;
     public TimeHelper timer = new TimeHelper();
     private int strafe = -1;
     public float yaw;
+
     public TargetStrafe() {
         super("TargetStrafe", Category.COMBAT);
     }
@@ -47,7 +49,7 @@ public class TargetStrafe extends Mod {
 
     public static boolean canStrafe() {
         boolean press = !targetkey.getValue() || mc.gameSettings.keyBindJump.isKeyDown();
-        return (KillAura.target != null) && press && (ModManager.getModule("KillAura").isEnabled() && (ModManager.getModule("Speed").isEnabled() || ModManager.getModule("Fly").isEnabled()));
+        return (KillAura.target != null) && (!hurt.getValue() || mc.thePlayer.hurtTime > 0) && press && (ModManager.getModule("KillAura").isEnabled() && (ModManager.getModule("Speed").isEnabled() || ModManager.getModule("Fly").isEnabled()));
     }
 
     @Override
@@ -121,6 +123,7 @@ public class TargetStrafe extends Mod {
 
 
     }
+
     public boolean preStrafing(EventPreMotion event, EntityLivingBase target, double moveSpeed) {
 
         final boolean pressingSpace = !targetkey.getValue() || Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode());
@@ -175,7 +178,7 @@ public class TargetStrafe extends Mod {
 
         if (event != null) {
             event.setX(mc.thePlayer.motionX = asLast[0]);
-            event.setZ(mc.thePlayer.motionZ =asLast[1]);
+            event.setZ(mc.thePlayer.motionZ = asLast[1]);
         } else {
             mc.thePlayer.motionX = asLast[0];
             mc.thePlayer.motionZ = asLast[1];
@@ -238,7 +241,7 @@ public class TargetStrafe extends Mod {
 
         if (event != null) {
             event.setX(mc.thePlayer.motionX = asLast[0]);
-            event.setZ(mc.thePlayer.motionZ =asLast[1]);
+            event.setZ(mc.thePlayer.motionZ = asLast[1]);
         } else {
             mc.thePlayer.motionX = asLast[0];
             mc.thePlayer.motionZ = asLast[1];

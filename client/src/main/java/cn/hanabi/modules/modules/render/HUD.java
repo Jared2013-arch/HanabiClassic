@@ -84,6 +84,8 @@ public class HUD extends Mod {
             .LoadValue(new String[]{"Random", "Theme", "Rainbow"});
 
     public static ColorValue design = new ColorValue("Design Color", 0.5f, 1f, 1f, 1f, false, false, 10f);
+    public static Value<String> Theme = new Value<String>("HUD", "Hit Sound", 0).LoadValue(new String[]{"3.x", "4.x"});
+
 
     public static Value<Double> rainbowspeed = new
             Value<>("HUD", "ArrayList Speed", 3d, 1d, 6d, 1d);
@@ -147,8 +149,6 @@ public class HUD extends Mod {
             return;
         if (fixname.getValue())
             event.setText(StringUtils.replace(event.getText(), "\247k", ""));
-
-
     }
 
 
@@ -162,6 +162,11 @@ public class HUD extends Mod {
 
     @EventTarget(Priority.LOWEST)
     private void render2D(EventRender2D event) {
+        if (Theme.isCurrentMode("3.x")) {
+            Hanabi.INSTANCE.newStyle = false;
+        } else {
+            Hanabi.INSTANCE.newStyle = true;
+        }
         ScaledResolution sr = new ScaledResolution(mc);
         float width = sr.getScaledWidth();
         float height = sr.getScaledHeight();
@@ -329,32 +334,66 @@ public class HUD extends Mod {
     }
 
     private void renderNewArray(ScaledResolution sr) {
-        float arrayListY = 5;
         ArrayList<Mod> mods = new ArrayList<>(ModManager.getEnabledModListHUD());
+        float nextY = 0f;
         HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
+        int base;
+        int color;
 
-        for (Mod m : mods) {
-            if (!m.isEnabled())
+        for (Mod module : mods) {
+            module.lastY = module.posY;
+            module.posY = nextY;
+
+            if (array.isCurrentMode("Random")) {
+                base = module.getColor();
+            } else if (array.isCurrentMode("Theme")) {
+                base = design.getColor();
+            } else {
+                base = RenderUtil.getRainbow(6000, (int) (-15 * nextY), rainbowspeed.getValue(), offset.getValue(), design.saturation, design.brightness);
+            }
+
+            if (arraylistfade.getValueState()) {
+
+                color = PaletteUtil
+                        .fade(new Color(base),
+                                (int) ((nextY + 11) / 11), fade.getValue().intValue())
+                        .getRGB();
+            } else {
+                color = base;
+
+            }
+            module.onRenderArray();
+            //不渲染渲染类
+            if (module.getName().equals("TargetStrafe"))
                 continue;
-            if (m.getCategory().equals(Category.RENDER))
+            if (module.getCategory() == Category.RENDER)
                 continue;
-            m.onRenderArray();
-            String name = m.getName() + ((m.getDisplayName() != null) ? " " + ChatFormatting.GRAY + m.getDisplayName() : "");
-            int stringWidth = font.getStringWidth(name);
-            int posX = sr.getScaledWidth() - stringWidth - 4;
+            if (!module.isEnabled() && module.posX <= 0)
+                continue;
+
+            // Module 信息
+            String modName = module.getName();
+            String displayName = module.getDisplayName();
+            float modwidth = module.posX;
             GL11.glPushMatrix();
             GlStateManager.enableBlend();
             GlStateManager.disableAlpha();
             GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
             mc.getTextureManager().bindTexture(new ResourceLocation("Client/new/hud/arraylistshadow.png"));
             GlStateManager.color(1.0f, 1.0f, 1.0f, 0.7f);
-            Gui.drawModalRectWithCustomSizedTexture((posX - 2), (int) (arrayListY - 37 / 4f), (float) 0, (float) 0, font.getStringWidth(name) + 13, 37, font.getStringWidth(name) + 13, 37);
+            Gui.drawModalRectWithCustomSizedTexture((int) (sr.getScaledWidth() - font.getStringWidth(name) - 11), (int) (nextY - 10), (float) 0, (float) 0, font.getStringWidth(name) + 13, 37, font.getStringWidth(name) + 13, 37);
             GlStateManager.disableBlend();
             GlStateManager.enableAlpha();
             GL11.glPopMatrix();
-            font.drawString(name, posX, arrayListY, -1);
-            arrayListY += 14;
+            font.drawString(modName, sr.getScaledWidth() - modwidth - 11, nextY + module.posYRend + 1, color);
+
+            if (displayName != null)
+                font.drawString(displayName, sr.getScaledWidth() - 8 - modwidth + font.getStringWidth(modName),
+                        nextY + module.posYRend + 1, new Color(159, 159, 159).getRGB());
+
+            nextY += font.FONT_HEIGHT;
         }
+
     }
 
     private void renderClassicArray(ScaledResolution sr) {
