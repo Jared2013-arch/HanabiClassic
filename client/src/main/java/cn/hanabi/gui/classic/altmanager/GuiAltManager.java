@@ -2,6 +2,7 @@ package cn.hanabi.gui.classic.altmanager;
 
 import cn.hanabi.Client;
 import cn.hanabi.Hanabi;
+import cn.hanabi.api.MicrosoftLogin;
 import cn.hanabi.injection.interfaces.IMinecraft;
 import cn.hanabi.utils.render.ParticleUtils;
 import cn.hanabi.utils.render.RenderUtil;
@@ -77,6 +78,7 @@ public class GuiAltManager extends GuiScreen {
                 break;
             }
             case 4: {
+                MicrosoftLogin.login();
 //                String data = null;
 //                try {
 //                    data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
@@ -374,7 +376,7 @@ public class GuiAltManager extends GuiScreen {
         //this.buttonList.add(this.login = new GuiButton(1, this.width / 2 - 122, this.height - 48, 100, 20, "Login"));
         //this.buttonList.add(this.remove = new GuiButton(2, this.width / 2 - 16, this.height - 24, 100, 20, "Remove"));
         // this.buttonList.add(new CustomGuiButton(3, this.width / 2 + 4 + 40, this.height - 48, 100, 20, "Add"));
-        this.buttonList.add(new CustomGuiButton(4, this.width / 2 - 122, this.height - 48, 100, 20, "Token Login"));
+        this.buttonList.add(new CustomGuiButton(4, this.width / 2 - 122, this.height - 48, 100, 20, "Web Login"));
         this.buttonList.add(new CustomGuiButton(5, this.width / 2 - 122, this.height - 24, 100, 20, "Random"));
         //this.buttonList.add(this.rename = new GuiButton(6, this.width / 2 + 90, this.height - 24, 100, 20, "Edit"));
         this.buttonList.add(new CustomGuiButton(7, this.width / 2 - 200, this.height - 24, 70, 20, "Back"));
@@ -382,7 +384,7 @@ public class GuiAltManager extends GuiScreen {
         this.buttonList.add(new CustomGuiButton(9, this.width / 2 + 122, this.height - 48, 70, 20, "MultPlayer"));
         this.buttonList.add(new CustomGuiButton(10, this.width / 2 - 388, this.height - 48, 68, 20, "Altening"));
         this.buttonList.add(new CustomGuiButton(11, this.width / 2 - 388, this.height - 24, 68, 20, "Mojang"));
-        //  this.buttonList.add(new CustomGuiButton(12, this.width / 2 + 16, this.height - 48, 100, 20, "Buy Account"));
+//          this.buttonList.add(new CustomGuiButton(12, this.width / 2 + 16, this.height - 48, 100, 20, "Buy Account"));
 
         this.buttonList.add(new CustomGuiButton(13, this.width / 2 + 122, this.height - 24, 70, 20, "Hyp Bypass :" + Hanabi.INSTANCE.hypixelBypass));
         this.buttonList.add(new CustomGuiButton(3, this.width / 2 + 16, this.height - 48, 100, 20, "MS Login: " + Hanabi.INSTANCE.mslogin));

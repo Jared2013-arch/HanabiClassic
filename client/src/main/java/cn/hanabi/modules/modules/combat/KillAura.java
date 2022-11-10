@@ -54,6 +54,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.*;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S30PacketWindowItems;
 import net.minecraft.util.*;
 import net.minecraft.world.WorldSettings;
@@ -576,7 +577,7 @@ public class KillAura extends Mod {
                 this.release = false;
             }
         }
-        if (target == null && !release) {
+        if (target == null && !release && mc.thePlayer.ticksExisted % 2 == 0) {
             mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
             unBlock(true);
             this.release = true;
@@ -631,7 +632,9 @@ public class KillAura extends Mod {
                     if (!blockMode.isCurrentMode("Vanilla")) {
                         float[] neededRotations1 = getNeededRotations(target, mc.thePlayer);
                         if (((Math.abs(neededRotations1[0] - target.rotationYaw % 360) + Math.abs(neededRotations1[1] - target.rotationPitch % 360)) < hover.getValue()) || !onlyOnAim.getValue()) {
-                            doBlock(true);
+                            if (target.getDistanceToEntity(mc.thePlayer) < 3.2) {
+                                doBlock(true);
+                            }
                         }
                     }
                 }
@@ -824,6 +827,11 @@ public class KillAura extends Mod {
 
     @EventTarget
     public void onPacket(EventPacket e) {
+        if (e.packet instanceof S08PacketPlayerPosLook) {
+            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+
+            unBlock(true);
+        }
 //        if (e.getPacket() instanceof C08PacketPlayerBlockPlacement && isBlocking && blockMode.isCurrentMode("Hypixel")) {
 //            e.setCancelled(true);
 //        }
