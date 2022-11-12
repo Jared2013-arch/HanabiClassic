@@ -80,8 +80,6 @@ public class KillAura extends Mod {
     public static Value<Boolean> autoBlock = new Value<>("KillAura", "AutoBlock", true);
 
     public static Value<Boolean> interact = new Value<>("KillAura", "Interact", false);
-
-    public static Value<Boolean> dynamic = new Value<>("KillAura", "Dynamic-UnBlock", false);
     public static Value<Boolean> glich = new Value<>("KillAura", "Swing-Glich", false);
 
     public static Value<Double> reach = new Value<>("KillAura", "Range", 4.2, 3.0, 6.0, 0.1);
@@ -95,7 +93,6 @@ public class KillAura extends Mod {
 
     public static Value<Double> minCps = new Value<>("KillAura", "Min CPS", 6.0, 1.0, 20.0, 1.0);
     public static Value<Double> maxCps = new Value<>("KillAura", "Max CPS", 12.0, 1.0, 20.0, 1.0);
-    public static Value<Double> blockReach = new Value<>("KillAura", "Block Range", 0.5, 0.0, 6.0, 0.1);
     public static Value<Boolean> attackPlayers = new Value<>("KillAura", "Players", true);
     public static Value<Boolean> attackAnimals = new Value<>("KillAura", "Animals", false);
     public static Value<Boolean> attackMobs = new Value<>("KillAura", "Mobs", false);
@@ -198,6 +195,8 @@ public class KillAura extends Mod {
     public static int killCount = 0;
     private Value<Boolean> onlyOnAim = new Value<>("KillAura", "Only On Aim", true);
     private Value<Double> hover = new Value<>("KillAura", "Hover", 200d, 0d, 720d, 10);
+    private static Value<Double> blockrange = new Value<>("KillAura", "BlockRange", 3d, 0d, 8d, 0.1);
+
 
     //other stuff
 
@@ -292,7 +291,7 @@ public class KillAura extends Mod {
                 return false;
             }
 
-            if (mc.thePlayer.getDistanceToEntity(entity) < (reach.getValueState() + blockReach.getValueState())) {
+            if (mc.thePlayer.getDistanceToEntity(entity) < (reach.getValueState())) {
 
 
                 if (entity != mc.thePlayer && !mc.thePlayer.isDead
@@ -632,7 +631,7 @@ public class KillAura extends Mod {
                     if (!blockMode.isCurrentMode("Vanilla")) {
                         float[] neededRotations1 = getNeededRotations(target, mc.thePlayer);
                         if (((Math.abs(neededRotations1[0] - target.rotationYaw % 360) + Math.abs(neededRotations1[1] - target.rotationPitch % 360)) < hover.getValue()) || !onlyOnAim.getValue()) {
-                            if (target.getDistanceToEntity(mc.thePlayer) < 3.2) {
+                            if (target.getDistanceToEntity(mc.thePlayer) < blockrange.getValueState()) {
                                 doBlock(true);
                             }
                         }
@@ -756,54 +755,16 @@ public class KillAura extends Mod {
     int abstep = 1;
 
     private void doBlock(boolean setItemUseInCount) {
-//        if (target != null) {
-//            if (mc.thePlayer.swingProgressInt == 1 && !this.release && this.block.getValue()) {
-//                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-//                this.release = true;
-//            } else if (mc.thePlayer.swingProgressInt == 2 && this.release  && this.block.getValue() && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemSword) {
-//                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-//                this.release = false;
-//            }
-//        }
-//        if (setItemUseInCount)
-//            ((IEntityPlayer) mc.thePlayer).setItemInUseCount(mc.thePlayer.getHeldItem().getMaxItemUseDuration());
-//            if (target != null && target.getDistanceToEntity(mc.thePlayer) < 3.1) {
-//                mc.thePlayer.setItemInUse(mc.thePlayer.getHeldItem(), mc.thePlayer.getHeldItem().getMaxItemUseDuration());
-//        if (abstep == 1) {
-//            mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0f, 0f, 0f));
-//        }
-//        if (abstep == 3) {
-//            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-//        }
-//        if (abstep == 5) {
-//            mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0f, 0f, 0f));
-//            abstep = 0;
-//        }
-//        abstep++;
-//            }
         ((IKeyBinding) mc.gameSettings.keyBindUseItem).setPress(true);
         isBlocking = true;
     }
 
     private void unBlock(boolean setItemUseInCount) {
-//        if (setItemUseInCount)
-//            ((IEntityPlayer) mc.thePlayer).setItemInUseCount(0);
-//        mc.thePlayer.setItemInUse(mc.thePlayer.getHeldItem(), 0);
-//
-//        double blockvalue = -1;
-//        if (!PlayerUtil.isMoving2() && dynamic.getValue())
-//            blockvalue = ThreadLocalRandom.current().nextDouble(-1.0, -0.2);
-        ((IKeyBinding) mc.gameSettings.keyBindUseItem).setPress(false);
-        mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange((mc.thePlayer.inventory.currentItem + 1 > 8) ? 0 : (mc.thePlayer.inventory.currentItem + 1)));
-        mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
 
-//        if (!blockMode.isCurrentMode("Always")) {
-//
-//            if (!blockMode.isCurrentMode("Exploit"))
-//                Wrapper.sendPacketNoEvent(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, new BlockPos(0, 0, 0), EnumFacing.DOWN));
-//
+        ((IKeyBinding) mc.gameSettings.keyBindUseItem).setPress(false);
+        if (target == null)
+            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
         isBlocking = false;
-//        }
     }
 
     @Override
@@ -828,13 +789,8 @@ public class KillAura extends Mod {
     @EventTarget
     public void onPacket(EventPacket e) {
         if (e.packet instanceof S08PacketPlayerPosLook) {
-            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-
             unBlock(true);
         }
-//        if (e.getPacket() instanceof C08PacketPlayerBlockPlacement && isBlocking && blockMode.isCurrentMode("Hypixel")) {
-//            e.setCancelled(true);
-//        }
     }
 
     private List<EntityLivingBase> getTargets() {

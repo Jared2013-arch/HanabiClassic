@@ -128,6 +128,7 @@ public class ModManager {
         addModule(new IceSpeed());
         addModule(new WaterSpeed());
         addModule(new Teleport());
+        addModule(new MotionBoost());
 
         // PLAYER
         addModule(new AutoArmor());

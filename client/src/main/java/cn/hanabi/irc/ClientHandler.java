@@ -23,7 +23,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
     public static ChannelHandlerContext context;
     private int rec;
     public static long currentTime = System.currentTimeMillis();
-    ;
+
 
     @Override
     public void channelInactive(final ChannelHandlerContext ctx) {
@@ -34,10 +34,11 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
         if (rec < 30) {
-            Hanabi.INSTANCE.println("IRC Reconnecting...");
-            Client.client.reconnect();
+            Hanabi.INSTANCE.loggedIn = false;
             Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(Minecraft.getMinecraft().currentScreen));
-            Hanabi.INSTANCE.loggedIn = true;
+            Hanabi.INSTANCE.println("IRC Reconnecting...");
+            PlayerUtil.tellPlayer("IRC Reconnecting...");
+            Client.client.reconnect();
             rec++;
         } else {
             Minecraft.getMinecraft().thePlayer = null;

@@ -126,6 +126,8 @@ public class TargetStrafe extends Mod {
 
     public boolean preStrafing(EventPreMotion event, EntityLivingBase target, double moveSpeed) {
 
+        if(!canStrafe())
+            return false;
         final boolean pressingSpace = !targetkey.getValue() || Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode());
 
         if (!isEnabled() || target == null || moveSpeed == 0 || !pressingSpace) return true;
@@ -189,6 +191,8 @@ public class TargetStrafe extends Mod {
 
     public boolean isStrafing(EventMove event, EntityLivingBase target, double moveSpeed) {
 
+        if(!canStrafe())
+            return false;
         final boolean pressingSpace = !targetkey.getValue() || Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCode());
 
         if (!isEnabled() || target == null || moveSpeed == 0 || !pressingSpace) return true;

@@ -141,7 +141,7 @@ public class Speed extends Mod {
             modeVerus.onMove(em);
         }
 
-        ((TargetStrafe) ModManager.getModule(TargetStrafe.class)).isStrafing(em, KillAura.target, MoveUtils.getBaseMoveSpeed());
+        (ModManager.getModule(TargetStrafe.class)).isStrafing(em, KillAura.target, MoveUtils.getBaseMoveSpeed());
     }
 
     @Override

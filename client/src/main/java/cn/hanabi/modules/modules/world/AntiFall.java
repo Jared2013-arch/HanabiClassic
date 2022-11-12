@@ -40,14 +40,8 @@ public class AntiFall extends Mod {
             e.setOnGround(true);
 
         if (mc.thePlayer.fallDistance >= falldistance.getValue() && aboveVoid) {
-            if (!falling) {
-                PlayerUtil.debugChat("1");
-                mc.getNetHandler().getNetworkManager().sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX + 1 + 0.004 * Math.random(), mc.thePlayer.posY, mc.thePlayer.posZ + 1 + 0.004 * Math.random(), false));
+                mc.getNetHandler().getNetworkManager().sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX + 1 + 0.14 * Math.random(), mc.thePlayer.posY + falldistance.getValue() + 0.15 * Math.random(), mc.thePlayer.posZ + 1 + 0.15 * Math.random(), false));
                 falling = true;
-            }
-            mc.thePlayer.motionX = 0;
-            mc.thePlayer.motionY = 0;
-            mc.thePlayer.motionZ = 0;
         } else {
             falling = false;
         }

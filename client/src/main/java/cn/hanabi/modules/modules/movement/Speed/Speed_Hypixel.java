@@ -191,9 +191,9 @@ public class Speed_Hypixel {
     }
 
     public void onMove(EventMove event) {
-        double rounded = MathUtils.round(mc.thePlayer.posY - (double) ((int) mc.thePlayer.posY), 3.0D);
-        final KillAura killAura = ModManager.getModule(KillAura.class);
-        final TargetStrafe targetStrafe = ModManager.getModule(TargetStrafe.class);
+//        double rounded = MathUtils.round(mc.thePlayer.posY - (double) ((int) mc.thePlayer.posY), 3.0D);
+//        final KillAura killAura = ModManager.getModule(KillAura.class);
+//        final TargetStrafe targetStrafe = ModManager.getModule(TargetStrafe.class);
 
 //        if (!motion.isCurrentMode("New")) {
 //            //low hop moment
