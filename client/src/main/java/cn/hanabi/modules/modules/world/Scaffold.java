@@ -75,6 +75,7 @@ public class Scaffold extends Mod {
     //OTHER
     private final Value<Double> sneakAfter = new Value<>("Scaffold", "Sneak Tick", 1d, 1d, 10d, 1d);
     private final Value<Boolean> packetSneak = new Value<>("Scaffold", "packetSneak", false);
+    private Value<Boolean> packetSpirnt = new Value<>("Scaffold", "packetSpirnt", false);
 
     private final Value<Boolean> moveTower = new Value<>("Scaffold", "Move Tower", true);
     private final Value<Boolean> hypixel = new Value<>("Scaffold", "Hypixel", true);
@@ -434,6 +435,24 @@ public class Scaffold extends Mod {
             mc.thePlayer.setSprinting(sprint.getValue());
             ((IKeyBinding) mc.gameSettings.keyBindSprint).setPress(sprint.getValue());
 
+            if (sprint.getValue())
+                mc.getNetHandler().addToSendQueue(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.STOP_SPRINTING));
+
+            if (sprint.getValue() && sneakCount >= sneakAfter.getValue())
+                if (packetSpirnt.getValue()) {
+                    mc.getNetHandler().addToSendQueue(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.STOP_SPRINTING));
+                } else {
+                    ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(true);
+                }
+            else if (sneakCount < sneakAfter.getValue())
+                if (packetSpirnt.getValue()) {
+                    mc.getNetHandler().addToSendQueue(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.START_SPRINTING));
+                } else {
+                    ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
+                }
+
+
+
             if (sneak.getValue() && sneakCount >= sneakAfter.getValue())
                 if (packetSneak.getValue()) {
                     mc.getNetHandler().addToSendQueue(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.START_SNEAKING));
@@ -540,7 +559,7 @@ public class Scaffold extends Mod {
             ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(false);
 
         }
-        if(packetSneak.getValue())
+        if (packetSneak.getValue())
             mc.getNetHandler().addToSendQueue(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.STOP_SNEAKING));
 
         if (Wrapper.getTimer().timerSpeed != 1)

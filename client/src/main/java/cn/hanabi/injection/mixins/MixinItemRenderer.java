@@ -91,9 +91,7 @@ public abstract class MixinItemRenderer {
                         this.doBowTransformations(partialTicks, entityplayersp);
                 }
             } else {
-                if (((KillAura.autoBlock.getValueState() && KillAura.target != null)
-                        || this.mc.gameSettings.keyBindUseItem.isKeyDown())
-                        && ModManager.getModule("EveryThingBlock").isEnabled()) {
+                if (this.mc.gameSettings.keyBindUseItem.isKeyDown() && ModManager.getModule("EveryThingBlock").isEnabled()) {
                     renderingBlocked(f, f1);
                 } else {
                     this.doItemUsedTransformations(f1);

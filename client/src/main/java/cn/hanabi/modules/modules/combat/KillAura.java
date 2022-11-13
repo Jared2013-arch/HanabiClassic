@@ -194,7 +194,8 @@ public class KillAura extends Mod {
     private boolean release;
     public static int killCount = 0;
     private Value<Boolean> onlyOnAim = new Value<>("KillAura", "Only On Aim", true);
-    private Value<Double> hover = new Value<>("KillAura", "Hover", 200d, 0d, 720d, 10);
+    private Value<Double> hoverYaw = new Value<>("KillAura", "Hover", 80d, 0d, 360d, 1);
+    private Value<Double> hoverPitch = new Value<>("KillAura", "Hover", 100d, 0d, 360d, 1);
     private static Value<Double> blockrange = new Value<>("KillAura", "BlockRange", 3d, 0d, 8d, 0.1);
 
 
@@ -629,12 +630,7 @@ public class KillAura extends Mod {
                     && !isBlocking) { // 格挡
                 if (new Random().nextInt(100) <= blockRate.getValue() && (!hurtBlock.getValue() || mc.thePlayer.hurtResistantTime > 0)) { //HurtTime Check && BlockRate
                     if (!blockMode.isCurrentMode("Vanilla")) {
-                        float[] neededRotations1 = getNeededRotations(target, mc.thePlayer);
-                        if (((Math.abs(neededRotations1[0] - target.rotationYaw % 360) + Math.abs(neededRotations1[1] - target.rotationPitch % 360)) < hover.getValue()) || !onlyOnAim.getValue()) {
-                            if (target.getDistanceToEntity(mc.thePlayer) < blockrange.getValueState()) {
-                                doBlock(true);
-                            }
-                        }
+                        doBlock(true);
                     }
                 }
             }
@@ -755,11 +751,18 @@ public class KillAura extends Mod {
     int abstep = 1;
 
     private void doBlock(boolean setItemUseInCount) {
-        ((IKeyBinding) mc.gameSettings.keyBindUseItem).setPress(true);
-        isBlocking = true;
+        float[] neededRotations1 = getNeededRotations(target, mc.thePlayer);
+        mc.thePlayer.setItemInUse(mc.thePlayer.getCurrentEquippedItem(), mc.thePlayer.getCurrentEquippedItem().getMaxItemUseDuration());
+        if (((Math.abs(neededRotations1[0] - target.rotationYaw % 360) < hoverYaw.getValue() || Math.abs(neededRotations1[1] - target.rotationPitch % 360) < hoverPitch.getValue())) || !onlyOnAim.getValue()) {
+            if (target.getDistanceToEntity(mc.thePlayer) < blockrange.getValueState()) {
+                ((IKeyBinding) mc.gameSettings.keyBindUseItem).setPress(true);
+                isBlocking = true;
+            }
+        }
     }
 
     private void unBlock(boolean setItemUseInCount) {
+        mc.thePlayer.setItemInUse(mc.thePlayer.getCurrentEquippedItem(), 0);
 
         ((IKeyBinding) mc.gameSettings.keyBindUseItem).setPress(false);
         if (target == null)

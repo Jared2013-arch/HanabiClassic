@@ -5,6 +5,9 @@ import cn.hanabi.events.EventWorldChange;
 import cn.hanabi.injection.interfaces.IPlayerControllerMP;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
+import cn.hanabi.modules.ModManager;
+import cn.hanabi.modules.modules.combat.KillAura;
+import cn.hanabi.modules.modules.movement.Speed.Speed;
 import cn.hanabi.modules.modules.render.ChestESP;
 import cn.hanabi.utils.game.CombatUtil;
 import cn.hanabi.utils.math.TimeHelper;
@@ -41,6 +44,8 @@ public class ChestAura extends Mod {
 
     @EventTarget
     public void onPre(EventPreMotion event) {
+        if(KillAura.target != null || ModManager.getModule(Speed.class).getState())
+            return;
         ArrayList<BlockPos> list = new ArrayList<>();
         for (BlockPos blockPos : ChestESP.list) {
             if (mc.thePlayer.getDistanceSq(blockPos) < reach.getValue()) {

@@ -242,7 +242,7 @@ public class MusicManager {
         } else {
             Media hit = new Media(mp3File.exists() ? mp3File.toURI().toString() : flacFile.toURI().toString());
             mediaPlayer = new MediaPlayer(hit);
-            mediaPlayer.setVolume(1.0f);
+            mediaPlayer.setVolume(0.7f);
             mediaPlayer.setAutoPlay(true);
             mediaPlayer.setAudioSpectrumNumBands(128);
             mediaPlayer.setAudioSpectrumListener((double timestamp, double duration, float[] magnitudes, float[] phases) -> {

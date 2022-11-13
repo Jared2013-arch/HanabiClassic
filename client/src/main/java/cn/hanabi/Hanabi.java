@@ -48,7 +48,7 @@ public class Hanabi {
 
     public static final double CLIENT_VERSION_NUMBER = 4.13;
     @NotNull
-    public static final String CLIENT_VERSION = CLIENT_VERSION_NUMBER + " 1011";
+    public static final String CLIENT_VERSION = CLIENT_VERSION_NUMBER + " 1013";
     @NotNull
     public static final String CLIENT_INITIALS;
 

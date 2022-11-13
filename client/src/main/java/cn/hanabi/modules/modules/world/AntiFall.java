@@ -38,12 +38,14 @@ public class AntiFall extends Mod {
 
         if (canFall && PlayerUtil.isBlockUnder() && nodmg.getValue())
             e.setOnGround(true);
-
-        if (mc.thePlayer.fallDistance >= falldistance.getValue() && aboveVoid) {
+        if(timer.isDelayComplete(delay.getValue())) {
+            if (mc.thePlayer.fallDistance >= 0.1 * falldistance.getValue() && aboveVoid) {
                 mc.getNetHandler().getNetworkManager().sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX + 1 + 0.14 * Math.random(), mc.thePlayer.posY + falldistance.getValue() + 0.15 * Math.random(), mc.thePlayer.posZ + 1 + 0.15 * Math.random(), false));
                 falling = true;
-        } else {
-            falling = false;
+            } else {
+                falling = false;
+            }
+            timer.reset();
         }
     }
 

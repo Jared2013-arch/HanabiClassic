@@ -17,8 +17,10 @@ public class MotionBoost extends Mod {
 
     @EventTarget
     public void onUpdate(EventUpdate e) {
-        if(mc.thePlayer != null && mc.thePlayer.hurtTime > 0){
-
+        if(mc.thePlayer != null && mc.thePlayer.hurtTime == 9){
+            mc.thePlayer.motionX *= x.getValue();
+            mc.thePlayer.motionY *= y.getValue();
+            mc.thePlayer.motionZ *= z.getValue();
         }
     }
 }
