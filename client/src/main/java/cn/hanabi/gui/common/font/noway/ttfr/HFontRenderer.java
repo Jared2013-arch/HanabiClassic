@@ -1,6 +1,8 @@
 package cn.hanabi.gui.common.font.noway.ttfr;
 
 import cn.hanabi.Wrapper;
+import cn.hanabi.utils.color.ColorUtils;
+import cn.hanabi.utils.render.RenderUtil;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
@@ -243,6 +245,11 @@ public class HFontRenderer implements IResourceManagerReloadListener {
 
     public int drawStringWithShadow(String p_drawStringWithShadow_1_, float v, float p_drawStringWithShadow_2_, float p_drawStringWithShadow_3_, int p_drawStringWithShadow_4_) {
         return this.drawString(p_drawStringWithShadow_1_, p_drawStringWithShadow_2_, p_drawStringWithShadow_3_, p_drawStringWithShadow_4_, true);
+    }
+
+    public int drawStringWithNewShadow(String text, float x, float y, int color) {
+        RenderUtil.drawImage(new ResourceLocation("Client/new/hud/arraylistshadow.png"), x - 10, y - 37 / 2f + 3, getStringWidth(text) + 18, 37, ColorUtils.reAlpha(-1, (int) (ColorUtils.intToColor(color).getAlpha() / 255f)));
+        return this.drawString(text, x, y, color, false);
     }
 
     public int drawString(String p_drawString_1_, float p_drawString_2_, float p_drawString_3_, int p_drawString_4_) {

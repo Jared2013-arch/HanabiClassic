@@ -375,23 +375,15 @@ public class HUD extends Mod {
             String modName = module.getName();
             String displayName = module.getDisplayName();
             float modwidth = module.posX;
-            GL11.glPushMatrix();
-            GlStateManager.enableBlend();
-            GlStateManager.disableAlpha();
-            GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-            mc.getTextureManager().bindTexture(new ResourceLocation("Client/new/hud/arraylistshadow.png"));
-            GlStateManager.color(1.0f, 1.0f, 1.0f, 0.7f);
-            Gui.drawModalRectWithCustomSizedTexture((int) (sr.getScaledWidth() - font.getStringWidth(modName + " " + (module.getDisplayName().equals("null") ? "" : displayName)) - 11), (int) (nextY - 10), (float) 0, (float) 0, font.getStringWidth(name) + 13, 37, font.getStringWidth(name) + 13, 37);
-            GlStateManager.disableBlend();
-            GlStateManager.enableAlpha();
-            GL11.glPopMatrix();
-            font.drawString(modName, sr.getScaledWidth() - modwidth - 11, nextY + module.posYRend + 1, color);
+            RenderUtil.drawRect(sr.getScaledWidth() - modwidth - 4, nextY + module.posYRend, sr.getScaledWidth(), nextY + module.posYRend + 12, new Color(0, 0, 0, 100).getRGB());
+            RenderUtil.drawRect(sr.getScaledWidth() - modwidth - 6, nextY + module.posYRend, sr.getScaledWidth() - modwidth - 4, nextY + module.posYRend + 12, new Color(62, 104, 255).getRGB());
+            font.drawString(modName + " " + ChatFormatting.GRAY + (displayName == null ? "" : displayName), sr.getScaledWidth() - modwidth - 2, nextY + module.posYRend + 1, color);
 
-            if (displayName != null)
-                font.drawString(displayName, sr.getScaledWidth() - 8 - modwidth + font.getStringWidth(modName),
-                        nextY + module.posYRend + 1, new Color(159, 159, 159).getRGB());
+//            if (displayName != null)
+//                font.drawString(displayName, sr.getScaledWidth() - 8 - modwidth + font.getStringWidth(modName),
+//                        nextY + module.posYRend + 1, new Color(159, 159, 159).getRGB());
 
-            nextY += font.FONT_HEIGHT;
+            nextY += 12;
         }
 
     }

@@ -61,7 +61,7 @@ public class AntiFall extends Mod {
                 if (isAboveVoid()) {
                     e.setCancelled(true);
                     packets.add(e.packet);
-                    if (timerUtil.hasReached(delay.getValue().intValue())) {
+                    if (timerUtil.delay(delay.getValue().intValue(),true)) {
                         mc.thePlayer.setPosition(last[0], last[1], last[2]);
                         if (extraPacket.getValue()) {
                             Wrapper.sendPacketNoEvent(new C03PacketPlayer.C04PacketPlayerPosition(
@@ -69,7 +69,6 @@ public class AntiFall extends Mod {
                         }
                         mc.thePlayer.motionY = 0;
                         packets.clear();
-                        timerUtil.reset();
                     }
                 } else {
                     last = new float[]{(float) mc.thePlayer.posX, (float) mc.thePlayer.posY, (float) mc.thePlayer.posZ};

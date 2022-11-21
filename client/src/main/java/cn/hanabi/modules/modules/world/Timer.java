@@ -23,8 +23,8 @@ public class Timer extends Mod {
     @EventTarget
     public void onPacket(EventPacket e) {
         if (e.getEventType().equals(EventType.SEND)) {
-            if (!timer.delay(50, true))
-                e.setCancelled(true);
+//            if (!timer.delay(50, true))
+//                e.setCancelled(true);
         }
     }
 
