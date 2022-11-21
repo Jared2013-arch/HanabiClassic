@@ -381,7 +381,7 @@ public class HUD extends Mod {
             GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
             mc.getTextureManager().bindTexture(new ResourceLocation("Client/new/hud/arraylistshadow.png"));
             GlStateManager.color(1.0f, 1.0f, 1.0f, 0.7f);
-            Gui.drawModalRectWithCustomSizedTexture((int) (sr.getScaledWidth() - font.getStringWidth(name) - 11), (int) (nextY - 10), (float) 0, (float) 0, font.getStringWidth(name) + 13, 37, font.getStringWidth(name) + 13, 37);
+            Gui.drawModalRectWithCustomSizedTexture((int) (sr.getScaledWidth() - font.getStringWidth(modName + " " + (module.getDisplayName().equals("null") ? "" : displayName)) - 11), (int) (nextY - 10), (float) 0, (float) 0, font.getStringWidth(name) + 13, 37, font.getStringWidth(name) + 13, 37);
             GlStateManager.disableBlend();
             GlStateManager.enableAlpha();
             GL11.glPopMatrix();

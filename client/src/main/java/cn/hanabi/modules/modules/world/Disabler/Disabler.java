@@ -1,47 +1,51 @@
 package cn.hanabi.modules.modules.world.Disabler;
 
-import cn.hanabi.events.*;
-import cn.hanabi.gui.classic.notifications.Notification;
+import cn.hanabi.Hanabi;
+import cn.hanabi.Wrapper;
+import cn.hanabi.events.EventPacket;
+import cn.hanabi.events.EventPreMotion;
+import cn.hanabi.events.EventWorldChange;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
-import cn.hanabi.utils.client.ClientUtil;
+import cn.hanabi.modules.ModManager;
+import cn.hanabi.modules.modules.world.Scaffold;
 import cn.hanabi.utils.math.TimeHelper;
-import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
+import com.darkmagician6.eventapi.types.EventType;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.network.play.client.*;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-
-import static cn.hanabi.Wrapper.sendPacketNoEvent;
+import java.util.Queue;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Disabler extends Mod {
-    //MODE
-    private final Value<String> DisablerMode = new Value<String>("Disabler", "DisableMode", 0)
-            .LoadValue(new String[]{"Hypixel", "VulcanCombat",});
 
-    private final Value<Double> delay = new Value<>("Disabler", "Delay", 400d, 0d, 2000d, 10);
-    //Vulcan
-    public static final LinkedList<Packet<INetHandlerPlayServer>> packett = new LinkedList<Packet<INetHandlerPlayServer>>();
-    public static final List<Packet<?>> packet = new ArrayList();
-    private double vulTickCounterUID = 0;
-    private TimeHelper lagTimer = new TimeHelper();
-    private TimeHelper hypTimer = new TimeHelper();
+    private final Queue<C0FPacketConfirmTransaction> confirmTransactionQueue = new ConcurrentLinkedQueue<>();
 
+    private final Queue<C00PacketKeepAlive> keepAliveQueue = new ConcurrentLinkedQueue<>();
+
+    private ArrayList<Packet> packets = new ArrayList<>();
+    private final CopyOnWriteArrayList<C0EPacketClickWindow> clickWindowPackets = new CopyOnWriteArrayList<>();
 
     private boolean disabled = false;
-    private LinkedList<Packet> confirmTransactionQueue = new LinkedList();
-    private LinkedList<Packet> keepAliveQueue = new LinkedList();
 
+    private int lastuid = 0;
 
-    //Hypixel
-    private LinkedList<Packet> packets = new LinkedList();
-    private int cout;
-    private int randomDelay = 4;
+    public boolean isCraftingItem = false;
+
+    private final TimeHelper lastRelease = new TimeHelper();
+
+    private int cancelledPackets = 0;
+
+    public TimeHelper timedOutTimer = new TimeHelper();
+
+    private float yawDiff = 0f;
+
+    private TimeHelper timer2 = new TimeHelper();
 
 
     public Disabler() {
@@ -53,131 +57,98 @@ public class Disabler extends Mod {
         super.onEnable();
     }
 
-    @Override
-    public void onDisable() {
-        super.onDisable();
-    }
-
     @EventTarget
-    public void onLoadWorld(EventWorldChange event) {
-        vulTickCounterUID = -25767;
-        cout = 0;
-        packets.clear();
+    private void LoadWorld(EventWorldChange e) {
+        timer2.reset();
+        confirmTransactionQueue.clear();
+        keepAliveQueue.clear();
         disabled = false;
-    }
-
-    public boolean isOnGround(double height) {
-        return !mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer,
-                mc.thePlayer.getEntityBoundingBox().offset(0.0D, -height, 0.0D)).isEmpty();
-    }
-
-    @EventTarget
-    public void onUpdate(EventPreMotion e) {
-        if (DisablerMode.isCurrentMode("VulcanCombat")) {
-            if (lagTimer.hasReached(5000L) && packett.size() > 4) {
-                lagTimer.reset();
-                while (packett.size() > 4) {
-                    sendPacketNoEvent(packett.poll());
-                }
-            }
-        }
+        isCraftingItem = false;
+        clickWindowPackets.clear();
+        lastuid = 0;
+        cancelledPackets = 0;
     }
 
     @EventTarget
-    public void onPre(EventPreMotion e) {
-        if (this.mc.isSingleplayer()) {
-            return;
-        }
-        if (DisablerMode.isCurrentMode("Hypixel")) {
-            if (hypTimer.isDelayComplete(delay.getValue()) && disabled) {
-                while (!packets.isEmpty()) {
-                    Packet remove = packets.remove(0);
-                    sendPacketNoEvent(remove);
-                }
-                hypTimer.reset();
-            }
-
-        }
-    }
-
-    @EventTarget
-    public void onMove(EventMove event) {
-        if (DisablerMode.isCurrentMode("Hypixel")) {
-
-        }
-    }
-
-    @EventTarget
-    public void onPacket(EventPacket event) {
-        final Packet p = event.getPacket();
-
-        if (this.mc.isSingleplayer()) {
-            return;
-        }
-        if (DisablerMode.isCurrentMode("VulcanCombat")) {
-            if (p instanceof C0FPacketConfirmTransaction) {
-                if (Math.abs((Math.abs((((C0FPacketConfirmTransaction) p).getUid())) - Math.abs(vulTickCounterUID))) <= 4) {
-                    vulTickCounterUID = ((C0FPacketConfirmTransaction) p).getUid();
-                    packett.add(p);
-                    event.setCancelled(true);
-                } else if (Math.abs((Math.abs((((C0FPacketConfirmTransaction) p).getUid())) - 25767)) <= 4) {
-                    vulTickCounterUID = ((C0FPacketConfirmTransaction) p).getUid();
+    private void onPacket(EventPacket e) {
+        if (e.getEventType().equals(EventType.SEND)) {
+            final Packet packet = e.getPacket();
+            if (disabled) {
+                if (packet instanceof C03PacketPlayer && !(packet instanceof C03PacketPlayer.C04PacketPlayerPosition || packet instanceof C03PacketPlayer.C05PacketPlayerLook || packet instanceof C03PacketPlayer.C06PacketPlayerPosLook) && !ModManager.getModule(Scaffold.class).isEnabled()) {
+                    cancelledPackets++;
+                    e.setCancelled(true);
                 }
             }
-        }
-
-        if (DisablerMode.isCurrentMode("Hypixel")) {
-            if (p instanceof C0FPacketConfirmTransaction) {
-                cout++;
-                if (((C0FPacketConfirmTransaction) p).getUid() < 0 && cout > 7) {
-                    if (!disabled) {
-                        ClientUtil.sendClientMessage("WatchDog: Disabled Hypixel", Notification.Type.SUCCESS);
-                        disabled = true;
-                    }
-                    packets.add(p);
-                    event.setCancelled(true);
-                }
-            }
-            if (p instanceof C00PacketKeepAlive) {
-                if (((C00PacketKeepAlive) p).getKey() >= 20) {
-                    packets.add(p);
-                    event.setCancelled(true);
-                }
-            }
-        }
-    }
-
-    public static double getRandom(double min, double max) {
-        if (min == max) {
-            return min;
-        } else if (min > max) {
-            final double d = min;
-            min = max;
-            max = d;
-        }
-        return ThreadLocalRandom.current().nextDouble(min, max);
-    }
-
-
-    //Bypass Timer
-//    private void doTimerDisabler(EventPacket e) {
-//        if (e.getPacket() instanceof C03PacketPlayer) {
-//            C03PacketPlayer c03PacketPlayer = (C03PacketPlayer) e.getPacket();
-//            if (!c03PacketPlayer.isMoving() && !mc.thePlayer.isUsingItem()) {
-//                e.setCancelled(true);
-//            }
-//            if (cancel) {
-//                if (!timer2.hasTimeElapsed(400, false)) {
-//                    if (!ModManager.getModule("Scaffold").isEnabled()) {
-//                        e.setCancelled(true);
-//                        packets.add(e.getPacket());
-//                    }
-//                } else {
-//                    packets.forEach(Wrapper::sendPacketNoEvent);
-//                    packets.clear();
-//                    cancel = false;
+//            if (ModManager.getModule("Speed").isEnabled()) {
+//                if (e.getPacket() instanceof C0CPacketInput) {
+//                    C0CPacketInput p = (C0CPacketInput) e.getPacket();
+//                    p.setStrafeSpeed(p.getStrafeSpeed() * 0.9999f);
+//                    e.packet = p;
 //                }
 //            }
-//        }
-//    }
+            if (packet instanceof C0FPacketConfirmTransaction) {
+                if (((C0FPacketConfirmTransaction) packet).getWindowId() == 0 && ((C0FPacketConfirmTransaction) packet).getUid() < 0 && ((C0FPacketConfirmTransaction) packet).getUid() != (-1)) {
+                    if (disabled) {
+                        cancelledPackets++;
+                        e.setCancelled(true);
+                    }
+                }
+            }
+            if (packet instanceof C0FPacketConfirmTransaction) {
+                processConfirmTransactionPacket(e);
+            } else if (packet instanceof C00PacketKeepAlive) {
+                processKeepAlivePacket(e);
+            }
+        }
+    }
+
+    @EventTarget
+    private void onUpdate(EventPreMotion e) {
+        if (mc.thePlayer.ticksExisted % 40 == 0) {
+            float rate = (cancelledPackets / 40f * 100);
+            cancelledPackets = 0;
+        }
+        setDisplayName(disabled ? "Active" : "Progressing");
+        if (disabled) {
+            if (confirmTransactionQueue.isEmpty()) {
+                lastRelease.reset();
+            } else {
+                if (confirmTransactionQueue.size() >= 7) {
+                    while (!keepAliveQueue.isEmpty())
+                        Wrapper.sendPacketNoEvent(keepAliveQueue.poll());
+                    while (!confirmTransactionQueue.isEmpty()) {
+                        Wrapper.sendPacketNoEvent(confirmTransactionQueue.poll());
+                    }
+                }
+            }
+        }
+    }
+
+    private void processConfirmTransactionPacket(EventPacket e) {
+        final Packet packet = e.getPacket();
+        final int preuid = lastuid - 1;
+        if (packet instanceof C0FPacketConfirmTransaction) {
+            if (((C0FPacketConfirmTransaction) packet).getWindowId() == 0 || ((C0FPacketConfirmTransaction) packet).getUid() < 0) {
+                if (((C0FPacketConfirmTransaction) packet).getUid() == preuid) {
+                    if (!disabled) {
+                        disabled = true;
+                    }
+                    confirmTransactionQueue.offer((C0FPacketConfirmTransaction) packet);
+                    e.setCancelled(true);
+                }
+                lastuid = ((C0FPacketConfirmTransaction) packet).getUid();
+            }
+        }
+    }
+
+
+    private void processKeepAlivePacket(EventPacket e) {
+        final Packet packet = e.getPacket();
+        if (packet instanceof C00PacketKeepAlive) {
+            if (disabled) {
+                keepAliveQueue.offer((C00PacketKeepAlive) packet);
+                e.setCancelled(true);
+            }
+        }
+    }
 }

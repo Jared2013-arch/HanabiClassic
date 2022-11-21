@@ -14,12 +14,15 @@ import cn.hanabi.utils.rotation.RotationUtil;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockSnow;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -41,6 +44,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static cn.hanabi.Wrapper.sendPacketNoEvent;
+import static cn.hanabi.utils.game.PlayerUtil.isAirUnder;
 
 public class Scaffold extends Mod {
     private float saveYaw, savePitch;
@@ -64,7 +68,7 @@ public class Scaffold extends Mod {
     private final Value<Boolean> sprint = new Value<>("Scaffold", "Sprint", true);
     private final Value<Boolean> sneak = new Value<>("Scaffold", "Sneak", true);
     private final Value<Boolean> jump = new Value<>("Scaffold", "AutoJump", true);
-    private final Value<Double> speedlimit = new Value<>("Scaffold", "Move Motify", 1.0, 0.6, 1.2, 0.1);
+    private final Value<Double> speedlimit = new Value<>("Scaffold", "Move Motify", 1.0, 0.6, 1.2, 0.01);
 
     //RAYCAST
     private final Value<Boolean> rayCast = new Value<>("Scaffold", "Ray Cast", true);
@@ -239,22 +243,37 @@ public class Scaffold extends Mod {
                 break;
             }
             case "Hypixel": {
-//                float rotationYaw = mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw;
-//                if (this.data.face.getName().equalsIgnoreCase("north"))
-//                    rotationYaw = -400;
-//
-//                if (this.data.face.getName().equalsIgnoreCase("south"))
-//                    rotationYaw = 150;
-//
-//                if (this.data.face.getName().equalsIgnoreCase("west"))
-//                    rotationYaw = -150;
-//
-//                if (this.data.face.getName().equalsIgnoreCase("east"))
-//                    rotationYaw = 150;
-
                 if (!mc.gameSettings.keyBindJump.isKeyDown()) {
-                    event.setPitch(angles[1]);
-                    event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
+                    float rot = 0.0f;
+                    if (mc.thePlayer.movementInput.moveForward > 0.0f) {
+                        rot = 180.0f;
+                        if (mc.thePlayer.movementInput.moveStrafe > 0.0f) {
+                            rot = -120.0f;
+                        } else if (mc.thePlayer.movementInput.moveStrafe < 0.0f) {
+                            rot = 120.0f;
+                        }
+                    } else if (mc.thePlayer.movementInput.moveForward == 0.0f) {
+                        rot = 180.0f;
+                        if (mc.thePlayer.movementInput.moveStrafe > 0.0f) {
+                            rot = -90.0f;
+                        } else if (mc.thePlayer.movementInput.moveStrafe < 0.0f) {
+                            rot = 90.0f;
+                        }
+                    } else if (mc.thePlayer.movementInput.moveForward < 0.0f) {
+                        if (mc.thePlayer.movementInput.moveStrafe > 0.0f) {
+                            rot = -45.0f;
+                        } else if (mc.thePlayer.movementInput.moveStrafe < 0.0f) {
+                            rot = 45.0f;
+                        }
+                    }
+                    if (isAirUnder(mc.thePlayer) && mc.gameSettings.keyBindJump.isKeyDown()
+                            && !PlayerUtil.isMoving() && towerMode.getValue().equals("Hypixel")) {
+                        rot = 180.0f;
+                    }
+
+                    event.setYaw(MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw) - rot);
+                    event.setPitch(87.5f);
+//                    event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
                 } else {
                     event.setYaw(mc.thePlayer.rotationYawHead = mc.thePlayer.renderYawOffset = curYaw);
                     event.setPitch(angles[1]);
@@ -295,6 +314,7 @@ public class Scaffold extends Mod {
                 // Calculate rotations to hit vec
                 angles = RotationUtil.getRotations(new float[]{((IEntityPlayerSP) mc.thePlayer).getLastReportedYaw(), ((IEntityPlayerSP) mc.thePlayer).getLastReportedPitch()},
                         15.5f, RotationUtil.getHitOrigin(mc.thePlayer), data.hitVec);
+                curYaw = getRotByFaceFlick(0);
             }
         }
 
@@ -322,24 +342,28 @@ public class Scaffold extends Mod {
         switch (placeMode.getModeAt(placeMode.getCurrentMode())) {
             case "Pre": {
                 if (timeHelper.isDelayComplete(delay.getValue().longValue()) && (ray != null && ray.getBlockPos().equals(blockPos) || !rayCast.getValue())) {
-                    Vec3 hitVec = hypixel.getValue() ? new Vec3(rotate.getX(), rotate.getY(), rotate.getZ()) : ray != null ? ray.hitVec : new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                    if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemStack, blockPos, enumFacing, hitVec)) {
-                        sneakCount++;
-                        slowTicks = 3;
-                        if (sneakCount > sneakAfter.getValue())
-                            sneakCount = 0;
-
-                        if (!noSwing.getValue())
-                            mc.thePlayer.swingItem();
-                        else
-                            mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
-
-                        timeHelper.reset();
-                    }
+                    place(itemStack, blockPos, ray);
 
                 }
                 break;
             }
+        }
+    }
+
+    private void place(ItemStack itemStack, BlockPos blockPos, MovingObjectPosition ray) {
+        Vec3 hitVec = hypixel.getValue() ? new Vec3(rotate.getX(), rotate.getY(), rotate.getZ()) : ray != null ? ray.hitVec : new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+        if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemStack, blockPos, enumFacing, hitVec)) {
+            sneakCount++;
+            slowTicks = 3;
+            if (sneakCount > sneakAfter.getValue())
+                sneakCount = 0;
+
+            if (!noSwing.getValue())
+                mc.thePlayer.swingItem();
+            else
+                mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
+
+            timeHelper.reset();
         }
     }
 
@@ -452,7 +476,6 @@ public class Scaffold extends Mod {
                 }
 
 
-
             if (sneak.getValue() && sneakCount >= sneakAfter.getValue())
                 if (packetSneak.getValue()) {
                     mc.getNetHandler().addToSendQueue(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.START_SNEAKING));
@@ -470,8 +493,8 @@ public class Scaffold extends Mod {
 //            mc.thePlayer.rotationPitch = rotation[1];
             float[] rotation = hypixel.getValue() ? getRotation(rotate, curYaw, curPitch, turnspeed.getValue().floatValue() * 30)
                     : faceBlock(blockPos, (float) (mc.theWorld.getBlockState(blockPos).getBlock().getBlockBoundsMaxY() - mc.theWorld.getBlockState(blockPos).getBlock().getBlockBoundsMinY()) + 0.5F, curYaw, curPitch, turnspeed.getValue().floatValue() * 30);
-
-            curYaw = rotation[0];
+//            curYaw = rotation[0];
+            curYaw = getRotByFaceFlick(0);
             curPitch = rotation[1];
 
             MovingObjectPosition ray = PlayerUtil.rayCastedBlock(curYaw, curPitch);
@@ -483,20 +506,7 @@ public class Scaffold extends Mod {
             switch (placeMode.getModeAt(placeMode.getCurrentMode())) {
                 case "Post": {
                     if (timeHelper.isDelayComplete(delay.getValue().longValue()) && (ray != null && ray.getBlockPos().equals(blockPos) || !rayCast.getValue())) {
-                        Vec3 hitVec = hypixel.getValue() ? new Vec3(rotate.getX(), rotate.getY(), rotate.getZ()) : ray != null ? ray.hitVec : new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                        if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemStack, blockPos, enumFacing, hitVec)) {
-                            sneakCount++;
-                            slowTicks = 3;
-                            if (sneakCount > sneakAfter.getValue())
-                                sneakCount = 0;
-
-                            if (!noSwing.getValue())
-                                mc.thePlayer.swingItem();
-                            else
-                                mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
-
-                            timeHelper.reset();
-                        }
+                        place(itemStack, blockPos, ray);
 
                     } else {
                         if (sneak.getValue())
@@ -541,7 +551,26 @@ public class Scaffold extends Mod {
             }
         }
     }
+    private float getRotByFaceFlick(float rotationYaw) {
+        if(data == null) return 0;
 
+        // TODO: THESE ARE NONE POSSIBLE ROTATIONS / THEY BAN ON ANTICHEATS -- FIX THEM
+
+        if (data.face.getName().equalsIgnoreCase("north"))
+            rotationYaw = 22.8293f;
+
+        if (this.data.face.getName().equalsIgnoreCase("south"))
+            rotationYaw = 201.7392F;
+
+        if (this.data.face.getName().equalsIgnoreCase("west"))
+            rotationYaw = -102.63821F;
+
+        if (this.data.face.getName().equalsIgnoreCase("east")) {
+            rotationYaw = 101.7283F;
+        }
+
+        return rotationYaw;
+    }
     @Override
     public void onEnable() {
         sneakCount = 0;
@@ -728,41 +757,44 @@ public class Scaffold extends Mod {
     }
 
     private BlockData getBlockData(final BlockPos pos) {
-        final EnumFacing[] facings = FACINGS;
+        final EnumFacing[] invert = {EnumFacing.UP, EnumFacing.DOWN, EnumFacing.SOUTH, EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.WEST};
+        double yValue = 0;
+        if (Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.getKeyCode()) && !mc.gameSettings.keyBindJump.isKeyDown() && mc.thePlayer.onGround) {
+            KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), false);
+            yValue -= 1;
+        }
+        BlockPos playerpos = new BlockPos(mc.thePlayer.getPositionVector()).offset(EnumFacing.DOWN).add(0, yValue, 0);
 
-        // 1 of the 4 directions around player
-        for (EnumFacing facing : facings) {
-            final BlockPos blockPos = pos.add(facing.getOpposite().getDirectionVec());
-            if (PlayerUtil.validateBlock(mc.theWorld.getBlockState(blockPos).getBlock(), PlayerUtil.BlockAction.PLACE_ON)) {
-                final BlockData data = new BlockData(blockPos, facing);
-                if (validateBlockRange(data))
-                    return data;
+        //todo:sameY
+//        if (sameY && ModuleManager.modules.get("Speed").stage || sprintValue.getCurrent().equalsIgnoreCase("Hypixel") && !mc.gameSettings.keyBindJump.isKeyDown()) {
+//            playerpos = new BlockPos(new Vec3(mc.thePlayer.getPositionVector().xCoord, this.startY, mc.thePlayer.getPositionVector().zCoord)).offset(EnumFacing.DOWN);
+//        } else {
+//            this.startY = mc.thePlayer.posY;
+//        }
+        EnumFacing[] facingVals = EnumFacing.values();
+        for (EnumFacing facingVal : facingVals) {
+            if (mc.theWorld.getBlockState(playerpos.offset(facingVal)).getBlock().getMaterial() != Material.air) {
+                return new BlockData(playerpos.offset(facingVal), invert[facingVal.ordinal()]);
             }
         }
+        final BlockPos[] addons = {
+                new BlockPos(-1, 0, 0),
+                new BlockPos(1, 0, 0),
+                new BlockPos(0, 0, -1),
+                new BlockPos(0, 0, 1)
+        };
+        for (int length2 = addons.length, j = 0; j < length2; ++j) {
+            final BlockPos offsetPos = playerpos.add(addons[j].getX(), 0, addons[j].getZ());
+            if (!(mc.theWorld.getBlockState(offsetPos).getBlock() instanceof BlockAir)) continue;
 
-        // 2 Blocks Under e.g. When jumping
-        final BlockPos posBelow = pos.add(0, -1, 0);
-        if (PlayerUtil.validateBlock(mc.theWorld.getBlockState(posBelow).getBlock(), PlayerUtil.BlockAction.PLACE_ON)) {
-            final BlockData data = new BlockData(posBelow, EnumFacing.UP);
-            if (validateBlockRange(data))
-                return data;
-        }
+            for (int k = 0; k < EnumFacing.values().length; ++k) {
+                if (mc.theWorld.getBlockState(offsetPos.offset(EnumFacing.values()[k])).getBlock().getMaterial() == Material.air)
+                    continue;
 
-        // 2 Block extension & diagonal
-        for (EnumFacing facing : facings) {
-            final BlockPos blockPos = pos.add(facing.getOpposite().getDirectionVec());
-            for (EnumFacing facing1 : facings) {
-                final BlockPos blockPos1 = blockPos.add(facing1.getOpposite().getDirectionVec());
-                if (PlayerUtil.validateBlock(mc.theWorld.getBlockState(blockPos1).getBlock(), PlayerUtil.BlockAction.PLACE_ON)) {
-                    final BlockData data = new BlockData(blockPos1, facing1);
-                    if (validateBlockRange(data))
-                        return data;
-                }
+                return new BlockData(offsetPos.offset(EnumFacing.values()[k]), invert[EnumFacing.values()[k].ordinal()]);
             }
         }
-
         return null;
-
     }
 
     private boolean validateBlockRange(final BlockData data) {

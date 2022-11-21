@@ -568,15 +568,15 @@ public class KillAura extends Mod {
     public void onPost(EventPostMotion event) {
         boolean toggled = ModManager.getModule("Scaffold").isEnabled();
 
-        if (target != null) {
-            if (mc.thePlayer.swingProgressInt == 1 && !this.release && this.block.getValue()) {
-                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                this.release = true;
-            } else if (mc.thePlayer.swingProgressInt == 2 && this.release && this.block.getValue() && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemSword) {
-                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-                this.release = false;
-            }
-        }
+//        if (target != null) {
+//            if (mc.thePlayer.swingProgressInt == 1 && !this.release && this.block.getValue()) {
+//                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+//                this.release = true;
+//            } else if (mc.thePlayer.swingProgressInt == 2 && this.release && this.block.getValue() && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemSword) {
+//                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+//                this.release = false;
+//            }
+//        }
         if (target == null && !release && mc.thePlayer.ticksExisted % 2 == 0) {
             mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
             unBlock(true);
@@ -628,7 +628,7 @@ public class KillAura extends Mod {
                     && (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword
                     && autoBlock.getValueState() || mc.thePlayer.isBlocking())
                     && !isBlocking) { // 格挡
-                if (new Random().nextInt(100) <= blockRate.getValue() && (!hurtBlock.getValue() || mc.thePlayer.hurtResistantTime > 0)) { //HurtTime Check && BlockRate
+                if (new Random().nextInt(100) <= blockRate.getValue() && (!hurtBlock.getValue() || mc.thePlayer.hurtResistantTime > 0)) {
                     if (!blockMode.isCurrentMode("Vanilla")) {
                         doBlock(true);
                     }
@@ -752,10 +752,11 @@ public class KillAura extends Mod {
 
     private void doBlock(boolean setItemUseInCount) {
         float[] neededRotations1 = getNeededRotations(target, mc.thePlayer);
-        mc.thePlayer.setItemInUse(mc.thePlayer.getCurrentEquippedItem(), mc.thePlayer.getCurrentEquippedItem().getMaxItemUseDuration());
         if (((Math.abs(neededRotations1[0] - target.rotationYaw % 360) < hoverYaw.getValue() || Math.abs(neededRotations1[1] - target.rotationPitch % 360) < hoverPitch.getValue())) || !onlyOnAim.getValue()) {
             if (target.getDistanceToEntity(mc.thePlayer) < blockrange.getValueState()) {
+                Wrapper.sendPacketNoEvent(new C08PacketPlayerBlockPlacement(new BlockPos(-1,-1,-1),255, mc.thePlayer.inventory.getCurrentItem(), 0f, 0f, 0f));
                 ((IKeyBinding) mc.gameSettings.keyBindUseItem).setPress(true);
+                mc.thePlayer.setItemInUse(mc.thePlayer.getCurrentEquippedItem(), mc.thePlayer.getCurrentEquippedItem().getMaxItemUseDuration());
                 isBlocking = true;
             }
         }
@@ -763,7 +764,6 @@ public class KillAura extends Mod {
 
     private void unBlock(boolean setItemUseInCount) {
         mc.thePlayer.setItemInUse(mc.thePlayer.getCurrentEquippedItem(), 0);
-
         ((IKeyBinding) mc.gameSettings.keyBindUseItem).setPress(false);
         if (target == null)
             mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
@@ -1037,7 +1037,6 @@ public class KillAura extends Mod {
     }
 
     //Render Part
-
     @EventTarget
     public void targetHud(EventRender2D event) {
         if (targetHUD.getValueState()) {

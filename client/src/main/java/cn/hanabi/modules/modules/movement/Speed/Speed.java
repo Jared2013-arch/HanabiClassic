@@ -126,7 +126,7 @@ public class Speed extends Mod {
 
     @EventTarget
     public void onStrafe(EventStrafe em) {
-        if ((!Speed.dmg.getValue() || mc.thePlayer.hurtTime != 0))
+        if ((!Speed.dmg.getValue() || mc.thePlayer.hurtTime != 0) && !mc.thePlayer.onGround)
             return;
         if (mode.isCurrentMode("Hypixel")) {
             modeGlobalHypixel.onStrafe(em);

@@ -141,6 +141,7 @@ public class Speed_Hypixel {
 
     public void onPost(EventPostMotion e) {
         if(mc.thePlayer.onGround && isMoving2()){
+
             mc.thePlayer.jump();
         }
     }

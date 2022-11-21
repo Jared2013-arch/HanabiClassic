@@ -139,7 +139,7 @@ public class InvCleaner extends Mod {
         return result;
     }
 
-    private static boolean isBestTool(ItemStack input) {
+    public static boolean isBestTool(ItemStack input) {
         for (ItemStack itemStack : InvUtils.getAllInventoryContent()) {
             if (itemStack == null)
                 continue;
@@ -165,7 +165,7 @@ public class InvCleaner extends Mod {
         return true;
     }
 
-    private static boolean isBestSword(ItemStack input) {
+    public static boolean isBestSword(ItemStack input) {
         for (ItemStack itemStack : InvUtils.getAllInventoryContent()) {
             if (itemStack == null)
                 continue;
@@ -182,7 +182,7 @@ public class InvCleaner extends Mod {
         return true;
     }
 
-    private static boolean isBestBow(ItemStack input) {
+    public static boolean isBestBow(ItemStack input) {
         for (ItemStack itemStack : InvUtils.getAllInventoryContent()) {
             if (itemStack == null)
                 continue;
@@ -199,7 +199,7 @@ public class InvCleaner extends Mod {
         return true;
     }
 
-    private static boolean isBestArmor(ItemStack input) {
+    public static boolean isBestArmor(ItemStack input) {
         for (ItemStack itemStack : InvUtils.getAllInventoryContent()) {
             if (itemStack == null||!(itemStack.getItem() instanceof ItemArmor))
                 continue;
