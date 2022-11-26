@@ -13,6 +13,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import org.apache.commons.codec.Charsets;
 
 @Native
 public class IRCClient {
@@ -38,11 +39,9 @@ public class IRCClient {
             @Override
             protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
                 nioSocketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.wrappedBuffer(delimiter.getBytes())));
-//                nioSocketChannel.pipeline().addLast(new DESDecoder());
                 nioSocketChannel.pipeline().addLast("decoder", new StringDecoder());
                 nioSocketChannel.pipeline().addLast("encoder", new StringEncoder());
                 nioSocketChannel.pipeline().addLast(new DelimiterEncoder(delimiter));
-//                nioSocketChannel.pipeline().addLast(new DESEncoder());
                 nioSocketChannel.pipeline().addLast(new ClientHandler());
             }
         });

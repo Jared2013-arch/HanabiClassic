@@ -35,7 +35,9 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
     public void channelUnregistered(ChannelHandlerContext ctx) {
         if (rec < 30) {
             Hanabi.INSTANCE.loggedIn = false;
-            Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(Minecraft.getMinecraft().currentScreen));
+            if(!(Minecraft.getMinecraft().currentScreen instanceof GuiLogin)) {
+                Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(Minecraft.getMinecraft().currentScreen));
+            }
             Hanabi.INSTANCE.println("IRC Reconnecting...");
             PlayerUtil.tellPlayer("IRC Reconnecting...");
             Client.client.reconnect();
@@ -64,12 +66,13 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
                         Hanabi.INSTANCE.moduleManager = null;
                         Hanabi.INSTANCE = null;
                     }
-                    ctx.writeAndFlush(PacketUtil.pack(new PacketHeartBeat(String.valueOf(System.currentTimeMillis()))));
+                    ctx.writeAndFlush(PacketUtil.pack(new PacketHeartBeat(Minecraft.getMinecraft().getSession() != null ? Minecraft.getMinecraft().getSession().getUsername() : "empty")));
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
+
                 }
 
             }
