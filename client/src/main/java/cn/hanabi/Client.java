@@ -3,7 +3,6 @@ package cn.hanabi;
 import cn.hanabi.events.EventLoop;
 import cn.hanabi.events.EventWorldChange;
 import cn.hanabi.gui.common.font.noway.ttfr.FontLoaders;
-import cn.hanabi.irc.IRCClient;
 import com.darkmagician6.eventapi.EventManager;
 import com.eskid.annotation.Native;
 import net.minecraft.client.Minecraft;
@@ -24,7 +23,6 @@ public class Client {
     public static float pitch;
     public static boolean sleep = false;
 
-    public static IRCClient client;
 
 
     public static void onGameLoop() {
@@ -49,8 +47,6 @@ public class Client {
     }
 
     public static void makeSense() {
-        client = new IRCClient();
-        client.connect();
         Display.setTitle(Hanabi.CLIENT_NAME + " " + Hanabi.CLIENT_VERSION);
         Hanabi.INSTANCE.fontManager = new FontLoaders();
 

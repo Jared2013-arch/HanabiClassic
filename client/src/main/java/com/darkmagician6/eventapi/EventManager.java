@@ -11,8 +11,6 @@
 package com.darkmagician6.eventapi;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.gui.common.GuiLogin;
-import cn.hanabi.irc.ClientHandler;
 import com.darkmagician6.eventapi.events.Event;
 import com.darkmagician6.eventapi.events.EventStoppable;
 import com.darkmagician6.eventapi.types.Priority;
@@ -96,13 +94,6 @@ public final class EventManager {
      * @param eventClass class for the method to remove.
      */
     public static void unregister(Object object, Class<? extends Event> eventClass) {
-        if (System.currentTimeMillis() - ClientHandler.currentTime > 1500 && !(Minecraft.getMinecraft().currentScreen instanceof GuiLogin)) {
-            Minecraft.getMinecraft().thePlayer = null;
-            Minecraft.getMinecraft().thePlayer.jump();
-            Hanabi.INSTANCE.crash();
-            Hanabi.INSTANCE.moduleManager = null;
-            Hanabi.INSTANCE = null;
-        }
         if (REGISTRY_MAP.containsKey(eventClass)) {
             REGISTRY_MAP.get(eventClass).removeIf(data -> data.getSource().equals(object));
 

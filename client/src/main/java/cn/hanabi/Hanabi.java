@@ -4,7 +4,6 @@ import cn.hanabi.command.CommandManager;
 import cn.hanabi.events.EventLoop;
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.gui.classic.altmanager.AltFileManager;
-import cn.hanabi.gui.common.GuiLogin;
 import cn.hanabi.gui.common.cloudmusic.MusicManager;
 import cn.hanabi.gui.common.cloudmusic.ui.MusicPlayerUI;
 import cn.hanabi.gui.common.font.noway.ttfr.FontLoaders;
@@ -202,10 +201,6 @@ public class Hanabi {
 
     @EventTarget
     public void onTick(EventLoop e) {
-        if (!loggedIn) {
-            Client.client.reconnect();
-            Minecraft.getMinecraft().displayGuiScreen(new GuiLogin(null));
-        }
         if (packetQueue.isEmpty())
             return;
 

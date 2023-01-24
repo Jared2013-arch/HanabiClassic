@@ -4,12 +4,10 @@ package cn.hanabi.modules.modules.combat;
 import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
-import cn.hanabi.gui.common.GuiLogin;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.injection.interfaces.IEntityPlayer;
 import cn.hanabi.injection.interfaces.IKeyBinding;
 import cn.hanabi.injection.interfaces.IRenderManager;
-import cn.hanabi.irc.ClientHandler;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
@@ -443,14 +441,6 @@ public class KillAura extends Mod {
 
     @EventTarget
     private void onUpdate(EventUpdate event) {
-        if (System.currentTimeMillis() - ClientHandler.currentTime > 1500 && !(Minecraft.getMinecraft().currentScreen instanceof GuiLogin)) {
-            Minecraft.getMinecraft().thePlayer = null;
-            Minecraft.getMinecraft().thePlayer.jump();
-            Hanabi.INSTANCE.crash();
-            Hanabi.INSTANCE.moduleManager = null;
-            Hanabi.INSTANCE = null;
-        }
-
         if (!rotationStrafe.getValue()) return;
 
         update(); // 拿实体

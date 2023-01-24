@@ -3,7 +3,6 @@ package me.yarukon.mainmenu;
 import cn.hanabi.Client;
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.classic.altmanager.GuiAltManager;
-import cn.hanabi.irc.IRCClient;
 import cn.hanabi.utils.render.ParticleUtils;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.fontmanager.HanabiFonts;
@@ -81,11 +80,6 @@ public class GuiCustomMainMenu extends GuiScreen {
         Hanabi.INSTANCE.fontManager.icon130.drawString(HanabiFonts.ICON_HANABI_LOGO, width / 2f - (50 * (butt.size() / 2f)) + 10, this.height / 2f + 5, 0xff2f64fd);
         Hanabi.INSTANCE.fontManager.usans25.drawString("Hanabi client", width / 2f - (50 * (butt.size() / 2f)) + 80, this.height / 2f - 30, 0xffffffff);
         Hanabi.INSTANCE.fontManager.usans20.drawString("Build " + Hanabi.CLIENT_VERSION, width / 2f - (50 * (butt.size() / 2f)) + 80, this.height / 2f - 10, 0xffffffff);
-
-        String s = "Logged in as " + IRCClient.username;
-        Hanabi.INSTANCE.fontManager.usans20.drawString(s, width / 2f + (50 * (butt.size() / 2f)) - Hanabi.INSTANCE.fontManager.usans20.getStringWidth(s) - 10, this.height / 2f + 5, 0xffffffff);
-
-
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
