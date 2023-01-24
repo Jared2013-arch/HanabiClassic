@@ -45,10 +45,6 @@ public final class GuiAltLogin extends GuiScreen {
                     }
                     break;
                 }
-                case 3: {
-                  Hanabi.INSTANCE.mslogin = !Hanabi.INSTANCE.mslogin;
-                    mc.displayGuiScreen(new GuiAltLogin(new GuiAltManager()));
-                }
             }
         } catch (Throwable e) {
             e.printStackTrace();

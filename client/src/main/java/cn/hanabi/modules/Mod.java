@@ -3,7 +3,6 @@ package cn.hanabi.modules;
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
 import cn.hanabi.gui.classic.notifications.Notification;
-import cn.hanabi.gui.newStyle.notification.CenterNotification;
 import cn.hanabi.modules.modules.render.HUD;
 import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.client.SoundFxPlayer;

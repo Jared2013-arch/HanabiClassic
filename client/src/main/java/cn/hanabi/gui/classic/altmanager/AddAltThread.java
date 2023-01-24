@@ -22,7 +22,7 @@ public class AddAltThread extends Thread {
         GuiAltManager.setStatus(EnumChatFormatting.GRAY + "Idle...");
     }
 
-    private void checkAndAddAlt(final String username, final String password, final boolean mslogin) {
+    private void checkAndAddAlt(final String username, final String password) {
         final YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY, "");
         final YggdrasilUserAuthentication auth = (YggdrasilUserAuthentication) service
                 .createUserAuthentication(Agent.MINECRAFT);
@@ -31,26 +31,15 @@ public class AddAltThread extends Thread {
         auth.setPassword(password);
 
         String name;
+        final MinecraftToken minecraftToken = minecraftAuthenticator.loginWithXbox(username, password);
+        final MinecraftProfile minecraftProfile = minecraftAuthenticator.checkOwnership(minecraftToken);
+        name = minecraftProfile.getUsername();
+        AltManager.registry.add(new Alt(username, password, name));
         try {
-            if (mslogin) {
-                final MinecraftToken minecraftToken = minecraftAuthenticator.loginWithXbox(username, password);
-                final MinecraftProfile minecraftProfile = minecraftAuthenticator.checkOwnership(minecraftToken);
-                name = minecraftProfile.getUsername();
-                name = "";
-            } else {
-                auth.logIn();
-                name = auth.getSelectedProfile().getName();
-            }
-            AltManager.registry.add(new Alt(username, password, name));
-            try {
-                Hanabi.INSTANCE.altFileMgr.getFile(Alts.class).saveFile();
-            } catch (Exception ignored) {
-            }
-            GuiAltManager.setStatus("Alt added. (" + username + ")");
-        } catch (AuthenticationException e) {
-            GuiAltManager.setStatus(EnumChatFormatting.RED + "Alt failed!");
-            e.printStackTrace();
+            Hanabi.INSTANCE.altFileMgr.getFile(Alts.class).saveFile();
+        } catch (Exception ignored) {
         }
+        GuiAltManager.setStatus("Alt added. (" + username + ")");
     }
 
     @Override
@@ -62,6 +51,6 @@ public class AddAltThread extends Thread {
             return;
         }
         GuiAltManager.setStatus(EnumChatFormatting.AQUA + "Trying alt...");
-        this.checkAndAddAlt(this.username, this.password, Hanabi.INSTANCE.mslogin);
+        this.checkAndAddAlt(this.username, this.password);
     }
 }

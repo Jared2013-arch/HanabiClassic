@@ -27,29 +27,18 @@ public final class AltLoginThread extends Thread {
         this.status = EnumChatFormatting.GRAY + "Waiting...";
     }
 
-    private Session createSession(final String username, final String password, final boolean mslogin) {
+    private Session createSession(final String username, final String password) {
         final YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY, "");
         final YggdrasilUserAuthentication auth = (YggdrasilUserAuthentication) service.createUserAuthentication(Agent.MINECRAFT);
         final MinecraftAuthenticator minecraftAuthenticator = new MinecraftAuthenticator();
-
         auth.setUsername(username);
         auth.setPassword(password);
-
-        if (mslogin) {
-            try {
-                final MinecraftToken minecraftToken = minecraftAuthenticator.loginWithXbox(username, password);
-                final MinecraftProfile minecraftProfile = minecraftAuthenticator.checkOwnership(minecraftToken);
-                return new Session(minecraftProfile.getUsername(), minecraftProfile.getUuid().toString(), minecraftToken.getAccessToken(), "mojang");
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
         try {
-            auth.logIn();
-            return new Session(auth.getSelectedProfile().getName(), auth.getSelectedProfile().getId().toString(), auth.getAuthenticatedToken(), "mojang");
-        } catch (AuthenticationException localAuthenticationException) {
-            localAuthenticationException.printStackTrace();
+            final MinecraftToken minecraftToken = minecraftAuthenticator.loginWithXbox(username, password);
+            final MinecraftProfile minecraftProfile = minecraftAuthenticator.checkOwnership(minecraftToken);
+            return new Session(minecraftProfile.getUsername(), minecraftProfile.getUuid().toString(), minecraftToken.getAccessToken(), "mojang");
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -74,7 +63,7 @@ public final class AltLoginThread extends Thread {
             return;
         }
         this.status = EnumChatFormatting.AQUA + "Logging in...";
-        final Session auth = this.createSession(alt.getUsername(), alt.getPassword(), (Hanabi.INSTANCE.mslogin));
+        final Session auth = this.createSession(alt.getUsername(), alt.getPassword());
         if (auth == null) {
             this.status = EnumChatFormatting.RED + "Login failed!";
         } else {

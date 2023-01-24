@@ -161,11 +161,6 @@ public class HUD extends Mod {
 
     @EventTarget(Priority.LOWEST)
     private void render2D(EventRender2D event) {
-        if (Theme.isCurrentMode("3.x")) {
-            Hanabi.INSTANCE.newStyle = false;
-        } else {
-            Hanabi.INSTANCE.newStyle = true;
-        }
         ScaledResolution sr = new ScaledResolution(mc);
         float width = sr.getScaledWidth();
         float height = sr.getScaledHeight();
@@ -197,9 +192,6 @@ public class HUD extends Mod {
         }
 
         if (arraylist.getValueState()) {
-            if (Hanabi.INSTANCE.newStyle)
-                renderNewArray(sr);
-            else
                 renderClassicArray(sr);
         }
 
@@ -211,45 +203,14 @@ public class HUD extends Mod {
         }
 
         if (music.getValueState())
-            if (Hanabi.INSTANCE.newStyle) {
-                MusicOverlayRenderer.INSTANCE.renderNewOverlay();
-            } else {
+
                 MusicOverlayRenderer.INSTANCE.renderOverlay();
-            }
+
 
         if (logo.getValueState()) {
-            if (Hanabi.INSTANCE.newStyle) {
-                GL11.glPushMatrix();
-                GlStateManager.enableBlend();
-                GlStateManager.disableAlpha();
-                GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-                mc.getTextureManager().bindTexture(new ResourceLocation("Client/logo128.png"));
-                Gui.drawModalRectWithCustomSizedTexture(20, 20, (float) 0, (float) 0, 128 / 2, 128 / 2, 128 / 2, 128 / 2);
-                GlStateManager.disableBlend();
-                GlStateManager.enableAlpha();
-                GL11.glPopMatrix();
-            } else {
                 Hanabi.INSTANCE.fontManager.icon130.drawStringWithShadow(HanabiFonts.ICON_HANABI_LOGO, 15, 60, array.isCurrentMode("Rainbow") ? new Color(47, 100, 253).getRGB() : design.getColor(), 120);
-            }
         }
 
-        if (posDisplay.getValueState()) {
-            if (Hanabi.INSTANCE.newStyle) {
-                String pos = "";
-                if (mc.thePlayer != null) {
-                    BlockPos blockPos = mc.thePlayer.getPosition();
-                    pos = "X:" + blockPos.getX() + "   Y:" + blockPos.getY() + "   Z:" + blockPos.getZ();
-
-                    Hanabi.INSTANCE.fontManager.wqy18.drawCenteredString(pos, 4, sr.getScaledWidth() - 16, new Color(255, 255, 255, 180).getRGB());
-                } else {
-                    if (mc.thePlayer != null) {
-                        BlockPos blockPos = mc.thePlayer.getPosition();
-                        pos = "X:" + blockPos.getX() + "   Y:" + blockPos.getY() + "   Z:" + blockPos.getZ();
-                        Hanabi.INSTANCE.fontManager.wqy18.drawCenteredString(pos, sr.getScaledWidth() / 2f, 50, new Color(255, 255, 255, 180).getRGB());
-                    }
-                }
-            }
-        }
         if (hotbar.getValueState() && mc.getRenderViewEntity() instanceof EntityPlayer && !mc.gameSettings.hideGUI) {
             HFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
 
@@ -259,10 +220,6 @@ public class HUD extends Mod {
             RenderUtil.drawRect(sr.getScaledWidth() / 2 - 100, sr.getScaledHeight() + 230, sr.getScaledWidth() / 2 + 100, sr.getScaledHeight() + 250, new Color(0, 0, 0).getRGB());
 
             long ping = (mc.getCurrentServerData() != null) ? mc.getCurrentServerData().pingToServer : -1;
-
-            if (!Hanabi.INSTANCE.newStyle) {
-                font.drawString("PING:" + ((ping <= 0) ? "N/A" : ping) + "ms     FPS:" + Minecraft.getDebugFPS(), 16f, height - 16f, -1);
-            }
 
             String ez = "Hanabi Build " + Hanabi.CLIENT_VERSION;
             Hanabi.INSTANCE.fontManager.wqy18.drawString(ez, sr.getScaledWidth() - font.getStringWidth(ez) - 5,

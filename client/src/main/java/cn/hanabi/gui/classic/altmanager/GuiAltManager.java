@@ -72,27 +72,8 @@ public class GuiAltManager extends GuiScreen {
 
     public void actionPerformed(GuiButton button) {
         switch (button.id) {
-            case 3: {
-                Hanabi.INSTANCE.mslogin = !Hanabi.INSTANCE.mslogin;
-                mc.displayGuiScreen(new GuiAltManager());
-                break;
-            }
             case 4: {
                 MicrosoftLogin.login();
-//                String data = null;
-//                try {
-//                    data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-//                } catch (Exception ignored) {
-//                    break;
-//                }
-//                if (data != null) {
-//                    String[] split = data.split("\n");
-//                    String[] a = new String[3];
-//                    for (int i = 0; i < split.length; i++) {
-//                        a[i] = split[i].split(": ")[1];
-//                    }
-//                    ((IMinecraft) mc).setSession(new Session(a[1], a[0], a[2], Session.Type.MOJANG.name()));
-//                }
                 break;
             }
             case 5: {
@@ -387,7 +368,6 @@ public class GuiAltManager extends GuiScreen {
 //          this.buttonList.add(new CustomGuiButton(12, this.width / 2 + 16, this.height - 48, 100, 20, "Buy Account"));
 
         this.buttonList.add(new CustomGuiButton(13, this.width / 2 + 122, this.height - 24, 70, 20, "Hyp Bypass :" + Hanabi.INSTANCE.hypixelBypass));
-        this.buttonList.add(new CustomGuiButton(3, this.width / 2 + 16, this.height - 48, 100, 20, "MS Login: " + Hanabi.INSTANCE.mslogin));
         this.buttonList.add(new CustomGuiButton(14, this.width / 2 + 16, this.height - 24, 100, 20, "Ban Checker"));
 
         seatchField = new CustomGuiTextField(99998, mc.fontRendererObj, "Search Alt", 65, this.height - 14 - 60, 200, 14);

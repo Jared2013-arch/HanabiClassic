@@ -88,8 +88,6 @@ public class Hanabi {
     public String location;
 
     public boolean hypixelBypass = false;
-    public boolean mslogin = true;
-
     public HudWindowManager hudWindowMgr;
     public boolean customScoreboard = false;
     public boolean hasOptifine = false;
@@ -101,10 +99,6 @@ public class Hanabi {
     public boolean loggedIn;
     TimeHelper ms = new TimeHelper();
     public long timing;
-
-    //Theme
-    public boolean newStyle = false;
-    public boolean selected = false;
 
 
     public Hanabi() {

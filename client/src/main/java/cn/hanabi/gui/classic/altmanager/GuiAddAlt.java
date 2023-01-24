@@ -61,10 +61,6 @@ public class GuiAddAlt extends GuiScreen {
                 break;
 
             }
-            case 3: {
-                Hanabi.INSTANCE.mslogin = !Hanabi.INSTANCE.mslogin;
-                mc.displayGuiScreen(new GuiAddAlt(new GuiAltManager()));
-            }
         }
     }
 

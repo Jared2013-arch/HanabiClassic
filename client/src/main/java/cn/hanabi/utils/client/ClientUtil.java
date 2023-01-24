@@ -2,7 +2,6 @@ package cn.hanabi.utils.client;
 
 import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.gui.classic.notifications.Notification.Type;
-import cn.hanabi.gui.newStyle.notification.CenterNotification;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockVine;
@@ -88,15 +87,6 @@ public enum ClientUtil {
 
 
         notifications.removeIf(Notification::shouldDelete);
-        for (Notification not : notifications) {
-            if(!(not instanceof CenterNotification)) {
-                not.draw(startY, lastY);
-                startY -= not.getHeight() + 1;
-            } else {
-                ((CenterNotification) not).draw(startY2, lastY2);
-                startY2 -= not.getHeight() + 1;
-            }
-        }
     }
 
 }
