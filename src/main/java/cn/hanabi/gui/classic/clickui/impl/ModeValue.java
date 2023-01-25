@@ -2,7 +2,7 @@ package cn.hanabi.gui.classic.clickui.impl;
 
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.classic.clickui.ClickUI;
-import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.render.TranslateUtil;
 import cn.hanabi.value.Value;
@@ -32,7 +32,7 @@ public class ModeValue {
 		this.y = y;
 		anima.interpolate(isOpen ? values.mode.size() * 18 : 18, 0, 0.2f);
 		length = 30 + anima.getX() - 18;
-		HFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
+		HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
 		font.drawString(name, x + 20, y + 8, new Color(255,255,255,255).getRGB());
 		RenderUtil.drawRoundRect(x + 130, y + 2, x + 220, y + anima.getX() + 3, 2, new Color(255,255,255,255).getRGB());
 		RenderUtil.drawRoundRect(x + 131, y + 3, x + 219, y + anima.getX() + 2, 2, new Color(30,30,30,255).getRGB());

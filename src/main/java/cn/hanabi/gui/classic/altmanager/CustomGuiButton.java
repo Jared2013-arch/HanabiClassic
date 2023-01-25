@@ -22,6 +22,6 @@ public class CustomGuiButton extends GuiButton {
         RenderUtil.drawRect(this.xPosition, this.yPosition, xPosition + width, yPosition + this.height, Color.BLACK.getRGB());
 
         this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
-        Hanabi.INSTANCE.fontManager.wqy16.drawCenteredString(this.displayString, this.xPosition + this.width / 2f, this.yPosition + (this.height - 8) / 2f, this.hovered ? new Color(47, 116, 253, 255).getRGB() : new Color(200, 200, 200).getRGB());
+        Hanabi.INSTANCE.fontManager.hm16.drawCenteredString(this.displayString, this.xPosition + this.width / 2f, this.yPosition + (this.height - 8) / 2f, this.hovered ? new Color(47, 116, 253, 255).getRGB() : new Color(200, 200, 200).getRGB());
     }
 }

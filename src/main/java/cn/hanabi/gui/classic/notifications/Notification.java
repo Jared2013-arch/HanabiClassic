@@ -5,7 +5,7 @@ import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.color.Colors;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.math.TimeHelper;
-import cn.hanabi.utils.fontmanager.HanabiFonts;
+import cn.hanabi.utils.fontmanager.HanabiFontIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -67,16 +67,16 @@ public class Notification {
 
         switch (t) {
             case ERROR:
-                Hanabi.INSTANCE.fontManager.icon25.drawString(HanabiFonts.ICON_NOTIFY_ERROR, x1 + 3, y1 + 8, Colors.WHITE.c);
+                Hanabi.INSTANCE.fontManager.icon25.drawString(HanabiFontIcon.ICON_NOTIFY_ERROR, x1 + 3, y1 + 8, Colors.WHITE.c);
                 break;
             case INFO:
-                Hanabi.INSTANCE.fontManager.icon25.drawString(HanabiFonts.ICON_NOTIFY_INFO, x1 + 3, y1 + 8, Colors.WHITE.c);
+                Hanabi.INSTANCE.fontManager.icon25.drawString(HanabiFontIcon.ICON_NOTIFY_INFO, x1 + 3, y1 + 8, Colors.WHITE.c);
                 break;
             case SUCCESS:
-                Hanabi.INSTANCE.fontManager.icon25.drawString(HanabiFonts.ICON_NOTIFY_SUCCESS, x1 + 3, y1 + 8, Colors.WHITE.c);
+                Hanabi.INSTANCE.fontManager.icon25.drawString(HanabiFontIcon.ICON_NOTIFY_SUCCESS, x1 + 3, y1 + 8, Colors.WHITE.c);
                 break;
             case WARNING:
-                Hanabi.INSTANCE.fontManager.icon25.drawString(HanabiFonts.ICON_NOTIFY_WARN, x1 + 3, y1 + 8, Colors.WHITE.c);
+                Hanabi.INSTANCE.fontManager.icon25.drawString(HanabiFontIcon.ICON_NOTIFY_WARN, x1 + 3, y1 + 8, Colors.WHITE.c);
                 break;
         }
 

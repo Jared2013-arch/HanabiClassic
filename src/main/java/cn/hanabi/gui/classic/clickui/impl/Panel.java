@@ -2,14 +2,14 @@ package cn.hanabi.gui.classic.clickui.impl;
 
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.classic.clickui.ClickUI;
-import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.utils.render.TranslateUtil;
-import cn.hanabi.utils.fontmanager.HanabiFonts;
+import cn.hanabi.utils.fontmanager.HanabiFontIcon;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -79,27 +79,27 @@ public class Panel {
         String iconstr = "";
         switch (category.toString()){
             case "Combat":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_COMBAT;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_COMBAT;
                 break;
             }
             case "Movement":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_MOVEMENT;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_MOVEMENT;
                 break;
             }
             case "Player":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_PLAYER;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_PLAYER;
                 break;
             }
             case "Render":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_RENDER;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_RENDER;
                 break;
             }
             case "World":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_WORLD;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_WORLD;
                 break;
             }
             case "Ghost":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_GHOST;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_GHOST;
                 break;
             }
         }
@@ -190,27 +190,27 @@ public class Panel {
         String iconstr = "";
         switch (category.toString()){
             case "Combat":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_COMBAT;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_COMBAT;
                 break;
             }
             case "Movement":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_MOVEMENT;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_MOVEMENT;
                 break;
             }
             case "Player":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_PLAYER;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_PLAYER;
                 break;
             }
             case "Render":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_RENDER;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_RENDER;
                 break;
             }
             case "World":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_WORLD;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_WORLD;
                 break;
             }
             case "Ghost":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_GHOST;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_GHOST;
                 break;
             }
         }

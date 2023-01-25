@@ -6,7 +6,7 @@ import cn.hanabi.events.EventPacket;
 import cn.hanabi.gui.classic.altmanager.AltFileManager;
 import cn.hanabi.gui.common.cloudmusic.MusicManager;
 import cn.hanabi.gui.common.cloudmusic.ui.MusicPlayerUI;
-import cn.hanabi.gui.common.font.noway.ttfr.FontLoaders;
+import cn.hanabi.gui.font.FontLoaders;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.utils.bypass.AESUtil;
 import cn.hanabi.utils.client.ClientUtil;
@@ -18,11 +18,9 @@ import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.utils.waypoints.WaypointManager;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
-import com.eskid.annotation.Native;
 import me.yarukon.DiscordThread;
 import me.yarukon.Yarukon;
 import me.yarukon.hud.window.HudWindowManager;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S01PacketJoinGame;
@@ -40,7 +38,6 @@ import java.util.Queue;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-@Native
 public class Hanabi {
     @NotNull
     public static final String CLIENT_NAME = "Hanabi";
@@ -51,11 +48,11 @@ public class Hanabi {
     @NotNull
     public static final String CLIENT_INITIALS;
 
+
     public static Hanabi INSTANCE;
 
     static {
         List<Character> chars = new ArrayList<>();
-
         for (char c : CLIENT_NAME.toCharArray())
             if (Character.toUpperCase(c) == c)
                 chars.add(c);

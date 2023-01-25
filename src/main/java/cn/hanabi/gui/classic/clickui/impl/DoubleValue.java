@@ -2,7 +2,7 @@ package cn.hanabi.gui.classic.clickui.impl;
 
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.classic.clickui.ClickUI;
-import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.render.TranslateUtil;
 import cn.hanabi.value.Value;
@@ -34,7 +34,7 @@ public class DoubleValue {
         this.x = x;
         this.y = y;
         length = 30;
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
+        HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
         font.drawString(name, x + 20, y + 8, new Color(255, 255, 255, 255).getRGB());
         double inc = values.getSteps();
         double max = (double) values.getValueMax();

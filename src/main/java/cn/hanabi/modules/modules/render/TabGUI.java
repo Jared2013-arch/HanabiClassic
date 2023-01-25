@@ -3,13 +3,13 @@ package cn.hanabi.modules.modules.render;
 import cn.hanabi.Hanabi;
 import cn.hanabi.events.EventKey;
 import cn.hanabi.events.EventRender2D;
-import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.math.TimeHelper;
-import cn.hanabi.utils.fontmanager.HanabiFonts;
+import cn.hanabi.utils.fontmanager.HanabiFontIcon;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import com.mojang.realmsclient.gui.ChatFormatting;
@@ -82,12 +82,12 @@ public class TabGUI extends Mod {
             // center
 
             String needDraw = "";
-            if (c == Category.COMBAT) needDraw = HanabiFonts.ICON_CLICKGUI_COMBAT;
-            if (c == Category.GHOST) needDraw = HanabiFonts.ICON_CLICKGUI_GHOST;
-            if (c == Category.MOVEMENT) needDraw = HanabiFonts.ICON_CLICKGUI_MOVEMENT;
-            if (c == Category.PLAYER) needDraw = HanabiFonts.ICON_CLICKGUI_PLAYER;
-            if (c == Category.RENDER) needDraw = HanabiFonts.ICON_CLICKGUI_RENDER;
-            if (c == Category.WORLD) needDraw = HanabiFonts.ICON_CLICKGUI_WORLD;
+            if (c == Category.COMBAT) needDraw = HanabiFontIcon.ICON_CLICKGUI_COMBAT;
+            if (c == Category.GHOST) needDraw = HanabiFontIcon.ICON_CLICKGUI_GHOST;
+            if (c == Category.MOVEMENT) needDraw = HanabiFontIcon.ICON_CLICKGUI_MOVEMENT;
+            if (c == Category.PLAYER) needDraw = HanabiFontIcon.ICON_CLICKGUI_PLAYER;
+            if (c == Category.RENDER) needDraw = HanabiFontIcon.ICON_CLICKGUI_RENDER;
+            if (c == Category.WORLD) needDraw = HanabiFontIcon.ICON_CLICKGUI_WORLD;
             HFontRenderer font = Hanabi.INSTANCE.fontManager.icon20;
             font.drawString(needDraw, startX - 2 + font.getStringWidth(needDraw) / 2f, (float) startY + 3, -1);
             startX += 16;

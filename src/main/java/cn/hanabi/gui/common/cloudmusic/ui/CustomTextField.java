@@ -47,10 +47,10 @@ public class CustomTextField {
 		GL11.glPushMatrix();
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		RenderUtil.doGlScissor((int) this.x + 1, (int) this.y + 3, 113, 11);
-		Hanabi.INSTANCE.fontManager.wqy13.drawString(this.textString, this.x + 1.5f - this.offset, this.y + 4F, Color.GRAY.getRGB());
+		Hanabi.INSTANCE.fontManager.hm13.drawString(this.textString, this.x + 1.5f - this.offset, this.y + 4F, Color.GRAY.getRGB());
 
 		if (this.isFocused) {
-			float width = Hanabi.INSTANCE.fontManager.wqy13.getStringWidth(this.textString.substring(0, selectedChar)) + 4;
+			float width = Hanabi.INSTANCE.fontManager.hm13.getStringWidth(this.textString.substring(0, selectedChar)) + 4;
 			float posX = this.x + width - this.offset;
 			RenderUtil.drawRect(posX - 0.5f, this.y + 5.5f, posX, this.y + 12.5f, RenderUtil.reAlpha(Color.GRAY.getRGB(), ticks / 500 % 2 == 0 ? 1f : 0));
 		}
@@ -119,7 +119,7 @@ public class CustomTextField {
 					}
 
 					this.selectedChar = this.textString.length();
-					width = Hanabi.INSTANCE.fontManager.wqy13.getStringWidth(this.textString.substring(0, this.selectedChar))
+					width = Hanabi.INSTANCE.fontManager.hm13.getStringWidth(this.textString.substring(0, this.selectedChar))
 							+ 2;
 					barOffset = width - this.offset;
 					if (barOffset > 111F) {
@@ -139,9 +139,9 @@ public class CustomTextField {
 							stringBuilder.deleteCharAt(this.selectedChar - 1);
 							this.textString = ChatAllowedCharacters.filterAllowedCharacters(stringBuilder.toString());
 							--this.selectedChar;
-							if (Hanabi.INSTANCE.fontManager.wqy13.getStringWidth(oldString) + 2 > 111F && this.offset > 0.0F) {
-								newTextWidth = Hanabi.INSTANCE.fontManager.wqy13.getStringWidth(this.textString) + 2;
-								oldTextWidth = Hanabi.INSTANCE.fontManager.wqy13.getStringWidth(oldString) + 2;
+							if (Hanabi.INSTANCE.fontManager.hm13.getStringWidth(oldString) + 2 > 111F && this.offset > 0.0F) {
+								newTextWidth = Hanabi.INSTANCE.fontManager.hm13.getStringWidth(this.textString) + 2;
+								oldTextWidth = Hanabi.INSTANCE.fontManager.hm13.getStringWidth(oldString) + 2;
 								charWidth = newTextWidth - oldTextWidth;
 								if (newTextWidth <= 111F && oldTextWidth - 111F > charWidth)
 									charWidth = 111F - oldTextWidth;
@@ -168,7 +168,7 @@ public class CustomTextField {
 						--this.selectedChar;
 					}
 
-					width = Hanabi.INSTANCE.fontManager.wqy13.getStringWidth(this.textString.substring(0, this.selectedChar))
+					width = Hanabi.INSTANCE.fontManager.hm13.getStringWidth(this.textString.substring(0, this.selectedChar))
 							+ 2;
 					barOffset = width - this.offset;
 					barOffset -= 2.0F;
@@ -182,7 +182,7 @@ public class CustomTextField {
 						++this.selectedChar;
 					}
 
-					width = Hanabi.INSTANCE.fontManager.wqy13.getStringWidth(this.textString.substring(0, this.selectedChar))
+					width = Hanabi.INSTANCE.fontManager.hm13.getStringWidth(this.textString.substring(0, this.selectedChar))
 							+ 2;
 					barOffset = width - this.offset;
 					if (barOffset > 111F) {
@@ -192,7 +192,7 @@ public class CustomTextField {
 					break;
 				case Keyboard.KEY_END:
 					this.selectedChar = this.textString.length();
-					width = Hanabi.INSTANCE.fontManager.wqy13.getStringWidth(this.textString.substring(0, this.selectedChar))
+					width = Hanabi.INSTANCE.fontManager.hm13.getStringWidth(this.textString.substring(0, this.selectedChar))
 							+ 2;
 					barOffset = width - this.offset;
 					if (barOffset > 111F) {
@@ -218,15 +218,15 @@ public class CustomTextField {
 				this.selectedChar += this.textString.length() - oldString.length();
 			} else {
 				++this.selectedChar;
-				float width = Hanabi.INSTANCE.fontManager.wqy13
+				float width = Hanabi.INSTANCE.fontManager.hm13
 						.getStringWidth(this.textString.substring(0, this.selectedChar)) + 2;
 				newTextWidth = width - this.offset;
 				if (newTextWidth > 111F)
 					this.offset += newTextWidth - 111F;
 			}
 
-			newTextWidth = Hanabi.INSTANCE.fontManager.wqy13.getStringWidth(this.textString) + 2;
-			oldTextWidth = Hanabi.INSTANCE.fontManager.wqy13.getStringWidth(oldString) + 2;
+			newTextWidth = Hanabi.INSTANCE.fontManager.hm13.getStringWidth(this.textString) + 2;
+			oldTextWidth = Hanabi.INSTANCE.fontManager.hm13.getStringWidth(oldString) + 2;
 			if (newTextWidth > 111F) {
 				if (oldTextWidth < 111F)
 					oldTextWidth = 111F;

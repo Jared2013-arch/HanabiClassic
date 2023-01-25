@@ -3,7 +3,7 @@ package cn.hanabi.gui.common.cloudmusic.ui;
 
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.common.cloudmusic.MusicManager;
-import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.modules.modules.render.HUD;
 import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.color.Colors;
@@ -44,8 +44,8 @@ public enum MusicOverlayRenderer {
         }
 
         if (MusicManager.INSTANCE.getCurrentTrack() != null && MusicManager.INSTANCE.getMediaPlayer() != null) {
-            instance.fontManager.wqy18.drawString(MusicManager.INSTANCE.getCurrentTrack().name + " - " + MusicManager.INSTANCE.getCurrentTrack().artists, 36f + addonX, 10 + addonY, Colors.WHITE.c);
-            instance.fontManager.wqy18.drawString(formatSeconds((int) readedSecs) + "/" + formatSeconds((int) totalSecs), 36f + addonX, 20 + addonY, 0xffffffff);
+            instance.fontManager.hm18.drawString(MusicManager.INSTANCE.getCurrentTrack().name + " - " + MusicManager.INSTANCE.getCurrentTrack().artists, 36f + addonX, 10 + addonY, Colors.WHITE.c);
+            instance.fontManager.hm18.drawString(formatSeconds((int) readedSecs) + "/" + formatSeconds((int) totalSecs), 36f + addonX, 20 + addonY, 0xffffffff);
 
             if (MusicManager.INSTANCE.circleLocations.containsKey(MusicManager.INSTANCE.getCurrentTrack().id)) {
                 GL11.glPushMatrix();
@@ -66,7 +66,7 @@ public enum MusicOverlayRenderer {
         }
 
         if(MusicManager.INSTANCE.lyric) { {
-            HFontRenderer lyricFont = Hanabi.INSTANCE.fontManager.wqy18;
+            HFontRenderer lyricFont = Hanabi.INSTANCE.fontManager.hm18;
             int addonYlyr = HUD.musicPosYlyr.getValueState().intValue();
             //Lyric
             int col = MusicManager.INSTANCE.tlrc.isEmpty() ? Colors.GREY.c : 0xff00af87;
@@ -83,7 +83,7 @@ public enum MusicOverlayRenderer {
                 firstTime = false;
             }
 
-            HFontRenderer wqy = Hanabi.INSTANCE.fontManager.wqy18;
+            HFontRenderer wqy = Hanabi.INSTANCE.fontManager.hm18;
             HFontRenderer sans = Hanabi.INSTANCE.fontManager.usans25;
 
             float width1 = wqy.getStringWidth(MusicManager.INSTANCE.getCurrentTrack().name);

@@ -3,7 +3,7 @@ package cn.hanabi.modules;
 
 import cn.hanabi.Hanabi;
 import cn.hanabi.events.EventKey;
-import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.modules.modules.combat.*;
 import cn.hanabi.modules.modules.ghost.*;
 import cn.hanabi.modules.modules.movement.Fly.Fly;

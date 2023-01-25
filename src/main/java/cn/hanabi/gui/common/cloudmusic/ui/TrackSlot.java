@@ -25,8 +25,8 @@ public class TrackSlot {
 		
 		RenderUtil.drawRoundedRect(x, y, x + 137, y + 20, 2, 0xff34373c);
 
-		Hanabi.INSTANCE.fontManager.wqy16.drawString(track.name, x + 2, y + 1, Color.WHITE.getRGB());
-		Hanabi.INSTANCE.fontManager.wqy13.drawString(track.artists, x + 2, y + 10, Color.WHITE.getRGB());
+		Hanabi.INSTANCE.fontManager.hm16.drawString(track.name, x + 2, y + 1, Color.WHITE.getRGB());
+		Hanabi.INSTANCE.fontManager.hm13.drawString(track.artists, x + 2, y + 10, Color.WHITE.getRGB());
 		
 		RenderUtil.drawRoundedRect(x + 122, y, x + 137, y + 20, 2, 0xff34373c);
 		//RenderUtil.drawGradientSideways(x + 100, y, x + 124, y + 20, 0x00818181, 0xff34373c);

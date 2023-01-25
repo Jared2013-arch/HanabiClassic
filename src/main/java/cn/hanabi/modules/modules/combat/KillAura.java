@@ -4,8 +4,7 @@ package cn.hanabi.modules.modules.combat;
 import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
-import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
-import cn.hanabi.injection.interfaces.IEntityPlayer;
+import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.injection.interfaces.IKeyBinding;
 import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.modules.Category;
@@ -29,7 +28,6 @@ import cn.hanabi.utils.rotation.VecRotation;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
-import com.eskid.annotation.Native;
 import me.yarukon.palette.ColorValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -53,7 +51,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
-import net.minecraft.network.play.server.S30PacketWindowItems;
 import net.minecraft.util.*;
 import net.minecraft.world.WorldSettings;
 import org.apache.commons.lang3.RandomUtils;
@@ -66,13 +63,11 @@ import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.lwjgl.opengl.GL11.*;
 
-@Native
 public class KillAura extends Mod {
     // 客户端设置
     public static Value<Boolean> autoBlock = new Value<>("KillAura", "AutoBlock", true);
@@ -1034,7 +1029,7 @@ public class KillAura extends Mod {
             if (this.hudMode.isCurrentMode("Simple")) {
                 if (target != null) {
                     GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-                    HFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
+                    HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
                     font.drawStringWithShadow(target.getName(), sr.getScaledWidth() / 2f - (font.getStringWidth(target.getName().replaceAll("\247.", "")) / 2f), sr.getScaledHeight() / 2f - 33, 0xffffffff);
                     RenderHelper.enableGUIStandardItemLighting();
                     mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/icons.png"));
@@ -1071,8 +1066,8 @@ public class KillAura extends Mod {
             }
 
             if (hudMode.isCurrentMode("Fancy")) {
-                HFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
-                HFontRenderer font1 = Hanabi.INSTANCE.fontManager.wqy16;
+                HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
+                HFontRenderer font1 = Hanabi.INSTANCE.fontManager.hm16;
                 if (target != null) {
                     int width = (sr.getScaledWidth() / 2) + 100;
                     int height = sr.getScaledHeight() / 2;
@@ -1126,7 +1121,7 @@ public class KillAura extends Mod {
                 ScaledResolution sr2 = new ScaledResolution(mc);
                 float scaledWidth = sr2.getScaledWidth();
                 float scaledHeight = sr2.getScaledHeight();
-                HFontRenderer font1 = Hanabi.INSTANCE.fontManager.wqy16;
+                HFontRenderer font1 = Hanabi.INSTANCE.fontManager.hm16;
 
                 nulltarget = target == null;
 

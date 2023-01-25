@@ -1,9 +1,7 @@
 package cn.hanabi.modules.modules.render;
 
-import cn.hanabi.Hanabi;
 import cn.hanabi.events.EventRender;
 import cn.hanabi.events.EventUpdate;
-import cn.hanabi.gui.common.cloudmusic.ui.MusicPlayerUI;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.utils.render.RenderUtil;

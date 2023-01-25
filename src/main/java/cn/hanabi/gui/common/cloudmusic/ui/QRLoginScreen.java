@@ -56,8 +56,8 @@ public class QRLoginScreen extends GuiScreen {
 		this.drawDefaultBackground();
 
 		String text = "使用二维码登录至网易云音乐";
-		Hanabi.INSTANCE.fontManager.wqy16.drawString(text, res.getScaledWidth() / 2 - (Hanabi.INSTANCE.fontManager.wqy16.getStringWidth(text) / 2), 30, 0xFFFFFFFF);
-		Hanabi.INSTANCE.fontManager.wqy16.drawString(state, res.getScaledWidth() / 2 - (Hanabi.INSTANCE.fontManager.wqy16.getStringWidth(state.replaceAll("\247.", "")) / 2), 50, 0xFFFFFFFF);
+		Hanabi.INSTANCE.fontManager.hm16.drawString(text, res.getScaledWidth() / 2 - (Hanabi.INSTANCE.fontManager.hm16.getStringWidth(text) / 2), 30, 0xFFFFFFFF);
+		Hanabi.INSTANCE.fontManager.hm16.drawString(state, res.getScaledWidth() / 2 - (Hanabi.INSTANCE.fontManager.hm16.getStringWidth(state.replaceAll("\247.", "")) / 2), 50, 0xFFFFFFFF);
 
 		if(this.loginProcessThread != null) {
 			RenderUtil.drawImage(new ResourceLocation("cloudMusicCache/qrcode"), res.getScaledWidth() / 2 - 64, 70, 128, 128, 1f);

@@ -252,7 +252,7 @@ public class GuiAltManager extends GuiScreen {
         RenderUtil.drawRect((width / 2f) + 48, (float) (125 - anim_import), (width / 2f) + 78, 125, new Color(47, 116, 253, 255).getRGB());
 
 
-        Hanabi.INSTANCE.fontManager.wqy16.drawString(hoverStringAdd, (width / 2) + 86, 110, Color.WHITE.getRGB());
+        Hanabi.INSTANCE.fontManager.hm16.drawString(hoverStringAdd, (width / 2) + 86, 110, Color.WHITE.getRGB());
 
         //edit
         Hanabi.INSTANCE.fontManager.usans25.drawString("Edit Alt", (width / 2) + 20, 130, new Color(255, 255, 255).getRGB());
@@ -267,7 +267,7 @@ public class GuiAltManager extends GuiScreen {
         }
         RenderUtil.drawRect((width / 2f) + 18, (float) (200 - anim_confirm), (width / 2f) + 43, 200, new Color(47, 116, 253, 255).getRGB());
 
-        Hanabi.INSTANCE.fontManager.wqy16.drawString(hoverStringEdit, (width / 2) + 70, 185, Color.WHITE.getRGB());
+        Hanabi.INSTANCE.fontManager.hm16.drawString(hoverStringEdit, (width / 2) + 70, 185, Color.WHITE.getRGB());
     }
 
     double anim1 = 0d;
@@ -297,7 +297,7 @@ public class GuiAltManager extends GuiScreen {
 
         RenderUtil.drawRect(95.0f, (float) (73 - anim2), 95.0f + 25, 73, new Color(47, 116, 253, 255).getRGB());
 
-        Hanabi.INSTANCE.fontManager.wqy16.drawString(hovering, 130, 52, new Color(200, 200, 200).getRGB());
+        Hanabi.INSTANCE.fontManager.hm16.drawString(hovering, 130, 52, new Color(200, 200, 200).getRGB());
     }
 
     public void drawAlt(int par1, int par2) {
@@ -337,9 +337,9 @@ public class GuiAltManager extends GuiScreen {
                     RenderUtil.drawRect(60.0f, y - this.offset - 4, this.width / 2f, y - this.offset + 30,
                             getColor(200, 50));
                 }
-                Hanabi.INSTANCE.fontManager.wqy18.drawString(name, 50.0f + 25, y - this.offset, -1);
+                Hanabi.INSTANCE.fontManager.hm18.drawString(name, 50.0f + 25, y - this.offset, -1);
 
-                Hanabi.INSTANCE.fontManager.wqy13.drawString(alt.getUsername(), 50.0f + 25, y - this.offset + 10, getColor(110));
+                Hanabi.INSTANCE.fontManager.hm13.drawString(alt.getUsername(), 50.0f + 25, y - this.offset + 10, getColor(110));
 
                 //   Hanabi.INSTANCE.fontManager.wqy13.drawString(pass, 50.0f + 25, y - this.offset + 18,
                 //           pass.equals("Cracked") ? new Color(255, 107, 107).getRGB() : getColor(110));

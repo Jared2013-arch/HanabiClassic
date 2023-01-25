@@ -7,14 +7,14 @@ import cn.hanabi.events.EventText;
 import cn.hanabi.gui.classic.tabgui.SubTab;
 import cn.hanabi.gui.classic.tabgui.Tab;
 import cn.hanabi.gui.common.cloudmusic.ui.MusicOverlayRenderer;
-import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.modules.modules.world.Scaffold;
 import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.color.Colors;
-import cn.hanabi.utils.fontmanager.HanabiFonts;
+import cn.hanabi.utils.fontmanager.HanabiFontIcon;
 import cn.hanabi.utils.game.PacketHelper;
 import cn.hanabi.utils.math.MathUtils;
 import cn.hanabi.utils.math.animation.SmoothAnimation;
@@ -24,12 +24,10 @@ import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.Priority;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import me.yarukon.YRenderUtil;
 import me.yarukon.palette.ColorValue;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -39,7 +37,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S03PacketTimeUpdate;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
@@ -83,9 +80,6 @@ public class HUD extends Mod {
             .LoadValue(new String[]{"Random", "Theme", "Rainbow"});
 
     public static ColorValue design = new ColorValue("Design Color", 0.5f, 1f, 1f, 1f, false, false, 10f);
-    public static Value<String> Theme = new Value<String>("HUD", "Hit Sound", 0).LoadValue(new String[]{"3.x", "4.x"});
-
-
     public static Value<Double> rainbowspeed = new
             Value<>("HUD", "ArrayList Speed", 3d, 1d, 6d, 1d);
     public static Value<Double> offset = new
@@ -192,7 +186,7 @@ public class HUD extends Mod {
         }
 
         if (arraylist.getValueState()) {
-                renderClassicArray(sr);
+            renderArrayList(sr);
         }
 
         if (noti.getValueState()) {
@@ -204,15 +198,15 @@ public class HUD extends Mod {
 
         if (music.getValueState())
 
-                MusicOverlayRenderer.INSTANCE.renderOverlay();
+            MusicOverlayRenderer.INSTANCE.renderOverlay();
 
 
         if (logo.getValueState()) {
-                Hanabi.INSTANCE.fontManager.icon130.drawStringWithShadow(HanabiFonts.ICON_HANABI_LOGO, 15, 60, array.isCurrentMode("Rainbow") ? new Color(47, 100, 253).getRGB() : design.getColor(), 120);
+            RenderUtil.drawImage(new ResourceLocation("Client/logo128.png"), 10, 10, 64, 64);
         }
 
         if (hotbar.getValueState() && mc.getRenderViewEntity() instanceof EntityPlayer && !mc.gameSettings.hideGUI) {
-            HFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
+            HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
 
             RenderUtil.drawRect(width / 2 - 91, height - 22, (width / 2 + 90), height - 2,
                     new Color(17, 17, 17, 200).getRGB());
@@ -222,7 +216,7 @@ public class HUD extends Mod {
             long ping = (mc.getCurrentServerData() != null) ? mc.getCurrentServerData().pingToServer : -1;
 
             String ez = "Hanabi Build " + Hanabi.CLIENT_VERSION;
-            Hanabi.INSTANCE.fontManager.wqy18.drawString(ez, sr.getScaledWidth() - font.getStringWidth(ez) - 5,
+            Hanabi.INSTANCE.fontManager.hm18.drawString(ez, sr.getScaledWidth() - font.getStringWidth(ez) - 5,
                     sr.getScaledHeight() - 16, -1);
 
             hotbarAnimation.set(mc.thePlayer.inventory.currentItem * 20);
@@ -289,65 +283,11 @@ public class HUD extends Mod {
         }
     }
 
-    private void renderNewArray(ScaledResolution sr) {
+
+    private void renderArrayList(ScaledResolution sr) {
         ArrayList<Mod> mods = new ArrayList<>(ModManager.getEnabledModListHUD());
         float nextY = 0f;
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
-        int base;
-        int color;
-
-        for (Mod module : mods) {
-            module.lastY = module.posY;
-            module.posY = nextY;
-
-            if (array.isCurrentMode("Random")) {
-                base = module.getColor();
-            } else if (array.isCurrentMode("Theme")) {
-                base = design.getColor();
-            } else {
-                base = RenderUtil.getRainbow(6000, (int) (-15 * nextY), rainbowspeed.getValue(), offset.getValue(), design.saturation, design.brightness);
-            }
-
-            if (arraylistfade.getValueState()) {
-
-                color = PaletteUtil
-                        .fade(new Color(base),
-                                (int) ((nextY + 11) / 11), fade.getValue().intValue())
-                        .getRGB();
-            } else {
-                color = base;
-
-            }
-            module.onRenderArray();
-            //不渲染渲染类
-            if (module.getName().equals("TargetStrafe"))
-                continue;
-            if (module.getCategory() == Category.RENDER)
-                continue;
-            if (!module.isEnabled() && module.posX <= 0)
-                continue;
-
-            // Module 信息
-            String modName = module.getName();
-            String displayName = module.getDisplayName();
-            float modwidth = module.posX;
-            RenderUtil.drawRect(sr.getScaledWidth() - modwidth - 4, nextY + module.posYRend, sr.getScaledWidth(), nextY + module.posYRend + 12, new Color(0, 0, 0, 100).getRGB());
-            RenderUtil.drawRect(sr.getScaledWidth() - modwidth - 6, nextY + module.posYRend, sr.getScaledWidth() - modwidth - 4, nextY + module.posYRend + 12, new Color(62, 104, 255).getRGB());
-            font.drawString(modName + " " + ChatFormatting.GRAY + (displayName == null ? "" : displayName), sr.getScaledWidth() - modwidth - 2, nextY + module.posYRend + 1, color);
-
-//            if (displayName != null)
-//                font.drawString(displayName, sr.getScaledWidth() - 8 - modwidth + font.getStringWidth(modName),
-//                        nextY + module.posYRend + 1, new Color(159, 159, 159).getRGB());
-
-            nextY += 12;
-        }
-
-    }
-
-    private void renderClassicArray(ScaledResolution sr) {
-        ArrayList<Mod> mods = new ArrayList<>(ModManager.getEnabledModListHUD());
-        float nextY = 0f;
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
+        HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
         int base;
         int color;
 
@@ -387,13 +327,13 @@ public class HUD extends Mod {
             String displayName = module.getDisplayName();
             float modwidth = module.posX;
 
-            font.drawStringWithShadow(modName, sr.getScaledWidth() - modwidth - 11, nextY + module.posYRend + 1, color, 100);
+            font.drawString(modName, sr.getScaledWidth() - modwidth - 11, nextY + module.posYRend + 1, color);
 
             if (displayName != null)
-                font.drawStringWithShadow(displayName, sr.getScaledWidth() - 8 - modwidth + font.getStringWidth(modName),
-                        nextY + module.posYRend + 1, new Color(159, 159, 159).getRGB(), 200);
+                font.drawString(displayName, sr.getScaledWidth() - 8 - modwidth + font.getStringWidth(modName),
+                        nextY + module.posYRend + 1, new Color(159, 159, 159).getRGB());
 
-            nextY += font.FONT_HEIGHT;
+            nextY += font.FONT_HEIGHT + 2;
         }
     }
 
@@ -549,7 +489,7 @@ public class HUD extends Mod {
             }
 
             int y = (height - mc.fontRendererObj.FONT_HEIGHT + x) - 38;
-            HFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
+            HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
             font.drawString(PType.replaceAll("\247.", ""), (float) width - 91f,
                     y - mc.fontRendererObj.FONT_HEIGHT + 1, design.getColor());
 

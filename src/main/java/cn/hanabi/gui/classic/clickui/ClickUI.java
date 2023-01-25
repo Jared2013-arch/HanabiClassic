@@ -2,7 +2,7 @@ package cn.hanabi.gui.classic.clickui;
 
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.classic.clickui.impl.BoolValue;
-import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.gui.classic.clickui.impl.DoubleValue;
 import cn.hanabi.gui.classic.clickui.impl.ModeValue;
 import cn.hanabi.gui.classic.clickui.impl.Panel;
@@ -13,7 +13,7 @@ import cn.hanabi.utils.render.BlurUtil;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.utils.render.TranslateUtil;
-import cn.hanabi.utils.fontmanager.HanabiFonts;
+import cn.hanabi.utils.fontmanager.HanabiFontIcon;
 import cn.hanabi.value.Value;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
@@ -114,7 +114,7 @@ public class ClickUI extends GuiScreen {
         //Blur后边的搜索栏的Shadow
         RenderUtil.drawRect(width / 2 - 60, 0, width / 2 + 60, 20, new Color(0,0,0,120).getRGB());
         if(!searchcontent.equalsIgnoreCase("") && searchcontent != null)  isSearching = true;
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
+        HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
         GL11.glPushMatrix();
         GL11.glEnable(3089);
         RenderUtil.startGlScissor(width / 2 - 55, 0, 110, 20);
@@ -129,7 +129,7 @@ public class ClickUI extends GuiScreen {
 
         //Blur后边的Reset的Shadow
         RenderUtil.drawRect(width / 2 + 80, 0, width / 2 + 130, 20, new Color(0,0,0,120).getRGB());
-        Hanabi.INSTANCE.fontManager.wqy18.drawCenteredString("Reset Gui", width / 2 + 105, 4, new Color(255,255,255,255).getRGB());
+        Hanabi.INSTANCE.fontManager.hm18.drawCenteredString("Reset Gui", width / 2 + 105, 4, new Color(255,255,255,255).getRGB());
 
         //Blur后边的Logo的Shadow
         Hanabi.INSTANCE.fontManager.usans30.drawCenteredString(Hanabi.CLIENT_NAME + " Build " + Hanabi.CLIENT_VERSION, width / 2, height - 20, new Color(0,0,0,255).getRGB());
@@ -173,7 +173,7 @@ public class ClickUI extends GuiScreen {
         //画Reset按钮
         boolean resetHover = isHover(mouseX, mouseY, width / 2 + 80, 0, width / 2 + 130, 20) && currentMod == null;
         RenderUtil.drawRect(width / 2 + 80, 0, width / 2 + 130, 20, new Color(0,0,0,resetHover ? 80 : 60).getRGB());
-        Hanabi.INSTANCE.fontManager.wqy18.drawCenteredString("Reset Gui", width / 2 + 105, 4, new Color(255,255,255,255).getRGB());
+        Hanabi.INSTANCE.fontManager.hm18.drawCenteredString("Reset Gui", width / 2 + 105, 4, new Color(255,255,255,255).getRGB());
 
         //设定Value的Panel的动画
         if(currentMod != null){
@@ -204,27 +204,27 @@ public class ClickUI extends GuiScreen {
                 String iconstr = "";
                 switch (currentMod.getCategory().toString()){
                     case "Combat":{
-                        iconstr = HanabiFonts.ICON_CLICKGUI_COMBAT;
+                        iconstr = HanabiFontIcon.ICON_CLICKGUI_COMBAT;
                         break;
                     }
                     case "Movement":{
-                        iconstr = HanabiFonts.ICON_CLICKGUI_MOVEMENT;
+                        iconstr = HanabiFontIcon.ICON_CLICKGUI_MOVEMENT;
                         break;
                     }
                     case "Player":{
-                        iconstr = HanabiFonts.ICON_CLICKGUI_PLAYER;
+                        iconstr = HanabiFontIcon.ICON_CLICKGUI_PLAYER;
                         break;
                     }
                     case "Render":{
-                        iconstr = HanabiFonts.ICON_CLICKGUI_RENDER;
+                        iconstr = HanabiFontIcon.ICON_CLICKGUI_RENDER;
                         break;
                     }
                     case "World":{
-                        iconstr = HanabiFonts.ICON_CLICKGUI_WORLD;
+                        iconstr = HanabiFontIcon.ICON_CLICKGUI_WORLD;
                         break;
                     }
                     case "Ghost":{
-                        iconstr = HanabiFonts.ICON_CLICKGUI_GHOST;
+                        iconstr = HanabiFontIcon.ICON_CLICKGUI_GHOST;
                         break;
                     }
                 }
@@ -379,27 +379,27 @@ public class ClickUI extends GuiScreen {
         String iconstr = "";
         switch (currentMod.getCategory().toString()){
             case "Combat":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_COMBAT;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_COMBAT;
                 break;
             }
             case "Movement":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_MOVEMENT;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_MOVEMENT;
                 break;
             }
             case "Player":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_PLAYER;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_PLAYER;
                 break;
             }
             case "Render":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_RENDER;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_RENDER;
                 break;
             }
             case "World":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_WORLD;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_WORLD;
                 break;
             }
             case "Ghost":{
-                iconstr = HanabiFonts.ICON_CLICKGUI_GHOST;
+                iconstr = HanabiFontIcon.ICON_CLICKGUI_GHOST;
                 break;
             }
         }

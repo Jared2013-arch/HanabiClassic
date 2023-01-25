@@ -1,7 +1,7 @@
 package cn.hanabi.modules;
 
 import cn.hanabi.Hanabi;
-import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.modules.modules.render.HUD;
 import cn.hanabi.utils.client.ClientUtil;

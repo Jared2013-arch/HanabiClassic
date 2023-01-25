@@ -62,10 +62,10 @@ public class MusicPlayerUI extends GuiScreen {
 			//歌单导入输入框
 			textField.draw(newX + 6, y + 2);
 			RenderUtil.drawRoundedRect(newWidth - 26, y + 5, newWidth - 7, y + 17, 2, RenderUtil.isHovering(mouseX, mouseY, newWidth - 26, y + 5, newWidth - 7, y + 17) || MusicManager.INSTANCE.analyzeThread != null? new Color(80, 80, 80).getRGB():0xff34373c);
-			Hanabi.INSTANCE.fontManager.wqy13.drawString("导入", newWidth - 23f, y + 6f, Color.GRAY.getRGB());
+			Hanabi.INSTANCE.fontManager.hm13.drawString("导入", newWidth - 23f, y + 6f, Color.GRAY.getRGB());
 
 			if(textField.textString.isEmpty()) {
-				Hanabi.INSTANCE.fontManager.wqy13.drawString("输入歌单ID", newX + 8, y + 6f, Color.GRAY.getRGB());
+				Hanabi.INSTANCE.fontManager.hm13.drawString("输入歌单ID", newX + 8, y + 6f, Color.GRAY.getRGB());
 			}
 
 			if(RenderUtil.isHovering(mouseX, mouseY, newX + 5, y + 20, newWidth - 5, y + height - 4)) {
@@ -131,7 +131,7 @@ public class MusicPlayerUI extends GuiScreen {
 		RenderUtil.drawRoundedRect(x, y + height - 60, x + width, y + height, 2, 0xff34373c);
 		RenderUtil.drawRect(x, y + height - 60, x + width, y + height - 58, 0xff34373c);
 
-		Hanabi.INSTANCE.fontManager.wqy16.drawString("网易云音乐", x + (width / 2) - (Hanabi.INSTANCE.fontManager.wqy16.getStringWidth("网易云音乐") / 2f) - 2, y + 5, -1);
+		Hanabi.INSTANCE.fontManager.hm16.drawString("网易云音乐", x + (width / 2) - (Hanabi.INSTANCE.fontManager.hm16.getStringWidth("网易云音乐") / 2f) - 2, y + 5, -1);
 
 		float progress = 0;
 		if (MusicManager.INSTANCE.getMediaPlayer() != null) {
@@ -167,8 +167,8 @@ public class MusicPlayerUI extends GuiScreen {
 
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		RenderUtil.doGlScissor((int) x, (int) y + (int) (height / 2 - 95), (int) width, 25);
-		Hanabi.INSTANCE.fontManager.wqy16.drawString(songName, x + (width / 2) - (Hanabi.INSTANCE.fontManager.wqy16.getStringWidth(songName) / 2) - 1.5f, y + (height / 2 - 95), -1);
-		Hanabi.INSTANCE.fontManager.wqy13.drawString(songArtist, x + (width / 2) - (Hanabi.INSTANCE.fontManager.wqy13.getStringWidth(songArtist) / 2) - 1.5f, y + (height / 2 - 82), -1);
+		Hanabi.INSTANCE.fontManager.hm16.drawString(songName, x + (width / 2) - (Hanabi.INSTANCE.fontManager.hm16.getStringWidth(songName) / 2) - 1.5f, y + (height / 2 - 95), -1);
+		Hanabi.INSTANCE.fontManager.hm13.drawString(songArtist, x + (width / 2) - (Hanabi.INSTANCE.fontManager.hm13.getStringWidth(songArtist) / 2) - 1.5f, y + (height / 2 - 82), -1);
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
 		if(MusicManager.INSTANCE.getMediaPlayer() != null) {

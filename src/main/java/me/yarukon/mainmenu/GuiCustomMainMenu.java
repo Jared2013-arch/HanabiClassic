@@ -5,7 +5,7 @@ import cn.hanabi.Hanabi;
 import cn.hanabi.gui.classic.altmanager.GuiAltManager;
 import cn.hanabi.utils.render.ParticleUtils;
 import cn.hanabi.utils.render.RenderUtil;
-import cn.hanabi.utils.fontmanager.HanabiFonts;
+import cn.hanabi.utils.fontmanager.HanabiFontIcon;
 import me.yarukon.BlurBuffer;
 import me.yarukon.YRenderUtil;
 import net.minecraft.client.gui.*;
@@ -77,7 +77,7 @@ public class GuiCustomMainMenu extends GuiScreen {
             startX += 50f;
         }
 
-        Hanabi.INSTANCE.fontManager.icon130.drawString(HanabiFonts.ICON_HANABI_LOGO, width / 2f - (50 * (butt.size() / 2f)) + 10, this.height / 2f + 5, 0xff2f64fd);
+        Hanabi.INSTANCE.fontManager.icon130.drawString(HanabiFontIcon.ICON_HANABI_LOGO, width / 2f - (50 * (butt.size() / 2f)) + 10, this.height / 2f + 5, 0xff2f64fd);
         Hanabi.INSTANCE.fontManager.usans25.drawString("Hanabi client", width / 2f - (50 * (butt.size() / 2f)) + 80, this.height / 2f - 30, 0xffffffff);
         Hanabi.INSTANCE.fontManager.usans20.drawString("Build " + Hanabi.CLIENT_VERSION, width / 2f - (50 * (butt.size() / 2f)) + 80, this.height / 2f - 10, 0xffffffff);
 

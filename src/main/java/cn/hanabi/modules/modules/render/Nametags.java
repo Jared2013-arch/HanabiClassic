@@ -4,7 +4,7 @@ import cn.hanabi.Hanabi;
 import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventRender;
 import cn.hanabi.events.EventRender2D;
-import cn.hanabi.gui.common.font.noway.ttfr.HFontRenderer;
+import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.injection.interfaces.IEntityRenderer;
 import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.modules.Category;
@@ -71,7 +71,7 @@ public class Nametags extends Mod {
                             continue;
                         }
 
-                        HFontRenderer font = Hanabi.INSTANCE.fontManager.wqy16;
+                        HFontRenderer font = Hanabi.INSTANCE.fontManager.hm16;
 
                         GlStateManager.translate(renderPositions[0] / scaledRes.getScaleFactor(), renderPositions[1] / scaledRes.getScaleFactor(), 0.0D);
 
@@ -150,11 +150,11 @@ public class Nametags extends Mod {
                                             stack);
                                     if (sLevel > 0) {
                                         drawEnchantTag("Sh" + getColor(sLevel) + sLevel, x, y);
-                                        y += Hanabi.INSTANCE.fontManager.wqy13.FONT_HEIGHT - 2;
+                                        y += Hanabi.INSTANCE.fontManager.hm13.FONT_HEIGHT - 2;
                                     }
                                     if (fLevel > 0) {
                                         drawEnchantTag("Fir" + getColor(fLevel) + fLevel, x, y);
-                                        y += Hanabi.INSTANCE.fontManager.wqy13.FONT_HEIGHT - 2;
+                                        y += Hanabi.INSTANCE.fontManager.hm13.FONT_HEIGHT - 2;
                                     }
                                     if (kLevel > 0) {
                                         drawEnchantTag("Kb" + getColor(kLevel) + kLevel, x, y);
@@ -167,11 +167,11 @@ public class Nametags extends Mod {
                                                 stack);
                                         if (pLevel > 0) {
                                             drawEnchantTag("P" + getColor(pLevel) + pLevel, x, y);
-                                            y += Hanabi.INSTANCE.fontManager.wqy13.FONT_HEIGHT - 2;
+                                            y += Hanabi.INSTANCE.fontManager.hm13.FONT_HEIGHT - 2;
                                         }
                                         if (tLevel > 0) {
                                             drawEnchantTag("Th" + getColor(tLevel) + tLevel, x, y);
-                                            y += Hanabi.INSTANCE.fontManager.wqy13.FONT_HEIGHT - 2;
+                                            y += Hanabi.INSTANCE.fontManager.hm13.FONT_HEIGHT - 2;
                                         }
                                         if (uLevel > 0) {
                                             drawEnchantTag("Unb" + getColor(uLevel) + uLevel, x, y);
@@ -183,12 +183,12 @@ public class Nametags extends Mod {
 
                                         if (powLevel > 0) {
                                             drawEnchantTag("Pow" + getColor(powLevel) + powLevel, x, y);
-                                            y += Hanabi.INSTANCE.fontManager.wqy13.FONT_HEIGHT - 2;
+                                            y += Hanabi.INSTANCE.fontManager.hm13.FONT_HEIGHT - 2;
                                         }
 
                                         if (punLevel > 0) {
                                             drawEnchantTag("Pun" + getColor(punLevel) + punLevel, x, y);
-                                            y += Hanabi.INSTANCE.fontManager.wqy13.FONT_HEIGHT - 2;
+                                            y += Hanabi.INSTANCE.fontManager.hm13.FONT_HEIGHT - 2;
                                         }
 
                                         if (fireLevel > 0) {
@@ -242,13 +242,13 @@ public class Nametags extends Mod {
     }
 
     private void drawEnchantTag(String text, float x, float y) {
-        GlStateManager.pushMatrix();
-        GlStateManager.disableDepth();
-        x = (int) (x * 1.05D);
-        y -= 6;
-        Hanabi.INSTANCE.fontManager.wqy13.drawString(text, x, -44 - y, Colors.WHITE.c);
-        GlStateManager.enableDepth();
-        GlStateManager.popMatrix();
+//        GlStateManager.pushMatrix();
+//        GlStateManager.disableDepth();
+//        x = (int) (x * 1.05D);
+//        y -= 6;
+//        Hanabi.INSTANCE.fontManager.wqy13.drawString(text, x, -44 - y, Colors.WHITE.c);
+//        GlStateManager.enableDepth();
+//        GlStateManager.popMatrix();
     }
 
     private void updatePositions() {

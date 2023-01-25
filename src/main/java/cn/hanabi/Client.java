@@ -2,16 +2,13 @@ package cn.hanabi;
 
 import cn.hanabi.events.EventLoop;
 import cn.hanabi.events.EventWorldChange;
-import cn.hanabi.gui.common.font.noway.ttfr.FontLoaders;
+import cn.hanabi.gui.font.FontLoaders;
 import com.darkmagician6.eventapi.EventManager;
-import com.eskid.annotation.Native;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import org.lwjgl.opengl.Display;
 
-@Native
 public class Client {
-    public static boolean active = true;
     public static boolean onDebug = false;
 
     // Map Must Know
@@ -21,9 +18,6 @@ public class Client {
     public static boolean isGameInit = false;
 
     public static float pitch;
-    public static boolean sleep = false;
-
-
 
     public static void onGameLoop() {
         isGameInit = true;
@@ -49,7 +43,6 @@ public class Client {
     public static void makeSense() {
         Display.setTitle(Hanabi.CLIENT_NAME + " " + Hanabi.CLIENT_VERSION);
         Hanabi.INSTANCE.fontManager = new FontLoaders();
-
     }
 
     public static void doLogin() {

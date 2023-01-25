@@ -51,6 +51,7 @@ dependencies {
         exclude module: "log4j-core"
         exclude module: "slf4j-api"
     }
+// https://mvnrepository.com/artifact/org.openjfx/javafx-media
 
     annotationProcessor("org.spongepowered:mixin:0.7.11-SNAPSHOT")
     implementation group: 'com.google.zxing', name: 'core', version: '2.1'
