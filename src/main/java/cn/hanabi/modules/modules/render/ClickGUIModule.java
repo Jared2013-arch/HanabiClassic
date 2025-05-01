@@ -6,6 +6,7 @@ import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.utils.client.SoundFxPlayer;
+import cn.hanabi.utils.game.PlayerUtil;
 import cn.hanabi.value.Value;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Keyboard;
@@ -13,7 +14,7 @@ import org.lwjgl.input.Keyboard;
 public class ClickGUIModule extends Mod {
     public static ClickUI classicGui = new ClickUI();
     public static AWClickGUI awGui = new AWClickGUI();
-    public static Value<String> mode = new Value<>("ClickGUI", "Mode", "Classic").LoadValue(new String[]{"Classic", "New", "AzureWare", "5.0"});
+    private final Value<String> mode = new Value<String>("ClickGUI", "Mode", 0).LoadValue(new String[]{"Classic", "New", "AzureWare", "5.0"});
     public static Value<Boolean> blur = new Value<>("ClickGUI", "Blur", true);
     ScaledResolution sr;
     int lastWidth = 0;
@@ -35,14 +36,14 @@ public class ClickGUIModule extends Mod {
 
         if (!((HUD) ModManager.getModule("HUD")).sound.isCurrentMode("Minecraft"))
             new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.ClickGuiOpen, -4);
-
-        if (mode.getValue().equals("Classic")) {
+        String mode = this.mode.getModeAt(this.mode.getCurrentMode());
+        if (mode.equals("Classic")) {
             mc.displayGuiScreen(classicGui);
-        }else if (mode.getValue().equals("New")) {
+        }else if (mode.equals("New")) {
             mc.displayGuiScreen(classicGui);
-        }else if (mode.getValue().equals("AzureWare")) {
+        }else if (mode.equals("AzureWare")) {
             mc.displayGuiScreen(awGui);
-        } else if (mode.getValue().equals("5.0")) {
+        } else if (mode.equals("5.0")) {
             mc.displayGuiScreen(classicGui);
         }
         setState(false);

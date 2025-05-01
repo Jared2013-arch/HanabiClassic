@@ -81,8 +81,8 @@ public class GuiCustomMainMenu extends GuiScreen {
         }
 
         String t1 = "欢迎回来, " + Hanabi.INSTANCE.username + "!";
-        Hanabi.INSTANCE.fontManager.comfortaa18.drawString(t1,
-                (float) (sr.getScaledWidth() - 55 - Hanabi.INSTANCE.fontManager.comfortaa18.getStringWidth(t1)), 20, -1);
+        Hanabi.INSTANCE.fontManager.hm18.drawString(t1,
+                (float) (sr.getScaledWidth() - 55 - Hanabi.INSTANCE.fontManager.hm18.getStringWidth(t1)), 20, -1);
 
 
         GL11.glPushMatrix();
@@ -107,7 +107,10 @@ public class GuiCustomMainMenu extends GuiScreen {
         RenderUtil.drawArc(sr.getScaledWidth() - 30, 25, 16, Colors.WHITE.c, 0, 360, 2);
         GL11.glPopMatrix();
 
-        Hanabi.INSTANCE.fontManager.comfortaa17.drawString(
+        Hanabi.INSTANCE.fontManager.hm18.drawString(
+                "", 2f,
+                sr.getScaledHeight() - 10, -1);
+        Hanabi.INSTANCE.fontManager.hm18.drawString(
                 Hanabi.CLIENT_NAME + " build " + Hanabi.CLIENT_VERSION, 2f,
                 sr.getScaledHeight() - 10, -1);
 
