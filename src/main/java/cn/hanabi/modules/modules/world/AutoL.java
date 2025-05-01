@@ -33,7 +33,7 @@ public class AutoL extends Mod {
     public static String getAutoLMessage(String PlayerName) {
         String abuse = AbuseUtil.getAbuseGlobal();
 
-        return (AutoL.clientname.getValueState() ? "[" + Hanabi.CLIENT_NAME + " " + Hanabi.CLIENT_VERSION_NUMBER + "] " : " ") + PlayerName + " L"
+        return (AutoL.clientname.getValueState() ? "[" + Hanabi.CLIENT_NAME + " " + Hanabi.CLIENT_VERSION + "] " : " ") + PlayerName + " L"
                 + (AutoL.abuse.getValueState() ? " " + abuse : "");
     }
 

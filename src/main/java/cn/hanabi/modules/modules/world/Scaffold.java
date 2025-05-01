@@ -466,7 +466,7 @@ public class Scaffold extends Mod {
                 if (packetSpirnt.getValue()) {
                     mc.getNetHandler().addToSendQueue(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.STOP_SPRINTING));
                 } else {
-                    ((IKeyBinding) mc.gameSettings.keyBindSneak).setPress(true);
+                    ((IKeyBinding) mc.gameSettings.keyBindSprint).setPress(true);
                 }
             else if (sneakCount < sneakAfter.getValue())
                 if (packetSpirnt.getValue()) {

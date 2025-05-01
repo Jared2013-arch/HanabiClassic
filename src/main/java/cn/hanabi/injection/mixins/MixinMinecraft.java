@@ -77,33 +77,6 @@ public abstract class MixinMinecraft implements IMinecraft {
         this.rightClickMouse();
     }
 
-    /*
-     * // 绕过Forge System.exit() 等一系列安全检测 private void injectSecurityManager() throws
-     * IllegalAccessException, NoSuchFieldException, InvocationTargetException,
-     * NoSuchMethodException { SecurityManager sm = System.getSecurityManager();
-     *
-     * if ((sm != null) && (sm.getClass().getClassLoader() != null)) {
-     * AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-     * sm.getClass().getProtectionDomain().implies(SecurityConstants.ALL_PERMISSION)
-     * ; return null; }); }
-     *
-     * Method reflectionDataMethod =
-     * Class.class.getDeclaredMethod("reflectionData");
-     * reflectionDataMethod.setAccessible(true); Object reflectionData =
-     * reflectionDataMethod.invoke(System.class);
-     *
-     * Field[] res = null; if (reflectionData != null) { Field field =
-     * reflectionData.getClass().getDeclaredField("declaredFields");
-     * field.setAccessible(true); res = (Field[]) field.get(reflectionData); }
-     *
-     * // No cached value available; request value from VM if(res == null) { Method
-     * method = Class.class.getDeclaredMethod("getDeclaredFields0", boolean.class);
-     * method.setAccessible(true); res = (Field[]) method.invoke(System.class,
-     * false); }
-     *
-     * for(Field re : res) { if(re.getName().equals("security")) {
-     * re.setAccessible(true); re.set(null, sm); } } }
-     */
 
     public void setClickCounter(int a) {
         this.leftClickCounter = a;

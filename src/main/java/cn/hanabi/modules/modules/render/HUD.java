@@ -6,7 +6,6 @@ import cn.hanabi.events.EventRender2D;
 import cn.hanabi.events.EventText;
 import cn.hanabi.gui.classic.tabgui.SubTab;
 import cn.hanabi.gui.classic.tabgui.Tab;
-import cn.hanabi.gui.common.cloudmusic.ui.MusicOverlayRenderer;
 import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
@@ -52,13 +51,6 @@ import java.util.Map;
 
 public class HUD extends Mod {
     private static final ArrayList<Long> times = new ArrayList<>();
-    public static Value<Double> musicPosX = new Value<>("HUD", "MusicPlayerX",
-            70d, 0d, 400d, 1d);
-    public static Value<Double> musicPosY = new
-            Value<>("HUD", "MusicPlayerY", 5d, 0d, 200d, 1d);
-    public static
-    Value<Double> musicPosYlyr = new Value<>("HUD", "MusicPlayerLyricY", 120d,
-            0d, 200d, 1d);
     private final HashMap<Integer, Integer> potionMaxDurations = new HashMap<>();
     private final WaitTimer tpsTimer = new WaitTimer();
     public Value<Boolean> arraylist = new Value<>("HUD", "ArrayList", true);
@@ -66,7 +58,6 @@ public class HUD extends Mod {
     //  public Value<Boolean> arraylistoutline = new Value<>("HUD", "Outline", false);
     public Value<Boolean> logo = new Value<>("HUD", "Logo", true);
     public Value<Boolean> hotbar = new Value<>("HUD", "Hotbar", true);
-    public Value<Boolean> music = new Value<>("HUD", "MusicPlayer", true);
     public Value<Boolean> potion = new Value<>("HUD", "Potion", true);
     public Value<Boolean> armor = new Value<>("HUD", "Armor", true);
     public Value<Boolean> compass = new Value<>("HUD", "Compass", true);
@@ -195,11 +186,6 @@ public class HUD extends Mod {
             }
             ClientUtil.INSTANCE.drawNotifications();
         }
-
-        if (music.getValueState())
-
-            MusicOverlayRenderer.INSTANCE.renderOverlay();
-
 
         if (logo.getValueState()) {
             RenderUtil.drawImage(new ResourceLocation("Client/logo128.png"), 10, 10, 64, 64);

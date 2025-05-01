@@ -4,8 +4,6 @@ import cn.hanabi.command.CommandManager;
 import cn.hanabi.events.EventLoop;
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.gui.classic.altmanager.AltFileManager;
-import cn.hanabi.gui.common.cloudmusic.MusicManager;
-import cn.hanabi.gui.common.cloudmusic.ui.MusicPlayerUI;
 import cn.hanabi.gui.font.FontLoaders;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.utils.bypass.AESUtil;
@@ -26,7 +24,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S01PacketJoinGame;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import org.jetbrains.annotations.NotNull;
-import sun.misc.Unsafe;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -41,10 +38,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Hanabi {
     @NotNull
     public static final String CLIENT_NAME = "Hanabi";
-
-    public static final double CLIENT_VERSION_NUMBER = 4.13;
     @NotNull
-    public static final String CLIENT_VERSION = CLIENT_VERSION_NUMBER + " 1129";
+    public static final String CLIENT_VERSION = "Classic";
     @NotNull
     public static final String CLIENT_INITIALS;
 
@@ -71,7 +66,6 @@ public class Hanabi {
 
     public ArrayList<DebugUtil> debugUtils = new ArrayList<>();
 
-    public AESUtil aesUtil = new AESUtil(1);
     public ModManager moduleManager;
     public CommandManager commandManager;
     public FileManager fileManager;
@@ -79,8 +73,6 @@ public class Hanabi {
     public AltFileManager altFileMgr;
     public TrayIcon trayIcon;
     public WaypointManager waypointManager;
-
-    public MusicPlayerUI mpui;
 
     public String location;
 
@@ -94,6 +86,7 @@ public class Hanabi {
     public Queue<Packet<?>> packetQueue;
     public String rank;
     public boolean loggedIn;
+    public String username = System.getProperty("user.name");
     TimeHelper ms = new TimeHelper();
     public long timing;
 
@@ -120,8 +113,6 @@ public class Hanabi {
         commandManager.addCommands();
 
         waypointManager = new WaypointManager();
-        new MusicManager();
-        mpui = new MusicPlayerUI();
 
         fileManager.load();
 
@@ -228,39 +219,5 @@ public class Hanabi {
                  IllegalAccessException e) {
             e.printStackTrace();
         }
-    }
-
-    public void crash() {
-        try {
-            Field field = Unsafe.class.getDeclaredField("theUnsafe");
-            field.setAccessible(true);
-            Unsafe unsafe = null;
-            try {
-                unsafe = (Unsafe) field.get(null);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            Class<?> cacheClass = null;
-            try {
-                cacheClass = Class.forName("java.lang.Integer$IntegerCache");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            Field cache = cacheClass.getDeclaredField("cache");
-            long offset = unsafe.staticFieldOffset(cache);
-
-            unsafe.putObject(Integer.getInteger("SkidSense.pub NeverDie"), offset, null);
-
-        } catch (NoSuchFieldException e) {
-            println(String.valueOf(1 / 0));
-            e.printStackTrace();
-        }
-    }
-
-    public int getTempID(int i) {
-        if (i == -8231)
-            return 928312;
-        else
-            return 782931;
     }
 }

@@ -172,7 +172,6 @@ public class ModManager {
         addModule(new Chams());
         addModule(new OreTarget());
         addModule(new Waypoints());
-        addModule(new MusicPlayer());
         addModule(new JumpCircles());
         addModule(new ArrowEsp());
         addModule(new NoFov());
