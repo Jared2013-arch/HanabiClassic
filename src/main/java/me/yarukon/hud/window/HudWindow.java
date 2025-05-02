@@ -117,7 +117,7 @@ public class HudWindow {
         }
         if (mc.currentScreen instanceof GuiChat) {
             YRenderUtil.drawRect(this.x, this.y, width, draggableHeight, 0xff00af87);
-            Hanabi.INSTANCE.fontManager.sessionInfoIcon20.drawString("A", this.x + iconOffX, this.y + iconOffY + 2, Colors.WHITE.c);
+            Hanabi.INSTANCE.fontManager.sessionInfoIcon20.drawString("A", this.x + iconOffX, this.y + iconOffY, Colors.WHITE.c);
             Hanabi.INSTANCE.fontManager.usans15.drawString("Move", x + 12, this.y + (draggableHeight / 2f) - (Hanabi.INSTANCE.fontManager.usans15.FONT_HEIGHT / 2f), 0xffffffff);
         }
     }

@@ -38,9 +38,6 @@ public class CommandManager {
         String raw = string.substring(1);
         String[] split = raw.split(" ");
 
-        // HANABI_VERIFY
-
-
         if (split.length == 0)
             return false;
 
@@ -50,6 +47,7 @@ public class CommandManager {
 
         try {
             if (command == null) {
+                ChatUtils.send("\247c" + "Unknown command: " + cmdName);
                 return true;
             } else {
                 String[] args = new String[split.length - 1];

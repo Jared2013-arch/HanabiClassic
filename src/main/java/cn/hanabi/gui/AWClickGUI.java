@@ -20,10 +20,7 @@ public class AWClickGUI extends GuiScreen {
     UnicodeFontRenderer font;
     ScaledResolution sr;
     public static float scale = 1f;
-
-    public AWClickGUI() {
-
-    }
+    private int scrolledX;
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         sr = new ScaledResolution(mc);
@@ -50,8 +47,16 @@ public class AWClickGUI extends GuiScreen {
         font.drawCenteredString("World", 6 + (215 / 6) * 9, 18, 0xEEEEEE);
         font = Hanabi.INSTANCE.fontManager.comfortaa16;
         int y = 78 / 3 + 20;
-        int x = 5;
-        int count = 0;
+        int dWheel = Mouse.getDWheel();
+        if (dWheel != 0) {
+            if (dWheel > 0 && (scrolledX + 20) <= 0) {
+                scrolledX += 20;
+            }
+            if (dWheel < 0) {
+                scrolledX -= 20;
+            }
+        }
+        int x = 5 + scrolledX;
         Category cate = Category.COMBAT;
         if (stage == 0)
             cate = Category.COMBAT;
@@ -84,7 +89,6 @@ public class AWClickGUI extends GuiScreen {
                     }
                 }
 
-                count++;
                 RenderUtil.drawImage(new ResourceLocation("Client/newui/navibar_no.png"), x, y, 130,
                         modneedysize * 20 + 25);
 
@@ -223,7 +227,7 @@ public class AWClickGUI extends GuiScreen {
             cate = Category.WORLD;
 
         int y = 78 / 3 + 20;
-        int x = 5;
+        int x = 5 + scrolledX;
         int count = 0;
         ScaledResolution sr = new ScaledResolution(mc);
 

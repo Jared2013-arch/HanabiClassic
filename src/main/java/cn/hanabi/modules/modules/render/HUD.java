@@ -65,10 +65,10 @@ public class HUD extends Mod {
     public Value<Boolean> noti = new Value<>("HUD", "Notification", true);
     public Value<Boolean> posDisplay = new Value<>("HUD", "Postion", true);
     public Value<Boolean> fixname = new Value<>("HUD", "Obfuscation Name Fix", true);
-    public Value<String> sound = new Value<>("HUD", "Sound", 0);
+    public Value<String> sound = new Value<>("HUD", "Sound", 1);
     public Value<String> hitsound = new Value<>("HUD", "Hit Sound", 0);
 
-    public static Value<String> array = new Value<String>("HUD", "Array List Color", 0)
+    public static Value<String> array = new Value<String>("HUD", "Array List Color", 2)
             .LoadValue(new String[]{"Random", "Theme", "Rainbow"});
 
     public static ColorValue design = new ColorValue("Design Color", 0.5f, 1f, 1f, 1f, false, false, 10f);
