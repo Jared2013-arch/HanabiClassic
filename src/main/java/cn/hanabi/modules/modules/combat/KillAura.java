@@ -17,6 +17,7 @@ import cn.hanabi.utils.client.FriendManager;
 import cn.hanabi.utils.client.TargetManager;
 import cn.hanabi.utils.color.ColorUtils;
 import cn.hanabi.utils.color.Colors;
+import cn.hanabi.utils.fontmanager.UnicodeFontRenderer;
 import cn.hanabi.utils.game.PlayerUtil;
 import cn.hanabi.utils.math.AnimationUtil;
 import cn.hanabi.utils.math.TimeHelper;
@@ -1029,7 +1030,7 @@ public class KillAura extends Mod {
             if (this.hudMode.isCurrentMode("Simple")) {
                 if (target != null) {
                     GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-                    HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
+                    UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
                     font.drawStringWithShadow(target.getName(), sr.getScaledWidth() / 2f - (font.getStringWidth(target.getName().replaceAll("\247.", "")) / 2f), sr.getScaledHeight() / 2f - 33, 0xffffffff);
                     RenderHelper.enableGUIStandardItemLighting();
                     mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/icons.png"));
@@ -1066,8 +1067,8 @@ public class KillAura extends Mod {
             }
 
             if (hudMode.isCurrentMode("Fancy")) {
-                HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
-                HFontRenderer font1 = Hanabi.INSTANCE.fontManager.hm16;
+                UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
+                UnicodeFontRenderer font1 = Hanabi.INSTANCE.fontManager.wqy16;
                 if (target != null) {
                     int width = (sr.getScaledWidth() / 2) + 100;
                     int height = sr.getScaledHeight() / 2;
@@ -1121,7 +1122,7 @@ public class KillAura extends Mod {
                 ScaledResolution sr2 = new ScaledResolution(mc);
                 float scaledWidth = sr2.getScaledWidth();
                 float scaledHeight = sr2.getScaledHeight();
-                HFontRenderer font1 = Hanabi.INSTANCE.fontManager.hm16;
+                UnicodeFontRenderer font1 = Hanabi.INSTANCE.fontManager.wqy16;
 
                 nulltarget = target == null;
 
@@ -1176,7 +1177,7 @@ public class KillAura extends Mod {
                 font1.drawStringWithShadow(healthStr, x + 40.0f + 85.0f - (float) font1.getStringWidth(healthStr) / 2.0f + mc.fontRendererObj.getStringWidth("\u2764") / 1.9f, y + 26.0f, blackcolor2);
                 mc.fontRendererObj.drawStringWithShadow("\u2764", x + 40.0f + 85.0f - (float) font1.getStringWidth(healthStr) / 2.0f - mc.fontRendererObj.getStringWidth("\u2764") / 1.9f, y + 26.5f, hurt.getRGB());
 
-                HFontRenderer font2 = Hanabi.INSTANCE.fontManager.usans14;
+                UnicodeFontRenderer font2 = Hanabi.INSTANCE.fontManager.usans14;
                 if (nulltarget) {
                     font2.drawStringWithShadow("XYZ:" + 0 + " " + 0 + " " + 0 + " | " + "Hurt: " + (false), x + 37f, y + 15f, Colors.WHITE.c);
                     font1.drawStringWithShadow("(No target)", x + 36.0f, y + 5.0f, Colors.WHITE.c);

@@ -3,6 +3,7 @@ package cn.hanabi.gui.classic.clickui.impl;
 import cn.hanabi.Hanabi;
 import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.gui.classic.clickui.ClickUI;
+import cn.hanabi.utils.fontmanager.UnicodeFontRenderer;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.render.TranslateUtil;
 import cn.hanabi.value.Value;
@@ -29,7 +30,7 @@ public class BoolValue {
 		this.y = y;
 		anima.interpolate((boolean) values.getValueState() ? 10 : 0, (boolean) values.getValueState() ? 255 : 0, 0.25f);
 		length = 30;
-		HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
+		UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
 		font.drawString(name, x + 20, y + 8, new Color(255,255,255,255).getRGB());
 		RenderUtil.circle(x + 220, y + 12, 4, new Color(70,70,70,255).getRGB());
 		RenderUtil.circle(x + 210, y + 12, 4, new Color(70,70,70,255).getRGB());

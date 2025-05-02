@@ -5,6 +5,7 @@ import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
+import cn.hanabi.utils.fontmanager.UnicodeFontRenderer;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.value.Value;
 import me.theresa.fontRenderer.font.UnicodeFont;
@@ -16,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 
 public class AWClickGUI extends GuiScreen {
     private int stage = 0;
-    HFontRenderer font;
+    UnicodeFontRenderer font;
     ScaledResolution sr;
     public static float scale = 1f;
 

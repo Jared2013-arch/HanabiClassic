@@ -11,6 +11,7 @@ import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.client.DebugUtil;
 import cn.hanabi.utils.client.SoundFxPlayer;
 import cn.hanabi.utils.fileSystem.FileManager;
+import cn.hanabi.utils.fontmanager.FontManager;
 import cn.hanabi.utils.game.NukerUtil;
 import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.utils.waypoints.WaypointManager;
@@ -69,7 +70,7 @@ public class Hanabi {
     public ModManager moduleManager;
     public CommandManager commandManager;
     public FileManager fileManager;
-    public FontLoaders fontManager;
+    public FontManager fontManager;
     public AltFileManager altFileMgr;
     public TrayIcon trayIcon;
     public WaypointManager waypointManager;
@@ -115,6 +116,7 @@ public class Hanabi {
         waypointManager = new WaypointManager();
 
         fileManager.load();
+
 
         if (windows) {
             if (SystemTray.isSupported()) {

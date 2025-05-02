@@ -10,6 +10,7 @@ import cn.hanabi.injection.interfaces.IRenderManager;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.utils.color.Colors;
+import cn.hanabi.utils.fontmanager.UnicodeFontRenderer;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.rotation.RotationUtil;
 import cn.hanabi.value.Value;
@@ -71,7 +72,7 @@ public class Nametags extends Mod {
                             continue;
                         }
 
-                        HFontRenderer font = Hanabi.INSTANCE.fontManager.hm16;
+                        UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.wqy16;
 
                         GlStateManager.translate(renderPositions[0] / scaledRes.getScaleFactor(), renderPositions[1] / scaledRes.getScaleFactor(), 0.0D);
 
@@ -150,11 +151,11 @@ public class Nametags extends Mod {
                                             stack);
                                     if (sLevel > 0) {
                                         drawEnchantTag("Sh" + getColor(sLevel) + sLevel, x, y);
-                                        y += Hanabi.INSTANCE.fontManager.hm13.FONT_HEIGHT - 2;
+                                        y += Hanabi.INSTANCE.fontManager.wqy13.FONT_HEIGHT - 2;
                                     }
                                     if (fLevel > 0) {
                                         drawEnchantTag("Fir" + getColor(fLevel) + fLevel, x, y);
-                                        y += Hanabi.INSTANCE.fontManager.hm13.FONT_HEIGHT - 2;
+                                        y += Hanabi.INSTANCE.fontManager.wqy13.FONT_HEIGHT - 2;
                                     }
                                     if (kLevel > 0) {
                                         drawEnchantTag("Kb" + getColor(kLevel) + kLevel, x, y);
@@ -167,11 +168,11 @@ public class Nametags extends Mod {
                                                 stack);
                                         if (pLevel > 0) {
                                             drawEnchantTag("P" + getColor(pLevel) + pLevel, x, y);
-                                            y += Hanabi.INSTANCE.fontManager.hm13.FONT_HEIGHT - 2;
+                                            y += Hanabi.INSTANCE.fontManager.wqy13.FONT_HEIGHT - 2;
                                         }
                                         if (tLevel > 0) {
                                             drawEnchantTag("Th" + getColor(tLevel) + tLevel, x, y);
-                                            y += Hanabi.INSTANCE.fontManager.hm13.FONT_HEIGHT - 2;
+                                            y += Hanabi.INSTANCE.fontManager.wqy13.FONT_HEIGHT - 2;
                                         }
                                         if (uLevel > 0) {
                                             drawEnchantTag("Unb" + getColor(uLevel) + uLevel, x, y);
@@ -183,12 +184,12 @@ public class Nametags extends Mod {
 
                                         if (powLevel > 0) {
                                             drawEnchantTag("Pow" + getColor(powLevel) + powLevel, x, y);
-                                            y += Hanabi.INSTANCE.fontManager.hm13.FONT_HEIGHT - 2;
+                                            y += Hanabi.INSTANCE.fontManager.wqy13.FONT_HEIGHT - 2;
                                         }
 
                                         if (punLevel > 0) {
                                             drawEnchantTag("Pun" + getColor(punLevel) + punLevel, x, y);
-                                            y += Hanabi.INSTANCE.fontManager.hm13.FONT_HEIGHT - 2;
+                                            y += Hanabi.INSTANCE.fontManager.wqy13.FONT_HEIGHT - 2;
                                         }
 
                                         if (fireLevel > 0) {

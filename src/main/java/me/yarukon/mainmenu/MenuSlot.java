@@ -1,6 +1,7 @@
 package me.yarukon.mainmenu;
 
 import cn.hanabi.Hanabi;
+import cn.hanabi.utils.client.SoundFxPlayer;
 import cn.hanabi.utils.color.Colors;
 import cn.hanabi.utils.game.MouseInputHandler;
 import cn.hanabi.utils.render.RenderUtil;
@@ -39,24 +40,24 @@ public class MenuSlot {
         RenderUtil.circle(x, animatedY, 30, Colors.WHITE.c);
 
         if (this.isHovering(mouseX, mouseY, x - 32, y - 32, x + 32, y + 32)) {
-            Hanabi.INSTANCE.fontManager.hm18.drawString(text, (float) x - 18, y + 40, Colors.WHITE.c);
+            Hanabi.INSTANCE.fontManager.wqy18.drawString(text, (float) x - 18, y + 40, Colors.WHITE.c);
         }
 
         switch (icon) {
             case "\ue90a":
-                Hanabi.INSTANCE.fontManager.icon70.drawString(icon, (float) x - 17, animatedY + 5, Colors.GREY.c);
+                Hanabi.INSTANCE.fontManager.icon70.drawString(icon, (float) x - 17, animatedY - 19, Colors.GREY.c);
                 break;
             case "\ue90c":
-                Hanabi.INSTANCE.fontManager.icon100.drawString(icon, (float) x - 24, animatedY + 10, Colors.GREY.c);
+                Hanabi.INSTANCE.fontManager.icon100.drawString(icon, (float) x - 24, animatedY - 28, Colors.GREY.c);
                 break;
             case "\ue912":
-                Hanabi.INSTANCE.fontManager.icon70.drawString(icon, (float) x - 17, animatedY + 5, Colors.GREY.c);
+                Hanabi.INSTANCE.fontManager.icon70.drawString(icon, (float) x - 17, animatedY - 20, Colors.GREY.c);
                 break;
             case "\ue90d":
-                Hanabi.INSTANCE.fontManager.icon70.drawString(icon, (float) x - 17, animatedY + 6, Colors.GREY.c);
+                Hanabi.INSTANCE.fontManager.icon70.drawString(icon, (float) x - 17, animatedY - 19, Colors.GREY.c);
                 break;
             case "\ue910":
-                Hanabi.INSTANCE.fontManager.icon70.drawString(icon, (float) x - 17, animatedY + 5, Colors.GREY.c);
+                Hanabi.INSTANCE.fontManager.icon70.drawString(icon, (float) x - 17, animatedY - 19, Colors.GREY.c);
         }
 
     }
@@ -64,6 +65,7 @@ public class MenuSlot {
     public void onClick(int mouseX, int mouseY, int x, int y) {
         if (this.isHovering(mouseX, mouseY, x - 32, y - 32, x + 32, y + 32) && handler.canExcecute()) {
             if (screen != null) {
+                new SoundFxPlayer().playSound(SoundFxPlayer.SoundType.Enter,0);
                 Minecraft.getMinecraft().displayGuiScreen(screen);
             } else {
                 Minecraft.getMinecraft().shutdown();

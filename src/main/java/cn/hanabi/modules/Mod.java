@@ -6,6 +6,7 @@ import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.modules.modules.render.HUD;
 import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.client.SoundFxPlayer;
+import cn.hanabi.utils.fontmanager.UnicodeFontRenderer;
 import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.utils.math.Translate;
 import cn.hanabi.utils.render.RenderUtil;
@@ -185,7 +186,7 @@ public abstract class Mod {
     }
 
     public void onRenderArray() {
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
+        UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
 
         if (namewidth == 0)
             namewidth = font.getStringWidth(name);
@@ -286,7 +287,7 @@ public abstract class Mod {
 
     public void setDisplayName(String displayName) {
 
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
+        UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
 
         if (this.displayName == null) {
             this.displayName = displayName;

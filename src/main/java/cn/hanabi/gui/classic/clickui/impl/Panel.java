@@ -6,6 +6,7 @@ import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
+import cn.hanabi.utils.fontmanager.UnicodeFontRenderer;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.utils.render.TranslateUtil;
@@ -64,9 +65,9 @@ public class Panel {
         x = desX;
         y = desY + 20 - yani;
 
-        HFontRenderer titlefont = Hanabi.INSTANCE.fontManager.usans25;
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway20;
-        HFontRenderer icon = Hanabi.INSTANCE.fontManager.icon30;
+        UnicodeFontRenderer titlefont = Hanabi.INSTANCE.fontManager.usans25;
+        UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.raleway20;
+        UnicodeFontRenderer icon = Hanabi.INSTANCE.fontManager.icon30;
 
         float mstartY = y + 40;
         float maddY = 22;
@@ -174,9 +175,9 @@ public class Panel {
         x = desX;
         y = desY + 20 - yani;
 
-        HFontRenderer titlefont = Hanabi.INSTANCE.fontManager.usans25;
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway20;
-        HFontRenderer icon = Hanabi.INSTANCE.fontManager.icon30;
+        UnicodeFontRenderer titlefont = Hanabi.INSTANCE.fontManager.usans25;
+        UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.raleway20;
+        UnicodeFontRenderer icon = Hanabi.INSTANCE.fontManager.icon30;
 
         float mstartY = y + 40;
         float maddY = 22;

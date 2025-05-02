@@ -14,6 +14,7 @@ import cn.hanabi.modules.modules.world.Scaffold;
 import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.color.Colors;
 import cn.hanabi.utils.fontmanager.HanabiFontIcon;
+import cn.hanabi.utils.fontmanager.UnicodeFontRenderer;
 import cn.hanabi.utils.game.PacketHelper;
 import cn.hanabi.utils.math.MathUtils;
 import cn.hanabi.utils.math.animation.SmoothAnimation;
@@ -192,7 +193,7 @@ public class HUD extends Mod {
         }
 
         if (hotbar.getValueState() && mc.getRenderViewEntity() instanceof EntityPlayer && !mc.gameSettings.hideGUI) {
-            HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
+            UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
 
             RenderUtil.drawRect(width / 2 - 91, height - 22, (width / 2 + 90), height - 2,
                     new Color(17, 17, 17, 200).getRGB());
@@ -202,7 +203,7 @@ public class HUD extends Mod {
             long ping = (mc.getCurrentServerData() != null) ? mc.getCurrentServerData().pingToServer : -1;
 
             String ez = "Hanabi Build " + Hanabi.CLIENT_VERSION;
-            Hanabi.INSTANCE.fontManager.hm18.drawString(ez, sr.getScaledWidth() - font.getStringWidth(ez) - 5,
+            Hanabi.INSTANCE.fontManager.wqy18.drawString(ez, sr.getScaledWidth() - font.getStringWidth(ez) - 5,
                     sr.getScaledHeight() - 16, -1);
 
             hotbarAnimation.set(mc.thePlayer.inventory.currentItem * 20);
@@ -217,7 +218,7 @@ public class HUD extends Mod {
                 this.customRenderHotbarItem(j, k, l, event.partialTicks, mc.thePlayer);
                 ItemStack itemstack = mc.thePlayer.inventory.mainInventory[j];
                 if (itemstack == null)
-                    Hanabi.INSTANCE.fontManager.tahomabd_15.drawString(String.valueOf(j + 1), k + 4, l, -1);
+                    Hanabi.INSTANCE.fontManager.comfortaa15.drawString(String.valueOf(j + 1), k + 4, l, -1);
             }
 
             GlStateManager.disableBlend();
@@ -273,7 +274,7 @@ public class HUD extends Mod {
     private void renderArrayList(ScaledResolution sr) {
         ArrayList<Mod> mods = new ArrayList<>(ModManager.getEnabledModListHUD());
         float nextY = 0f;
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
+        UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
         int base;
         int color;
 
@@ -338,8 +339,8 @@ public class HUD extends Mod {
                 blockCount = 0;
             }
             String cunt = "block" + (blockCount > 1 ? "s" : "");
-            HFontRenderer font = Hanabi.INSTANCE.fontManager.usans20;
-            HFontRenderer font2 = Hanabi.INSTANCE.fontManager.usans18;
+            UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.usans20;
+            UnicodeFontRenderer font2 = Hanabi.INSTANCE.fontManager.usans18;
             float length = font.getStringWidth(blockCount + "  ") + font2.getStringWidth(cunt) + 1f;
             YRenderUtil.drawRoundedRect(width / 2 - (length / 2), height + trueHeight - yAxisAnimation, length, 15, 2, RenderUtil.reAlpha(Colors.BLACK.c, alphaAnimation), 0.5f, RenderUtil.reAlpha(Colors.BLACK.c, alphaAnimation));
             this.drawArrowRect(width / 2 - 5, height + trueHeight - 5 - yAxisAnimation, width / 2 + 5, height + trueHeight - yAxisAnimation, RenderUtil.reAlpha(0xff000000, alphaAnimation));
@@ -475,7 +476,7 @@ public class HUD extends Mod {
             }
 
             int y = (height - mc.fontRendererObj.FONT_HEIGHT + x) - 38;
-            HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
+            UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
             font.drawString(PType.replaceAll("\247.", ""), (float) width - 91f,
                     y - mc.fontRendererObj.FONT_HEIGHT + 1, design.getColor());
 

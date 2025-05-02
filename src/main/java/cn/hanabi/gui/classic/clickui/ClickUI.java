@@ -9,6 +9,7 @@ import cn.hanabi.gui.classic.clickui.impl.Panel;
 import cn.hanabi.gui.classic.clickui.misc.ClickEffect;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
+import cn.hanabi.utils.fontmanager.UnicodeFontRenderer;
 import cn.hanabi.utils.render.BlurUtil;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.math.TimeHelper;
@@ -114,7 +115,7 @@ public class ClickUI extends GuiScreen {
         //Blur后边的搜索栏的Shadow
         RenderUtil.drawRect(width / 2 - 60, 0, width / 2 + 60, 20, new Color(0,0,0,120).getRGB());
         if(!searchcontent.equalsIgnoreCase("") && searchcontent != null)  isSearching = true;
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.hm18;
+        UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.wqy18;
         GL11.glPushMatrix();
         GL11.glEnable(3089);
         RenderUtil.startGlScissor(width / 2 - 55, 0, 110, 20);
@@ -129,7 +130,7 @@ public class ClickUI extends GuiScreen {
 
         //Blur后边的Reset的Shadow
         RenderUtil.drawRect(width / 2 + 80, 0, width / 2 + 130, 20, new Color(0,0,0,120).getRGB());
-        Hanabi.INSTANCE.fontManager.hm18.drawCenteredString("Reset Gui", width / 2 + 105, 4, new Color(255,255,255,255).getRGB());
+        Hanabi.INSTANCE.fontManager.wqy18.drawCenteredString("Reset Gui", width / 2 + 105, 4, new Color(255,255,255,255).getRGB());
 
         //Blur后边的Logo的Shadow
         Hanabi.INSTANCE.fontManager.usans30.drawCenteredString(Hanabi.CLIENT_NAME + " Build " + Hanabi.CLIENT_VERSION, width / 2, height - 20, new Color(0,0,0,255).getRGB());
@@ -173,7 +174,7 @@ public class ClickUI extends GuiScreen {
         //画Reset按钮
         boolean resetHover = isHover(mouseX, mouseY, width / 2 + 80, 0, width / 2 + 130, 20) && currentMod == null;
         RenderUtil.drawRect(width / 2 + 80, 0, width / 2 + 130, 20, new Color(0,0,0,resetHover ? 80 : 60).getRGB());
-        Hanabi.INSTANCE.fontManager.hm18.drawCenteredString("Reset Gui", width / 2 + 105, 4, new Color(255,255,255,255).getRGB());
+        Hanabi.INSTANCE.fontManager.wqy18.drawCenteredString("Reset Gui", width / 2 + 105, 4, new Color(255,255,255,255).getRGB());
 
         //设定Value的Panel的动画
         if(currentMod != null){

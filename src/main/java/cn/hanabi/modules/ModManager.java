@@ -14,6 +14,7 @@ import cn.hanabi.modules.modules.player.*;
 import cn.hanabi.modules.modules.render.*;
 import cn.hanabi.modules.modules.world.*;
 import cn.hanabi.modules.modules.world.Disabler.Disabler;
+import cn.hanabi.utils.fontmanager.UnicodeFontRenderer;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import org.jetbrains.annotations.NotNull;
@@ -56,7 +57,7 @@ public class ModManager {
     }
 
     public static ArrayList<Mod> getEnabledModListHUD() {
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
+        UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.raleway17;
 
         ArrayList<Mod> enabledModList = new ArrayList<>(getModules());
         enabledModList.sort((o1, o2) -> (int) (((o2.getDisplayName() != null) ? font.getStringWidth(o2.getDisplayName()) + 3 + font.getStringWidth(o2.getName()) : o2.namewidth) - (((o1.getDisplayName() != null) ? font.getStringWidth(o1.getDisplayName()) + 3 + font.getStringWidth(o1.getName()) : o1.namewidth))));

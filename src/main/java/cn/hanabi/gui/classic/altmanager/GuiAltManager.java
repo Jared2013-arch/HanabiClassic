@@ -232,7 +232,7 @@ public class GuiAltManager extends GuiScreen {
 
         String hoverStringEdit = "";
         //+
-        Hanabi.INSTANCE.fontManager.altManagerIcon45.drawString("C", (width / 2) + 20, 110, Color.WHITE.getRGB());
+        Hanabi.INSTANCE.fontManager.comfortaa45.drawString("+", (width / 2) + 20, 110, Color.WHITE.getRGB());
         if (isRectHovered((width / 2f) + 18, 90, (width / 2f) + 42, 120, mouseX, mouseY)) {
             anim_add = RenderUtil.getAnimationStateSmooth(2, anim_add, 10f / Minecraft.getDebugFPS());
             hoverStringAdd = "Add";
@@ -242,7 +242,7 @@ public class GuiAltManager extends GuiScreen {
         RenderUtil.drawRect((width / 2f) + 18, (float) (125 - anim_add), (width / 2f) + 42, 125, new Color(47, 116, 253, 255).getRGB());
 
         //import
-        Hanabi.INSTANCE.fontManager.altManagerIcon45.drawString("E", (width / 2) + 55, 110, Color.WHITE.getRGB());
+        Hanabi.INSTANCE.fontManager.comfortaa45.drawString("->", (width / 2) + 55, 110, Color.WHITE.getRGB());
         if (isRectHovered((width / 2f) + 48, (float) (90), (width / 2f) + 78, 120, mouseX, mouseY)) {
             anim_import = RenderUtil.getAnimationStateSmooth(2, anim_import, 10f / Minecraft.getDebugFPS());
             hoverStringAdd = "Import from clipboard";
@@ -252,12 +252,12 @@ public class GuiAltManager extends GuiScreen {
         RenderUtil.drawRect((width / 2f) + 48, (float) (125 - anim_import), (width / 2f) + 78, 125, new Color(47, 116, 253, 255).getRGB());
 
 
-        Hanabi.INSTANCE.fontManager.hm16.drawString(hoverStringAdd, (width / 2) + 86, 110, Color.WHITE.getRGB());
+        Hanabi.INSTANCE.fontManager.wqy16.drawString(hoverStringAdd, (width / 2) + 86, 110, Color.WHITE.getRGB());
 
         //edit
         Hanabi.INSTANCE.fontManager.usans25.drawString("Edit Alt", (width / 2) + 20, 130, new Color(255, 255, 255).getRGB());
 
-        Hanabi.INSTANCE.fontManager.altManagerIcon45.drawString("A", (width / 2) + 20, 190, Color.WHITE.getRGB());
+        Hanabi.INSTANCE.fontManager.comfortaa45.drawString("Y", (width / 2) + 20, 190, Color.WHITE.getRGB());
         //(width / 2f) + 18, (float) (298 - anim_import ),(width / 2f) + 43,326
         if (isRectHovered((width / 2f) + 18, (float) (180), (width / 2f) + 43, 210, mouseX, mouseY)) {
             anim_confirm = RenderUtil.getAnimationStateSmooth(2, anim_confirm, 10f / Minecraft.getDebugFPS());
@@ -267,7 +267,7 @@ public class GuiAltManager extends GuiScreen {
         }
         RenderUtil.drawRect((width / 2f) + 18, (float) (200 - anim_confirm), (width / 2f) + 43, 200, new Color(47, 116, 253, 255).getRGB());
 
-        Hanabi.INSTANCE.fontManager.hm16.drawString(hoverStringEdit, (width / 2) + 70, 185, Color.WHITE.getRGB());
+        Hanabi.INSTANCE.fontManager.wqy16.drawString(hoverStringEdit, (width / 2) + 70, 185, Color.WHITE.getRGB());
     }
 
     double anim1 = 0d;
@@ -277,7 +277,7 @@ public class GuiAltManager extends GuiScreen {
     public void drawHeader(int mouseX, int mouseY) {
         String hovering = "";
         //√
-        Hanabi.INSTANCE.fontManager.altManagerIcon45.drawString("A", 65.0f, 55, Color.WHITE.getRGB());
+        Hanabi.INSTANCE.fontManager.comfortaa45.drawString("L", 65.0f, 55, Color.WHITE.getRGB());
         if (isRectHovered(63.0f, 50, (int) (67.0f + 20), 73, mouseX, mouseY)) {
             anim1 = RenderUtil.getAnimationStateSmooth(2, anim1, 10f / Minecraft.getDebugFPS());
             hovering = "Login";
@@ -287,7 +287,7 @@ public class GuiAltManager extends GuiScreen {
         RenderUtil.drawRect(63.0f, (float) (73 - anim1), 67.0f + 20, 73, new Color(47, 116, 253, 255).getRGB());
 
         //×
-        Hanabi.INSTANCE.fontManager.altManagerIcon45.drawString("B", 100.0f, 55, Color.WHITE.getRGB());
+        Hanabi.INSTANCE.fontManager.comfortaa45.drawString("-", 100.0f, 55, Color.WHITE.getRGB());
         if (isRectHovered(95, 50, (int) (95f + 20), 73, mouseX, mouseY)) {
             anim2 = RenderUtil.getAnimationStateSmooth(2, anim2, 10f / Minecraft.getDebugFPS());
             hovering = "Remove";
@@ -297,7 +297,7 @@ public class GuiAltManager extends GuiScreen {
 
         RenderUtil.drawRect(95.0f, (float) (73 - anim2), 95.0f + 25, 73, new Color(47, 116, 253, 255).getRGB());
 
-        Hanabi.INSTANCE.fontManager.hm16.drawString(hovering, 130, 52, new Color(200, 200, 200).getRGB());
+        Hanabi.INSTANCE.fontManager.wqy16.drawString(hovering, 130, 52, new Color(200, 200, 200).getRGB());
     }
 
     public void drawAlt(int par1, int par2) {
@@ -337,9 +337,9 @@ public class GuiAltManager extends GuiScreen {
                     RenderUtil.drawRect(60.0f, y - this.offset - 4, this.width / 2f, y - this.offset + 30,
                             getColor(200, 50));
                 }
-                Hanabi.INSTANCE.fontManager.hm18.drawString(name, 50.0f + 25, y - this.offset, -1);
+                Hanabi.INSTANCE.fontManager.wqy18.drawString(name, 50.0f + 25, y - this.offset, -1);
 
-                Hanabi.INSTANCE.fontManager.hm13.drawString(alt.getUsername(), 50.0f + 25, y - this.offset + 10, getColor(110));
+                Hanabi.INSTANCE.fontManager.wqy13.drawString(alt.getUsername(), 50.0f + 25, y - this.offset + 10, getColor(110));
 
                 //   Hanabi.INSTANCE.fontManager.wqy13.drawString(pass, 50.0f + 25, y - this.offset + 18,
                 //           pass.equals("Cracked") ? new Color(255, 107, 107).getRGB() : getColor(110));

@@ -7,6 +7,7 @@ import cn.hanabi.gui.font.HFontRenderer;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
+import cn.hanabi.utils.fontmanager.UnicodeFontRenderer;
 import cn.hanabi.utils.render.RenderUtil;
 import cn.hanabi.utils.math.TimeHelper;
 import cn.hanabi.utils.fontmanager.HanabiFontIcon;
@@ -88,12 +89,12 @@ public class TabGUI extends Mod {
             if (c == Category.PLAYER) needDraw = HanabiFontIcon.ICON_CLICKGUI_PLAYER;
             if (c == Category.RENDER) needDraw = HanabiFontIcon.ICON_CLICKGUI_RENDER;
             if (c == Category.WORLD) needDraw = HanabiFontIcon.ICON_CLICKGUI_WORLD;
-            HFontRenderer font = Hanabi.INSTANCE.fontManager.icon20;
+            UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.icon20;
             font.drawString(needDraw, startX - 2 + font.getStringWidth(needDraw) / 2f, (float) startY + 3, -1);
             startX += 16;
         }
 
-        HFontRenderer font = Hanabi.INSTANCE.fontManager.raleway16;
+        UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.raleway16;
         // modules screen
         if (screen == 1 || screen == 2) {
             int startXMods = 3;
