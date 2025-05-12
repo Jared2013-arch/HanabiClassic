@@ -29,17 +29,17 @@ Developers who make significant contributions may apply for read/write access to
 
 ## 📝 Development Roadmap (TODO)
 
-- [] Port early Hanabi ClickGUI
+- [ ] Port early Hanabi ClickGUI
 
 - [x] Port Azureware’s ClickGUI
 
-- [] Port early Azureware UI
+- [ ] Port early Azureware UI
 
-- [] Fix Hypixel bypass
+- [ ] Fix Hypixel bypass
 
-- [] Fix numerous bugs
+- [ ] Fix numerous bugs
 
-- [] Add bypass support for other servers
+- [ ] Add bypass support for other servers
 
 
 
