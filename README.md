@@ -1,5 +1,12 @@
 # Hanabi Classic
 
+## 🌐 Language / 语言选择
+
+- [English](README-EN.md)
+- [中文](README.md)
+
+---
+
 Hanabi Classic 是 Hanabi 的一个经典版本，旨在提供一个经典、怀旧的游戏体验。
 
 ---
