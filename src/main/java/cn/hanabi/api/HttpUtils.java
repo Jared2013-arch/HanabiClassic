@@ -204,26 +204,6 @@ public class HttpUtils {
         }
     }
 
-
-    /**
-     * 根据 Map 构建 URL 查询字符串。
-     *
-     * @param url 基础 URL。
-     * @param map 查询参数 Map。
-     * @return 包含查询参数的完整 URL。
-     */
-    public static String buildUrl(String url, Map<String, String> map) {
-        StringBuilder sb = new StringBuilder(url);
-        if (map != null && !map.isEmpty()) {
-            sb.append("?");
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-                sb.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
-            }
-            sb.deleteCharAt(sb.length() - 1); // 删除最后一个 '&'
-        }
-        return sb.toString();
-    }
-
     /**
      * 发送 HTTP GET 请求。
      *

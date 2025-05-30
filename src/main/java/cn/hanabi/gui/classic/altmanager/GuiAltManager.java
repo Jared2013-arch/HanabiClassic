@@ -68,7 +68,7 @@ public class GuiAltManager extends GuiScreen {
             }
         }
         if (button.id == 1) {
-            MicrosoftLogin.loginViaBrowser();
+            new Thread(MicrosoftLogin::loginViaBrowser).start();
         }
         if (button.id == 2) {
             this.mc.displayGuiScreen(new GuiMainMenu());

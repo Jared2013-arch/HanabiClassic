@@ -82,7 +82,6 @@ public class Hanabi {
     //Crasher
     public Queue<Packet<?>> packetQueue;
     public String rank;
-    public boolean loggedIn;
     public String username = System.getProperty("user.name");
     TimeHelper ms = new TimeHelper();
     public long timing;

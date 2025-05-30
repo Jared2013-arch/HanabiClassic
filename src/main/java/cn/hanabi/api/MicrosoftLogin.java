@@ -29,9 +29,8 @@ public class MicrosoftLogin {
     private static final String CLIENT_ID = "00000000402b5328";
     private static final int SERVER_PORT = 17342;
     private static final String REDIRECT_URI = "http://127.0.0.1:" + SERVER_PORT;
-    private static final boolean DEBUG_MODE = true; // Set to true for verbose output, false for less output
+    private static final boolean DEBUG_MODE = false;
 
-    // --- Internal State ---
     private static HttpServer httpServer;
     private static final AtomicBoolean loginCompleted = new AtomicBoolean(false);
 
@@ -386,9 +385,6 @@ public class MicrosoftLogin {
             boolean initiated = loginMicrosoft();
             if (initiated) {
                 logInfo("Browser opened. Waiting for login completion...");
-                // In a real application, you'd want a more sophisticated way to wait for the login to complete,
-                // perhaps with a timeout and a mechanism to notify the main thread.
-                // For this example, a simple loop for demonstration.
                 long startTime = System.currentTimeMillis();
                 long timeout = 120 * 1000; // 2 minutes timeout
                 while (!loginCompleted.get() && (System.currentTimeMillis() - startTime < timeout)) {
