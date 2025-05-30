@@ -51,6 +51,7 @@ public class ReflectionUtils {
 
     public static void setRightClickDelayTimer(int i) {
         try {
+            Client.map = false;
             String s = !Client.map ? "rightClickDelayTimer" : "field_71467_ac";
             Minecraft mc = Minecraft.getMinecraft();
             Class<?> c = mc.getClass();

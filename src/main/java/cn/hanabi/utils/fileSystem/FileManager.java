@@ -186,20 +186,6 @@ public class FileManager {
             if (!gen.exists()) {
                 gen.createNewFile();
             }
-            PrintWriter genPW = new PrintWriter(gen);
-            if (GuiAltManager.Api != null)
-                genPW.write(GuiAltManager.Api);
-            genPW.close();
-            // HANABI_VERIFY
-            // HANABI_VERIFY
-            /*
-             * try { if
-             * (!Hanabi.AES_UTILS.decrypt(Hanabi.HWID_VERIFY).contains(Wrapper.getHWID())) {
-             * FMLCommonHandler.instance().exitJava(0, true); Client.sleep = true; } } catch
-             * (Exception e) { FMLCommonHandler.instance().exitJava(0, true); Client.sleep =
-             * true; }
-             *
-             */
             // Module
             if (!moduleFile.exists()) {
                 moduleFile.createNewFile();
@@ -290,18 +276,6 @@ public class FileManager {
                         continue;
                     m.setKeybind(key);
                 }
-            }
-            // altgen
-            if (!gen.exists()) {
-                gen.createNewFile();
-            } else {
-                String result;
-                BufferedReader br = new BufferedReader(new FileReader(gen));
-                result = br.readLine();
-                if (GuiAltManager.Api == null) {
-                    GuiAltManager.Api = result;
-                }
-
             }
 
             // Module

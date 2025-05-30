@@ -332,22 +332,22 @@ public class HUD extends Mod {
         float trueHeight = 18;
 
         //渲染用
-        if (alphaAnimation > 0.2f) {
-            try {
-                blockCount = Scaffold.items.stackSize;
-            } catch (Exception ignore) {
-                blockCount = 0;
-            }
-            String cunt = "block" + (blockCount > 1 ? "s" : "");
-            UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.usans20;
-            UnicodeFontRenderer font2 = Hanabi.INSTANCE.fontManager.usans18;
-            float length = font.getStringWidth(blockCount + "  ") + font2.getStringWidth(cunt) + 1f;
-            YRenderUtil.drawRoundedRect(width / 2 - (length / 2), height + trueHeight - yAxisAnimation, length, 15, 2, RenderUtil.reAlpha(Colors.BLACK.c, alphaAnimation), 0.5f, RenderUtil.reAlpha(Colors.BLACK.c, alphaAnimation));
-            this.drawArrowRect(width / 2 - 5, height + trueHeight - 5 - yAxisAnimation, width / 2 + 5, height + trueHeight - yAxisAnimation, RenderUtil.reAlpha(0xff000000, alphaAnimation));
-
-            font.drawString(blockCount + "", width / 2 - (length / 2 - 2f), height + trueHeight + 3 - yAxisAnimation, RenderUtil.reAlpha(Colors.WHITE.c, MathUtils.clampValue(alphaAnimation + 0.25f, 0f, 1f)));
-            font2.drawString(cunt, width / 2 - (length / 2 - 1f) + font.getStringWidth(blockCount + " "), height + (trueHeight + 4) - yAxisAnimation, RenderUtil.reAlpha(Colors.WHITE.c, MathUtils.clampValue(alphaAnimation - 0.1f, 0f, 1f)));
-        }
+//        if (alphaAnimation > 0.2f) {
+//            try {
+//                blockCount = Scaffold.items.stackSize;
+//            } catch (Exception ignore) {
+//                blockCount = 0;
+//            }
+//            String cunt = "block" + (blockCount > 1 ? "s" : "");
+//            UnicodeFontRenderer font = Hanabi.INSTANCE.fontManager.usans20;
+//            UnicodeFontRenderer font2 = Hanabi.INSTANCE.fontManager.usans18;
+//            float length = font.getStringWidth(blockCount + "  ") + font2.getStringWidth(cunt) + 1f;
+//            YRenderUtil.drawRoundedRect(width / 2 - (length / 2), height + trueHeight - yAxisAnimation, length, 15, 2, RenderUtil.reAlpha(Colors.BLACK.c, alphaAnimation), 0.5f, RenderUtil.reAlpha(Colors.BLACK.c, alphaAnimation));
+//            this.drawArrowRect(width / 2 - 5, height + trueHeight - 5 - yAxisAnimation, width / 2 + 5, height + trueHeight - yAxisAnimation, RenderUtil.reAlpha(0xff000000, alphaAnimation));
+//
+//            font.drawString(blockCount + "", width / 2 - (length / 2 - 2f), height + trueHeight + 3 - yAxisAnimation, RenderUtil.reAlpha(Colors.WHITE.c, MathUtils.clampValue(alphaAnimation + 0.25f, 0f, 1f)));
+//            font2.drawString(cunt, width / 2 - (length / 2 - 1f) + font.getStringWidth(blockCount + " "), height + (trueHeight + 4) - yAxisAnimation, RenderUtil.reAlpha(Colors.WHITE.c, MathUtils.clampValue(alphaAnimation - 0.1f, 0f, 1f)));
+//        }
     }
 
     public void drawArrowRect(float left, float top, float right, float bottom, int color) {

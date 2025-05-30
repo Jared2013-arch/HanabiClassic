@@ -143,8 +143,10 @@ public class FontManager {
         comfortaa17 = this.getFont("comfortaa", 17.0F);
         comfortaa18 = this.getFont("comfortaa", 18.0F);
         comfortaa20 = this.getFont("comfortaa", 20.0F);
+        comfortaa22 = this.getFont("comfortaa", 22.0F);
         comfortaa25 = this.getFont("comfortaa", 25.0F);
         comfortaa30 = this.getFont("comfortaa", 30.0F);
+        comfortaa28 = this.getFont("comfortaa", 28.0F);
         comfortaa35 = this.getFont("comfortaa", 35.0F);
         comfortaa40 = this.getFont("comfortaa", 40.0F);
         comfortaa45 = this.getFont("comfortaa", 45.0F);

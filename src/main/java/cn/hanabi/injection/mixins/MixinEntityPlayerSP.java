@@ -123,7 +123,7 @@ public class MixinEntityPlayerSP extends AbstractClientPlayer implements IEntity
         EventPreMotion pre = new EventPreMotion(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
         EventManager.call(pre);
         if (pre.cancel) {
-            EventPostMotion post = new EventPostMotion(pre.pitch);
+            EventPostMotion post = new EventPostMotion(pre.pitch, pre.yaw);
             EventManager.call(post);
             return;
         }
@@ -195,7 +195,7 @@ public class MixinEntityPlayerSP extends AbstractClientPlayer implements IEntity
                 this.lastReportedYaw = yaw;
                 this.lastReportedPitch = pitch;
             }
-            EventPostMotion post2 = new EventPostMotion(pre.pitch);
+            EventPostMotion post2 = new EventPostMotion(pre.pitch, yaw);
             EventManager.call(post2);
         }
     }
@@ -543,7 +543,7 @@ public class MixinEntityPlayerSP extends AbstractClientPlayer implements IEntity
             double d3 = x;
             double d4 = y;
             double d5 = z;
-            boolean flag = this.onGround && (this.isSneaking() && !ModManager.getModule("Scaffold").isEnabled()) && this instanceof EntityPlayer;
+            boolean flag = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
             safeMode = this.onGround && event.getSafe() && this instanceof EntityPlayer;
 
             if (flag || safeMode) {

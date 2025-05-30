@@ -24,7 +24,6 @@ public class Eagle extends Mod {
     public void onUpdate(EventUpdate event) {
         if (!mc.thePlayer.onGround)
             return;
-
         KeyBinding.setKeyBindState(mc.gameSettings.keyBindSneak.getKeyCode(), getBlockUnderPlayer(mc.thePlayer) instanceof BlockAir);
     }
 

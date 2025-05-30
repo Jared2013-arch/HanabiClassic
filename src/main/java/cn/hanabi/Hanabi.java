@@ -3,10 +3,7 @@ package cn.hanabi;
 import cn.hanabi.command.CommandManager;
 import cn.hanabi.events.EventLoop;
 import cn.hanabi.events.EventPacket;
-import cn.hanabi.gui.classic.altmanager.AltFileManager;
-import cn.hanabi.gui.font.FontLoaders;
 import cn.hanabi.modules.ModManager;
-import cn.hanabi.utils.bypass.AESUtil;
 import cn.hanabi.utils.client.ClientUtil;
 import cn.hanabi.utils.client.DebugUtil;
 import cn.hanabi.utils.client.SoundFxPlayer;
@@ -71,7 +68,6 @@ public class Hanabi {
     public CommandManager commandManager;
     public FileManager fileManager;
     public FontManager fontManager;
-    public AltFileManager altFileMgr;
     public TrayIcon trayIcon;
     public WaypointManager waypointManager;
 
@@ -106,7 +102,6 @@ public class Hanabi {
 
         EventManager.register(new NukerUtil());
 
-        (altFileMgr = new AltFileManager()).loadFiles();
         ClientUtil.notifications.clear();
 
         moduleManager.addModules();

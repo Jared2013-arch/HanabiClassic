@@ -1,8 +1,8 @@
 package cn.hanabi.api;
 
-import cn.hanabi.Wrapper;
 import cn.hanabi.injection.interfaces.IMinecraft;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Session;
@@ -12,114 +12,431 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.StringJoiner;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MicrosoftLogin {
 
-    private static final String CLIENT_ID = "d1ed1b72-9f7c-41bc-9702-365d2cbd2e38";
+    public static String loginProgressMessage = "Waiting for login...";
+
+    // --- Configuration ---
+    private static final String CLIENT_ID = "00000000402b5328";
+    private static final int SERVER_PORT = 17342;
+    private static final String REDIRECT_URI = "http://127.0.0.1:" + SERVER_PORT;
+    private static final boolean DEBUG_MODE = true; // Set to true for verbose output, false for less output
+
+    // --- Internal State ---
     private static HttpServer httpServer;
+    private static final AtomicBoolean loginCompleted = new AtomicBoolean(false);
 
-    static {
+    /**
+     * Starts the local HTTP server to handle the Microsoft authentication redirect.
+     * This method should be called before opening the browser for login.
+     */
+    public static void startLocalHttpServer() {
+        if (httpServer != null) {
+            logInfo("HTTP server is already running.");
+            return;
+        }
+
         try {
-            httpServer = HttpServer.create(new InetSocketAddress(17342), 0);
-            System.out.println("create login server");
+            httpServer = HttpServer.create(new InetSocketAddress(SERVER_PORT), 0);
+            logInfo("Created login server on port " + SERVER_PORT);
+
             httpServer.createContext("/", exchange -> {
-                System.out.println("new connection");
-                Map<String, String> map = new HashMap<>();
-                String s1 = exchange.getRequestURI().toString();
-                String code = s1.substring(s1.indexOf("=") + 1);
-                httpServer.stop(3);
-                map.put("client_id", CLIENT_ID);
-                map.put("code", code);
-                map.put("grant_type", "authorization_code");
-                map.put("redirect_uri", "http://127.0.0.1:17342");
-                String oauth = HttpUtils.postMAP("https://login.live.com/oauth20_token.srf", map);
-                String access_token = HttpUtils.gson().fromJson(oauth, JsonObject.class).get("access_token").getAsString();
-                System.out.println(access_token);
+                logInfo("New connection received on HTTP server.");
+                String responseMessage = "Authentication successful! You can close this tab.";
+                try (OutputStream responseBody = exchange.getResponseBody()) {
+                    exchange.sendResponseHeaders(200, responseMessage.length());
+                    responseBody.write(responseMessage.getBytes(StandardCharsets.UTF_8));
+                } catch (IOException e) {
+                    logError("Error sending HTTP response: " + e.getMessage());
+                } finally {
+                    // Stop the server immediately after receiving the code
+                    stopLocalHttpServer();
+                }
 
-                map.clear();
-                Map<String, Object> map2 = new HashMap<>();
-                map2.put("AuthMethod", "RPS");
-                map2.put("SiteName", "user.auth.xboxlive.com");
-                map2.put("RpsTicket", "d=" + access_token);
-                JsonObject jo = new JsonObject();
-                jo.add("Properties", HttpUtils.gson().toJsonTree(map2));
-                jo.addProperty("RelyingParty", "http://auth.xboxlive.com");
-                jo.addProperty("TokenType", "JWT");
-                String s2 = HttpUtils.postJSON("https://user.auth.xboxlive.com/user/authenticate", jo);
-                JsonObject jsonObject = HttpUtils.gson().fromJson(s2, JsonObject.class);
-                String xbl_token = jsonObject.get("Token").getAsString();
-                String xbl_userhash = jsonObject.get("DisplayClaims").getAsJsonObject().get("xui").getAsJsonArray().get(0).getAsJsonObject().get("uhs").getAsString();
+                String requestUri = exchange.getRequestURI().toString();
+                logDebug("Received request URI: " + requestUri);
 
-                System.out.println(xbl_token);
+                if (requestUri.contains("code=")) {
+                    String code = requestUri.substring(requestUri.indexOf("=") + 1);
+                    logInfo("Authorization code received. Starting token exchange...");
+                    try {
+                        // Exchange authorization code for initial tokens
+                        Map<String, String> tokenRequestParams = new HashMap<>();
+                        tokenRequestParams.put("client_id", CLIENT_ID);
+                        tokenRequestParams.put("code", code);
+                        tokenRequestParams.put("grant_type", "authorization_code");
+                        tokenRequestParams.put("redirect_uri", REDIRECT_URI);
 
-                JsonObject jo2 = new JsonObject();
-                JsonObject jop = new JsonObject();
-                jop.addProperty("SandboxId", "RETAIL");
-                jop.add("UserTokens", HttpUtils.gson().toJsonTree(new String[]{xbl_token}));
-                jo2.add("Properties", jop);
-                jo2.addProperty("RelyingParty", "rp://api.minecraftservices.com/");
-                jo2.addProperty("TokenType", "JWT");
-                String xsts = HttpUtils.postJSON("https://xsts.auth.xboxlive.com/xsts/authorize", jo2);
+                        String oauthResponse = HttpUtils.postMAP("https://login.live.com/oauth20_token.srf", tokenRequestParams);
+                        logDebug("OAuth Response: " + oauthResponse);
+                        JsonObject oauthJson = HttpUtils.gson().fromJson(oauthResponse, JsonObject.class);
+                        String accessToken = getJsonString(oauthJson, "access_token", "OAuth access token");
+                        String refreshToken = getJsonString(oauthJson, "refresh_token", "OAuth refresh token");
+                        logInfo("OAuth Access Token obtained. (Refresh Token: " + (DEBUG_MODE ? refreshToken : "[HIDDEN]") + ")");
 
-
-                System.out.println(xsts);
-
-
-                String xsts_token = HttpUtils.gson().fromJson(xsts, JsonObject.class).get("Token").getAsString();
-                String xsts_userhash = HttpUtils.gson().fromJson(xsts, JsonObject.class).get("DisplayClaims").getAsJsonObject().get("xui").getAsJsonArray().get(0).getAsJsonObject().get("uhs").getAsString();
-                JsonObject properties = new JsonObject();
-                properties.addProperty("identityToken", "XBL3.0 x=" + xsts_userhash + ";" + xsts_token);
-                String minecraftAuth = HttpUtils.postJSON("https://api.minecraftservices.com/authentication/login_with_xbox", properties);
-
-                JsonObject json = HttpUtils.gson().fromJson(minecraftAuth, JsonObject.class);
-                String accessToken = json.get("access_token").getAsString();
-                String uuid = json.get("username").getAsString();
-                System.out.println(uuid);
-
-                System.out.println("Bearer " + accessToken);
-                // get profile
-                Map<String, String> map3 = new HashMap<>();
-                map3.put("Authorization", "Bearer " + accessToken);
-                String profile = HttpUtils.get("https://api.minecraftservices.com/minecraft/profile", map3);
-                JsonObject profileJson = HttpUtils.gson().fromJson(profile, JsonObject.class);
-                String uuid2 = profileJson.get("id").getAsString();
-                String name = profileJson.get("name").getAsString();
-                System.out.println(uuid2);
-                System.out.println(name);
-                ((IMinecraft) Minecraft.getMinecraft()).setSession(new Session(name, uuid2, accessToken, "mojang"));
-                String result = "Success";
-
-                exchange.sendResponseHeaders(200, result.length());
-                OutputStream responseBody = exchange.getResponseBody();
-                responseBody.write(result.getBytes(StandardCharsets.UTF_8));
+                        // Continue with Minecraft authentication using the obtained access token
+                        continueMinecraftAuthentication(accessToken);
+                        loginCompleted.set(true);
+                    } catch (Exception e) {
+                        logError("Error during login completion: " + e.getMessage());
+                        setStep("Login Failed. (error: " + e.getMessage() + ")");
+                    }
+                } else {
+                    logError("No authorization code found in the redirect URI.");
+                    setStep("Login failed. (no authorization code found in the redirect URI)");
+                    stopLocalHttpServer();
+                }
             });
-            httpServer.setExecutor(null);
+
+            // Use a single-thread executor for the HTTP server to avoid resource issues
+            httpServer.setExecutor(Executors.newSingleThreadExecutor());
             httpServer.start();
+            logInfo("HTTP server started successfully.");
         } catch (IOException e) {
+            logError("Failed to start HTTP server: " + e.getMessage());
+            setStep("Login failed. (error: " + e.getMessage() + ")");
+            httpServer = null; // Ensure server is null if creation failed
+            throw new RuntimeException("Failed to start HTTP server for Microsoft login.", e);
+        }
+    }
+
+    /**
+     * Stops the local HTTP server.
+     */
+    public static void stopLocalHttpServer() {
+        if (httpServer != null) {
+            httpServer.stop(1); // Stop with a 1-second delay to allow current requests to finish
+            httpServer = null;
+            logInfo("HTTP server stopped.");
+        }
+    }
+
+    /**
+     * Initiates the Microsoft login process by opening a browser window.
+     * This method will start a local HTTP server to listen for the redirect.
+     *
+     * @return true if the login process is successfully initiated (browser opened), false otherwise.
+     */
+    public static boolean loginMicrosoft() {
+        startLocalHttpServer(); // Ensure the server is running before opening the browser
+        if (httpServer == null) {
+            logError("HTTP server failed to start. Cannot proceed with browser login.");
+            return false;
+        }
+
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("client_id", CLIENT_ID);
+            params.put("response_type", "code");
+            params.put("redirect_uri", REDIRECT_URI);
+            params.put("scope", "service::user.auth.xboxlive.com::MBI_SSL");
+
+            String microsoftAuthUrl = buildUrl("https://login.live.com/oauth20_authorize.srf", params);
+            logInfo("Opening browser for Microsoft authentication: " + microsoftAuthUrl);
+            Desktop.getDesktop().browse(URI.create(microsoftAuthUrl));
+            return true;
+        } catch (IOException e) {
+            logError("Failed to open browser for Microsoft login: " + e.getMessage());
+            setStep("Login failed. (failed to open browser for Microsoft login)");
+            stopLocalHttpServer(); // Stop server if browser can't be opened
+            return false;
+        }
+    }
+
+    /**
+     * Continues the Minecraft authentication process using an Xbox Live access token.
+     * This method covers steps 2-5 of the original login flow:
+     * Xbox Live authentication, XSTS authorization, Minecraft authentication, and profile retrieval.
+     *
+     * @param xboxAccessToken The Xbox Live access token obtained from the initial OAuth flow or refresh token.
+     * @throws IOException If any HTTP request fails or authentication fails.
+     */
+    private static void continueMinecraftAuthentication(String xboxAccessToken) throws IOException {
+        logInfo("Continuing Minecraft authentication flow...");
+
+        // 2. Authenticate with Xbox Live
+        setStep("Step 2/5: Authenticating with Xbox Live...");
+        Map<String, Object> xboxAuthProperties = new HashMap<>();
+        xboxAuthProperties.put("AuthMethod", "RPS");
+        xboxAuthProperties.put("SiteName", "user.auth.xboxlive.com");
+        xboxAuthProperties.put("RpsTicket", xboxAccessToken);
+
+        JsonObject xboxAuthPayload = new JsonObject();
+        xboxAuthPayload.add("Properties", HttpUtils.gson().toJsonTree(xboxAuthProperties));
+        xboxAuthPayload.addProperty("RelyingParty", "http://auth.xboxlive.com");
+        xboxAuthPayload.addProperty("TokenType", "JWT");
+
+        String xboxAuthResponse = HttpUtils.postJSON("https://user.auth.xboxlive.com/user/authenticate", xboxAuthPayload);
+        logDebug("Xbox Auth Response: " + xboxAuthResponse);
+        JsonObject xboxAuthJson = HttpUtils.gson().fromJson(xboxAuthResponse, JsonObject.class);
+        String xblToken = getJsonString(xboxAuthJson, "Token", "XBL Token");
+        String xblUserhash = xboxAuthJson.getAsJsonObject("DisplayClaims")
+                .getAsJsonArray("xui").get(0).getAsJsonObject()
+                .get("uhs").getAsString();
+        logInfo("Xbox Live Token and Userhash obtained.");
+
+        // 3. Authorize with XSTS
+        setStep("Step 3/5: Authorizing with XSTS service...");
+        JsonObject xstsProperties = new JsonObject();
+        xstsProperties.addProperty("SandboxId", "RETAIL");
+        xstsProperties.add("UserTokens", HttpUtils.gson().toJsonTree(new String[]{xblToken}));
+
+        JsonObject xstsPayload = new JsonObject();
+        xstsPayload.add("Properties", xstsProperties);
+        xstsPayload.addProperty("RelyingParty", "rp://api.minecraftservices.com/");
+        xstsPayload.addProperty("TokenType", "JWT");
+
+        String xstsResponse = HttpUtils.postJSON("https://xsts.auth.xboxlive.com/xsts/authorize", xstsPayload);
+        logDebug("XSTS Response: " + xstsResponse);
+        JsonObject xstsJson = HttpUtils.gson().fromJson(xstsResponse, JsonObject.class);
+
+        if (xstsJson.has("XErr")) {
+            long xErrCode = xstsJson.get("XErr").getAsLong();
+            String message = xstsJson.has("Message") ? xstsJson.get("Message").getAsString() : "Unknown XSTS error.";
+            logError("XSTS Error: " + message + " (Code: " + xErrCode + ")");
+            if (xErrCode == 2148916064L) {
+                logError("This typically means the account is a child account and requires adult verification.");
+            } else if (xErrCode == 2148916065L) {
+                logError("This usually means the account has not accepted the Xbox Live terms of service.");
+            }
+            throw new IOException("XSTS authorization failed: " + message);
+        }
+
+        String xstsToken = getJsonString(xstsJson, "Token", "XSTS Token");
+        String xstsUserhash = xstsJson.getAsJsonObject("DisplayClaims")
+                .getAsJsonArray("xui").get(0).getAsJsonObject()
+                .get("uhs").getAsString();
+        logInfo("XSTS Token and Userhash obtained.");
+
+        // 4. Authenticate with Minecraft
+        setStep("Step 4/5: Authenticating with Minecraft services...");
+        JsonObject minecraftAuthPayload = new JsonObject();
+        minecraftAuthPayload.addProperty("identityToken", "XBL3.0 x=" + xstsUserhash + ";" + xstsToken);
+
+        String minecraftAuthResponse = HttpUtils.postJSON("https://api.minecraftservices.com/authentication/login_with_xbox", minecraftAuthPayload);
+        logDebug("Minecraft Auth Response: " + minecraftAuthResponse);
+        JsonObject minecraftAuthJson = HttpUtils.gson().fromJson(minecraftAuthResponse, JsonObject.class);
+        String mcAccessToken = getJsonString(minecraftAuthJson, "access_token", "Minecraft access token");
+        String mcUsername = getJsonString(minecraftAuthJson, "username", "Minecraft username"); // This is often the UUID, not the display name
+        logInfo("Minecraft Access Token obtained. Username: " + mcUsername);
+
+
+        // 5. Get Minecraft Profile
+        setStep("Step 5/5: Retrieving Minecraft profile...");
+        Map<String, String> profileHeaders = new HashMap<>();
+        profileHeaders.put("Authorization", "Bearer " + mcAccessToken);
+
+        String profileResponse = HttpUtils.get("https://api.minecraftservices.com/minecraft/profile", profileHeaders);
+        logDebug("Minecraft Profile Response: " + profileResponse);
+        JsonObject profileJson = HttpUtils.gson().fromJson(profileResponse, JsonObject.class);
+
+        String uuid = getJsonString(profileJson, "id", "Minecraft UUID");
+        String name = getJsonString(profileJson, "name", "Minecraft Username");
+        boolean hasBoughtGame = profileJson.has("name") && profileJson.has("id"); // Simple check
+
+        if (!hasBoughtGame) {
+            logError("Minecraft profile indicates game not owned or profile not found.");
+            throw new IOException("Minecraft account does not own the game or profile not found.");
+        }
+
+        logInfo("Successfully retrieved Minecraft profile - Name: " + name + ", UUID: " + uuid);
+
+        // Set Minecraft Session
+        logInfo("Setting Minecraft session...");
+        ((IMinecraft) Minecraft.getMinecraft()).setSession(new Session(name, uuid, mcAccessToken, "mojang"));
+        setStep("Minecraft session updated successfully!");
+    }
+
+    /**
+     * Logs in to Minecraft using a refresh token.
+     *
+     * @param refreshToken The refresh token obtained from a previous login.
+     * @return The new Minecraft access token, or null if login fails.
+     */
+    public static String loginRefreshToken(String refreshToken) {
+        logInfo("Attempting to refresh Minecraft session using refresh token...");
+        final String oauthTokenUrl = "https://login.live.com/oauth20_token.srf";
+        final Map<String, String> params = new LinkedHashMap<>();
+        params.put("client_id", CLIENT_ID);
+        params.put("refresh_token", refreshToken);
+        params.put("grant_type", "refresh_token");
+        params.put("redirect_uri", "https://login.live.com/oauth20_desktop.srf");
+        params.put("scope", "service::user.auth.xboxlive.com::MBI_SSL");
+
+        try {
+            String response = HttpUtils.postMAP(oauthTokenUrl, params);
+            logDebug("Refresh token response: " + response);
+            JsonObject respJson = new JsonParser().parse(response).getAsJsonObject();
+
+            if (respJson.has("error")) {
+                String error = respJson.get("error").getAsString();
+                String errorDescription = respJson.has("error_description") ? respJson.get("error_description").getAsString() : "No description.";
+                logError("Failed to refresh token: " + error + " - " + errorDescription);
+                return null;
+            }
+
+            String newAccessToken = getJsonString(respJson, "access_token", "New access token");
+            // You should store this new refresh token to use for future refresh attempts
+            String newRefreshToken = getJsonString(respJson, "refresh_token", "New refresh token");
+            logInfo("Successfully refreshed OAuth tokens. New refresh token: " + (DEBUG_MODE ? newRefreshToken : "[HIDDEN]"));
+
+            continueMinecraftAuthentication(newAccessToken);
+
+            return newAccessToken;
+
+        } catch (IOException | IllegalStateException e) {
+            logError("Error during refresh token login: " + e.getMessage());
+            setStep("Failed to refresh OAuth token");
+            e.printStackTrace(); // Print stack trace for debugging
+            return null;
+        }
+    }
+
+    /**
+     * Converts a map of parameters to a URL-encoded string.
+     *
+     * @param params The map of parameters.
+     * @return A URL-encoded string.
+     */
+    private static String paramsToUrlEncoded(Map<String, String> params) {
+        StringJoiner sj = new StringJoiner("&");
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            sj.add(urlEncode(entry.getKey()) + "=" + urlEncode(entry.getValue()));
+        }
+        return sj.toString();
+    }
+
+    /**
+     * Builds a URL with query parameters from a base URL and a map of parameters.
+     *
+     * @param baseUrl The base URL.
+     * @param params  The map of parameters.
+     * @return The constructed URL.
+     */
+    private static String buildUrl(String baseUrl, Map<String, String> params) {
+        if (params.isEmpty()) {
+            return baseUrl;
+        }
+        return baseUrl + "?" + paramsToUrlEncoded(params);
+    }
+
+    /**
+     * URL-encodes a string.
+     *
+     * @param value The string to encode.
+     * @return The URL-encoded string.
+     */
+    private static String urlEncode(String value) {
+        try {
+            return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
+        } catch (Exception e) {
+            logError("Failed to URL encode: " + value + " - " + e.getMessage());
+            return value; // Fallback to unencoded if encoding fails
+        }
+    }
+
+    /**
+     * Safely retrieves a string value from a JsonObject.
+     *
+     * @param jsonObject The JsonObject.
+     * @param key        The key to retrieve.
+     * @param fieldName  A user-friendly name for the field (for logging).
+     * @return The string value.
+     * @throws IOException If the key is not found or is not a string.
+     */
+    private static String getJsonString(JsonObject jsonObject, String key, String fieldName) throws IOException {
+        if (jsonObject == null || !jsonObject.has(key) || !jsonObject.get(key).isJsonPrimitive()) {
+            logError("Missing or invalid field in JSON response: " + fieldName + " (key: " + key + ")");
+            throw new IOException("Missing or invalid field in JSON response: " + fieldName);
+        }
+        return jsonObject.get(key).getAsString();
+    }
+
+    // --- Logging Utilities ---
+
+    private static void logInfo(String message) {
+        System.out.println("[MicrosoftLogin INFO] " + message);
+    }
+
+    private static void logDebug(String message) {
+        if (DEBUG_MODE) {
+            System.out.println("[MicrosoftLogin DEBUG] " + message);
+        }
+    }
+
+    private static void logError(String message) {
+        System.err.println("[MicrosoftLogin ERROR] " + message);
+    }
+
+
+
+    public static void loginViaBrowser() {
+        try {
+            logInfo("Starting Microsoft login process...");
+            setStep("Step 1/5: Retrieving accessToken from browser...");
+            boolean initiated = loginMicrosoft();
+            if (initiated) {
+                logInfo("Browser opened. Waiting for login completion...");
+                // In a real application, you'd want a more sophisticated way to wait for the login to complete,
+                // perhaps with a timeout and a mechanism to notify the main thread.
+                // For this example, a simple loop for demonstration.
+                long startTime = System.currentTimeMillis();
+                long timeout = 120 * 1000; // 2 minutes timeout
+                while (!loginCompleted.get() && (System.currentTimeMillis() - startTime < timeout)) {
+                    try {
+                        Thread.sleep(1000); // Wait 1 second
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        logError("Login wait interrupted: " + e.getMessage());
+                        setStep("Login wait interrupted");
+                        break;
+                    }
+                }
+                if (loginCompleted.get()) {
+                    logInfo("Login process finished.");
+                } else {
+                    logError("Login timed out or did not complete.");
+                }
+            } else {
+                logError("Failed to initiate browser login.");
+            }
+        } catch (Exception e) {
+            logError("An unexpected error occurred in main: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            stopLocalHttpServer(); // Ensure server is stopped on exit
+        }
+    }
+
+    public static void loginViaRefreshToken(String token) {
+        String storedRefreshToken = token;
+        logInfo("Attempting to login with refresh token...");
+        setStep("Step 1/5: Retrieving accessToken using refresh token...");
+        try {
+            String newMcAccessToken = loginRefreshToken(storedRefreshToken);
+            if (newMcAccessToken != null) {
+                logInfo("Successfully obtained new Minecraft access token via refresh token.");
+                // At this point, the Minecraft session would have been set by continueMinecraftAuthentication
+            } else {
+                logError("Failed to obtain new Minecraft access token via refresh token.");
+            }
+        } catch (Exception e) {
+            logError("An unexpected error occurred during refresh token login: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-
-    public static boolean login() {
-        AtomicBoolean flag = new AtomicBoolean(false);
-        try {
-            Map<String, String> map = new HashMap<>();
-            map.put("client_id", CLIENT_ID);
-            map.put("response_type", "code");
-            map.put("redirect_uri", "http://127.0.0.1:17342");
-            map.put("scope", "XboxLive.signin%20XboxLive.offline_access");
-            String s = HttpUtils.buildUrl("https://login.live.com/oauth20_authorize.srf",
-                    map);
-            Desktop.getDesktop().browse(URI.create(s));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return flag.get();
-
+    public static void setStep(String step) {
+        logInfo(step);
+        loginProgressMessage = step;
     }
 }
