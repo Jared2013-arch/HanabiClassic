@@ -26,7 +26,10 @@ public class MicrosoftLogin {
     public static String loginProgressMessage = "Waiting for login...";
 
     // --- Configuration ---
+
     private static final String CLIENT_ID = "00000000402b5328";
+    private static final String CLIENT_ID_2 = "d1ed1b72-9f7c-41bc-9702-365d2cbd2e38";
+
     private static final int SERVER_PORT = 17342;
     private static final String REDIRECT_URI = "http://127.0.0.1:" + SERVER_PORT;
     private static final boolean DEBUG_MODE = false;
@@ -70,7 +73,7 @@ public class MicrosoftLogin {
                     try {
                         // Exchange authorization code for initial tokens
                         Map<String, String> tokenRequestParams = new HashMap<>();
-                        tokenRequestParams.put("client_id", CLIENT_ID);
+                        tokenRequestParams.put("client_id", CLIENT_ID_2);
                         tokenRequestParams.put("code", code);
                         tokenRequestParams.put("grant_type", "authorization_code");
                         tokenRequestParams.put("redirect_uri", REDIRECT_URI);
@@ -83,7 +86,7 @@ public class MicrosoftLogin {
                         logInfo("OAuth Access Token obtained. (Refresh Token: " + (DEBUG_MODE ? refreshToken : "[HIDDEN]") + ")");
 
                         // Continue with Minecraft authentication using the obtained access token
-                        continueMinecraftAuthentication(accessToken);
+                        continueMinecraftAuthentication(accessToken, false);
                         loginCompleted.set(true);
                     } catch (Exception e) {
                         logError("Error during login completion: " + e.getMessage());
@@ -134,10 +137,10 @@ public class MicrosoftLogin {
 
         try {
             Map<String, String> params = new HashMap<>();
-            params.put("client_id", CLIENT_ID);
+            params.put("client_id", CLIENT_ID_2);
             params.put("response_type", "code");
             params.put("redirect_uri", REDIRECT_URI);
-            params.put("scope", "service::user.auth.xboxlive.com::MBI_SSL");
+            params.put("scope", "XboxLive.signin offline_access");
 
             String microsoftAuthUrl = buildUrl("https://login.live.com/oauth20_authorize.srf", params);
             logInfo("Opening browser for Microsoft authentication: " + microsoftAuthUrl);
@@ -159,7 +162,7 @@ public class MicrosoftLogin {
      * @param xboxAccessToken The Xbox Live access token obtained from the initial OAuth flow or refresh token.
      * @throws IOException If any HTTP request fails or authentication fails.
      */
-    private static void continueMinecraftAuthentication(String xboxAccessToken) throws IOException {
+    private static void continueMinecraftAuthentication(String xboxAccessToken, boolean refreshToken) throws IOException {
         logInfo("Continuing Minecraft authentication flow...");
 
         // 2. Authenticate with Xbox Live
@@ -167,7 +170,11 @@ public class MicrosoftLogin {
         Map<String, Object> xboxAuthProperties = new HashMap<>();
         xboxAuthProperties.put("AuthMethod", "RPS");
         xboxAuthProperties.put("SiteName", "user.auth.xboxlive.com");
-        xboxAuthProperties.put("RpsTicket", xboxAccessToken);
+        if (refreshToken) {
+            xboxAuthProperties.put("RpsTicket", xboxAccessToken);
+        }else{
+            xboxAuthProperties.put("RpsTicket", "d=" + xboxAccessToken);
+        }
 
         JsonObject xboxAuthPayload = new JsonObject();
         xboxAuthPayload.add("Properties", HttpUtils.gson().toJsonTree(xboxAuthProperties));
@@ -288,7 +295,7 @@ public class MicrosoftLogin {
             String newRefreshToken = getJsonString(respJson, "refresh_token", "New refresh token");
             logInfo("Successfully refreshed OAuth tokens. New refresh token: " + (DEBUG_MODE ? newRefreshToken : "[HIDDEN]"));
 
-            continueMinecraftAuthentication(newAccessToken);
+            continueMinecraftAuthentication(newAccessToken,true);
 
             return newAccessToken;
 

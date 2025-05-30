@@ -47,22 +47,34 @@ public class Scaffold extends Mod {
         super("Scaffold", Category.PLAYER);
     }
 
+    boolean found = false;
 
     @EventTarget
     public void onPreMotion(EventPreMotion event) {
         mc.thePlayer.setSprinting(false);
-        rotationYaw = mc.thePlayer.rotationYaw + 180;
+
         rotationPitch = 78.0f;
-        mc.thePlayer.rotationYawHead = rotationYaw;
-        mc.thePlayer.renderYawOffset = rotationYaw;
-        event.setPitch(rotationPitch);
-        event.setYaw(rotationYaw);
+
+        rotationYaw = mc.thePlayer.rotationYaw + 180;
+
+        if (found) {
+            mc.thePlayer.rotationYawHead = rotationYaw;
+            mc.thePlayer.renderYawOffset = rotationYaw;
+
+            event.setPitch(rotationPitch);
+            event.setYaw(rotationYaw);
+        }
+
         for (int i = 0; i < 10; i++) {
             MovingObjectPosition movingObjectPosition = rayTraceBlock(getVectorForRotation(rotationPitch, rotationYaw), new Vec3(event.x, event.y + mc.thePlayer.eyeHeight, event.z));
             objectMouseOver = movingObjectPosition;
             if (movingObjectPosition != null) {
                 if (movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && (!mc.thePlayer.onGround || movingObjectPosition.sideHit != EnumFacing.UP)) {
+                    found = true;
                     break;
+                }else{
+                    found = false;
+                    objectMouseOver = null;
                 }
             }
             rotationPitch++;
