@@ -5,6 +5,7 @@ import cn.hanabi.injection.interfaces.IKeyBinding;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
 import cn.hanabi.modules.ModManager;
+import cn.hanabi.modules.modules.combat.KillAura;
 import cn.hanabi.utils.game.PlayerUtil;
 import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
@@ -22,6 +23,8 @@ public class Sprint extends Mod {
     @EventTarget
     public void onUpdate(EventUpdate event) {
         if(ModManager.getModule("Scaffold").getState())
+            return;
+        if(ModManager.getModule("KillAura").getState() && KillAura.target != null)
             return;
 
         boolean canSprint = mc.thePlayer.getFoodStats().getFoodLevel() > 6.0F || mc.thePlayer.capabilities.allowFlying;

@@ -193,8 +193,9 @@ public class KillAura extends Mod {
     private static Value<Double> blockrange = new Value<>("KillAura", "BlockRange", 3d, 0d, 8d, 0.1);
 
 
-    //other stuff
+    boolean attack = false;
 
+    //other stuff
     public KillAura() {
         super("KillAura", Category.COMBAT);
         priority.LoadValue(new String[]{"Angle", "Range", "Armor", "Health", "Fov", "Hurt Time"});
@@ -453,12 +454,11 @@ public class KillAura extends Mod {
             rotation(realLastRot);
         } else {
             targets.clear();
-            if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword
-                    && autoBlock.getValueState() && isBlocking) {
-                unBlock(true);
-            }
             lastRotations = new float[]{mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch};
         }
+
+        if (target != null)
+            mc.thePlayer.setSprinting(false);
     }
 
     @EventTarget
@@ -507,10 +507,6 @@ public class KillAura extends Mod {
                 }
             } else {
                 targets.clear();
-                if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword
-                        && autoBlock.getValueState() && isBlocking) {
-                    unBlock(true);
-                }
                 lastRotations = new float[]{mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch};
             }
 
@@ -539,9 +535,11 @@ public class KillAura extends Mod {
 
         if (pre.getValue()) {
             if (target != null) {
-                while (cps > 0) {
-                    doAttack(); // 攻击 TODO 在onUpdate/PreMotion/PostMotion 进行攻击
-                    cps--;
+                if (cps > 0) {
+                    while (cps > 0) {
+                        doAttack(); // 攻击 TODO 在onUpdate/PreMotion/PostMotion 进行攻击
+                        cps--;
+                    }
                 }
             }
         }
@@ -561,12 +559,6 @@ public class KillAura extends Mod {
 //                this.release = false;
 //            }
 //        }
-        if (target == null && !release && mc.thePlayer.ticksExisted % 2 == 0) {
-            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-            unBlock(true);
-            this.release = true;
-        }
-
 
         if (!pre.getValue()) {
             if (target != null) {
@@ -598,6 +590,11 @@ public class KillAura extends Mod {
                     unBlock(!mc.thePlayer.isBlocking() && !autoBlock.getValueState()
                             && mc.thePlayer.getItemInUseCount() > 0);
                 }
+            }
+
+            if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemSword
+                    && autoBlock.getValueState() && isBlocking) {
+                unBlock(true);
             }
 
             if (isInRange) {
@@ -637,26 +634,26 @@ public class KillAura extends Mod {
         serverRotation.setYaw(lastRotations[0]);
         serverRotation.setPitch(lastRotations[1]);
 
-        if (rotationTimer.isDelayComplete((100 - smooth.getValueState()) * RandomUtils.nextFloat(2.6f, 3.1f))) {
-            rotationTimer.reset();
-            lastRotations = RotationUtil.getNeededRotations(AimUtil.getLocation(targets.get(index).getEntityBoundingBox().expand(hitbox.getValue(), hitbox.getValue(), hitbox.getValue())), new Vec3(0, 0, 0));
+//        if (rotationTimer.isDelayComplete((100 - smooth.getValueState()) * RandomUtils.nextFloat(2.6f, 3.1f))) {
+//            rotationTimer.reset();
+        lastRotations = RotationUtil.getNeededRotations(AimUtil.getLocation(targets.get(index).getEntityBoundingBox().expand(hitbox.getValue(), hitbox.getValue(), hitbox.getValue())), new Vec3(0, 0, 0));
 
-            double minTurnSpeed = Math.min(maxTurn.getValue(), minTurn.getValue());
-            double maxTurnSpeed = Math.max(maxTurn.getValue(), minTurn.getValue());
+        double minTurnSpeed = Math.min(maxTurn.getValue(), minTurn.getValue());
+        double maxTurnSpeed = Math.max(maxTurn.getValue(), minTurn.getValue());
 
-            if (!force.getValue())
-                lastRotations = RotationUtil.convertBack(RotationUtil.limitAngleChange(RotationUtil.convert(realLastRot), RotationUtil.convert(lastRotations)
-                        , (float) (Math.random() * (maxTurnSpeed - minTurnSpeed) + minTurnSpeed)));
+        if (!force.getValue())
+            lastRotations = RotationUtil.convertBack(RotationUtil.limitAngleChange(RotationUtil.convert(realLastRot), RotationUtil.convert(lastRotations)
+                    , (float) (Math.random() * (maxTurnSpeed - minTurnSpeed) + minTurnSpeed)));
 
-            switch (SensitivityMode.getModeAt(SensitivityMode.getCurrentMode())) {
-                case "Normal": {
-                    lastRotations = AimUtil.NormalFix(lastRotations);
-                    break;
-                }
-                case "Prefect": {
-                    lastRotations = AimUtil.PrefectFix(lastRotations);
-                }
+        switch (SensitivityMode.getModeAt(SensitivityMode.getCurrentMode())) {
+            case "Normal": {
+                lastRotations = AimUtil.NormalFix(lastRotations);
+                break;
             }
+            case "Prefect": {
+                lastRotations = AimUtil.PrefectFix(lastRotations);
+            }
+//            }
         }
     }
 
@@ -713,8 +710,8 @@ public class KillAura extends Mod {
 
     private void attackEntity() {
         //Normal Single && Switch
+        mc.thePlayer.attackTargetEntityWithCurrentItem(target);
         mc.thePlayer.swingItem();
-
         if (interact.getValue())
             mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(aacbot.getValueState() ? needHitBot == null ? target : needHitBot : target, C02PacketUseEntity.Action.INTERACT));
 
@@ -738,16 +735,16 @@ public class KillAura extends Mod {
         float[] neededRotations1 = getNeededRotations(target, mc.thePlayer);
         if (((Math.abs(neededRotations1[0] - target.rotationYaw % 360) < hoverYaw.getValue() || Math.abs(neededRotations1[1] - target.rotationPitch % 360) < hoverPitch.getValue())) || !onlyOnAim.getValue()) {
             if (target.getDistanceToEntity(mc.thePlayer) < blockrange.getValueState()) {
-                Wrapper.sendPacketNoEvent(new C08PacketPlayerBlockPlacement(new BlockPos(-1,-1,-1),255, mc.thePlayer.inventory.getCurrentItem(), 0f, 0f, 0f));
+//                Wrapper.sendPacketNoEvent(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0f, 0f, 0f));
                 ((IKeyBinding) mc.gameSettings.keyBindUseItem).setPress(true);
-                mc.thePlayer.setItemInUse(mc.thePlayer.getCurrentEquippedItem(), mc.thePlayer.getCurrentEquippedItem().getMaxItemUseDuration());
+//                mc.thePlayer.setItemInUse(mc.thePlayer.getCurrentEquippedItem(), mc.thePlayer.getCurrentEquippedItem().getMaxItemUseDuration());
                 isBlocking = true;
             }
         }
     }
 
     private void unBlock(boolean setItemUseInCount) {
-        mc.thePlayer.setItemInUse(mc.thePlayer.getCurrentEquippedItem(), 0);
+//        mc.thePlayer.setItemInUse(mc.thePlayer.getCurrentEquippedItem(), 0);
         ((IKeyBinding) mc.gameSettings.keyBindUseItem).setPress(false);
         if (target == null)
             mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));

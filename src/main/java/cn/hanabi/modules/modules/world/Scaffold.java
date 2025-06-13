@@ -73,18 +73,8 @@ public class Scaffold extends Mod {
         float rotOffset = 180;
 
         if (mc.gameSettings.keyBindForward.isKeyDown()){
-            if (mc.gameSettings.keyBindRight.isKeyDown()){
-                rotOffset += 90;
-            } else if (mc.gameSettings.keyBindLeft.isKeyDown()) {
-                rotOffset += -90;
-            }
         } else if (mc.gameSettings.keyBindBack.isKeyDown()) {
             rotOffset = 0;
-            if (mc.gameSettings.keyBindRight.isKeyDown()){
-                rotOffset += -90;
-            } else if (mc.gameSettings.keyBindLeft.isKeyDown()) {
-                rotOffset += 90;
-            }
         }else{
             if (mc.gameSettings.keyBindRight.isKeyDown()){
                 rotOffset = -90;
@@ -131,8 +121,6 @@ public class Scaffold extends Mod {
         event.setPitch(rotationPitch);
         event.setYaw(rotationYaw);
         if (found) {
-
-
             rotated = true;
         }
 
@@ -154,7 +142,7 @@ public class Scaffold extends Mod {
 
     @EventTarget
     public void onSafeWalk(EventSafeWalk e) {
-
+//        e.setSafe(true);
     }
 
     @EventTarget
