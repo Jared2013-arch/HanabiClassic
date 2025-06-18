@@ -1,5 +1,6 @@
 package cn.hanabi.injection.mixins;
 
+import cn.hanabi.events.EventLook;
 import cn.hanabi.injection.interfaces.IEntityLivingBase;
 import cn.hanabi.modules.ModManager;
 import cn.hanabi.modules.modules.movement.NoJumpDelay;
@@ -7,6 +8,7 @@ import cn.hanabi.modules.modules.render.HUD;
 import cn.hanabi.modules.modules.render.HitAnimation;
 import cn.hanabi.modules.modules.world.Scaffold;
 import cn.hanabi.utils.client.SoundFxPlayer;
+import com.darkmagician6.eventapi.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
@@ -106,6 +108,10 @@ public abstract class MixinEntityLivingBase implements IEntityLivingBase {
             rotationYaw = Scaffold.rotationYaw;
             return this.getVector(rotationPitch, rotationYaw);
         }
+
+        EventLook eventLook = new EventLook(rotationYaw, rotationPitch);
+        EventManager.call(eventLook);
+
         if (partialTicks == 1.0F) {
             return this.getVector(rotationPitch, rotationYaw);
         } else {

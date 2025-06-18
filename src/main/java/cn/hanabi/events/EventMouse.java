@@ -18,6 +18,5 @@ public class EventMouse
         Left,
         Right,
         Middle
-
     }
 }

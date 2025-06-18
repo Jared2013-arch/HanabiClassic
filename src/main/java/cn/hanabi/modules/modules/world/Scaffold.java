@@ -4,7 +4,11 @@ import cn.hanabi.Wrapper;
 import cn.hanabi.events.*;
 import cn.hanabi.modules.Category;
 import cn.hanabi.modules.Mod;
+import cn.hanabi.modules.ModManager;
+import cn.hanabi.utils.RotationComponent;
+import cn.hanabi.utils.Vector2f;
 import cn.hanabi.utils.game.MoveUtils;
+import cn.hanabi.value.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.block.*;
 import net.minecraft.init.Blocks;
@@ -49,90 +53,95 @@ public class Scaffold extends Mod {
         super("Scaffold", Category.PLAYER);
     }
 
+    public Value<Boolean> sprint = new Value<>("Scaffold", "Sprint", true);
+
     boolean found = false;
     boolean rotated = false;
 
     @EventTarget
     public void onPreMotion(EventPreMotion event) {
-        // switch to blocks
-        if (mc.thePlayer.getCurrentEquippedItem() == null || !(mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemBlock)) {
-            for (int i = 0; i < 9; i++) {
-                ItemStack itemStack = mc.thePlayer.inventory.mainInventory[i];
-                if (itemStack != null && itemStack.getItem() instanceof ItemBlock) {
-                    if (itemStack.stackSize > 0) {
-                        mc.thePlayer.inventory.currentItem = i;
-                        break;
+        if (mc.thePlayer.motionY < 0 && !mc.thePlayer.onGround) {
+            // switch to blocks
+            if (mc.thePlayer.getCurrentEquippedItem() == null || !(mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemBlock)) {
+                for (int i = 0; i < 9; i++) {
+                    ItemStack itemStack = mc.thePlayer.inventory.mainInventory[i];
+                    if (itemStack != null && itemStack.getItem() instanceof ItemBlock) {
+                        if (itemStack.stackSize > 0) {
+                            mc.thePlayer.inventory.currentItem = i;
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        rotationPitch = (float) (78.0f + Math.random() / 100f);
+            rotationPitch = (float) (29f + Math.random() / 100f);
 
-        // calc rotation
-        float rotOffset = 180;
+            // calc rotation
+            float rotOffset = 180;
 
-        if (mc.gameSettings.keyBindForward.isKeyDown()){
-        } else if (mc.gameSettings.keyBindBack.isKeyDown()) {
-            rotOffset = 0;
-        }else{
-            if (mc.gameSettings.keyBindRight.isKeyDown()){
-                rotOffset = -90;
-            } else if (mc.gameSettings.keyBindLeft.isKeyDown()) {
-                rotOffset = 90;
-            }
-        }
-
-
-        rotationYaw = mc.thePlayer.rotationYaw + rotOffset;
-        mc.thePlayer.setSprinting(false);
-
-
-        for (int i = 0; i < 10; i++) {
-            MovingObjectPosition movingObjectPosition = rayTraceBlock(getVectorForRotation(rotationPitch, rotationYaw), new Vec3(event.x, event.y + mc.thePlayer.eyeHeight, event.z));
-            objectMouseOver = movingObjectPosition;
-            if (movingObjectPosition != null) {
-                if (movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && (!mc.thePlayer.onGround || movingObjectPosition.sideHit != EnumFacing.UP)) {
-                    found = true;
-                    break;
-                } else {
-                    found = false;
-                    objectMouseOver = null;
+            if (mc.gameSettings.keyBindForward.isKeyDown()) {
+            } else if (mc.gameSettings.keyBindBack.isKeyDown()) {
+                rotOffset = 0;
+            } else {
+                if (mc.gameSettings.keyBindRight.isKeyDown()) {
+                    rotOffset = -90;
+                } else if (mc.gameSettings.keyBindLeft.isKeyDown()) {
+                    rotOffset = 90;
                 }
             }
-            rotationPitch++;
-        }
 
-        if (mc.gameSettings.keyBindJump.isKeyDown() && !MoveUtils.isMoving()){
-            rotationPitch = 88f;
-        }
 
-        if (rotated) {
-            rotated = false;
-            if (objectMouseOver != null && objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.getCurrentEquippedItem(), objectMouseOver.getBlockPos(), objectMouseOver.sideHit, objectMouseOver.hitVec))
-                    mc.thePlayer.swingItem();
+            rotationYaw = mc.thePlayer.rotationYaw + rotOffset;
+
+            for (int i = 0; i < 60; i++) {
+                MovingObjectPosition movingObjectPosition = rayTraceBlock(getVectorForRotation(rotationPitch, rotationYaw), new Vec3(event.x, event.y + mc.thePlayer.eyeHeight, event.z));
+                objectMouseOver = movingObjectPosition;
+                if (movingObjectPosition != null) {
+                    if (movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && movingObjectPosition.sideHit != EnumFacing.UP && (!mc.thePlayer.onGround || movingObjectPosition.sideHit != EnumFacing.UP)) {
+                        found = true;
+                        break;
+                    } else {
+                        found = false;
+                        objectMouseOver = null;
+                    }
+                }
+                rotationPitch++;
+            }
+
+            if (mc.gameSettings.keyBindJump.isKeyDown() && !MoveUtils.isMoving()) {
+                rotationPitch = 88f;
+            }
+
+            if (rotated) {
+                rotated = false;
+//                RotationComponent.setRotations(new Vector2f(rotationYaw, rotationPitch), 180f, RotationComponent.MovementFix.NORMAL);
+                if (objectMouseOver != null && objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                    if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.getCurrentEquippedItem(), objectMouseOver.getBlockPos(), objectMouseOver.sideHit, objectMouseOver.hitVec))
+                        mc.thePlayer.swingItem();
+                }
+            }
+            event.setYaw(rotationYaw);
+            event.setPitch(rotationPitch);
+
+            if (found) {
+                rotated = true;
             }
         }
-        mc.thePlayer.rotationYawHead = rotationYaw;
-        mc.thePlayer.renderYawOffset = rotationYaw;
-        mc.thePlayer.prevRenderYawOffset  = rotationYaw;
-
-        event.setPitch(rotationPitch);
-        event.setYaw(rotationYaw);
-        if (found) {
-            rotated = true;
-        }
-
     }
 
     @EventTarget
     public void onPostMotion(EventPostMotion event) {
-
 //        if (objectMouseOver != null && objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
 //            if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.getCurrentEquippedItem(), objectMouseOver.getBlockPos(), objectMouseOver.sideHit, objectMouseOver.hitVec))
 //                mc.thePlayer.swingItem();
 //        }
+    }
+
+    @EventTarget
+    public void onUpdate(EventUpdate e) {
+        if (mc.thePlayer.onGround && MoveUtils.isMoving()) {
+            mc.thePlayer.jump();
+        }
     }
 
     @EventTarget
@@ -146,7 +155,13 @@ public class Scaffold extends Mod {
     }
 
     @EventTarget
-    public void onMove(EventMove e){
+    public void onStrafe(EventStrafe e) {
+//        e.yaw = rotationYaw;
+    }
+
+    @EventTarget
+    public void onMove(EventMove e) {
+
     }
 
     protected final net.minecraft.util.Vec3 getVectorForRotation(float pitch, float yaw) {

@@ -14,6 +14,7 @@ import cn.hanabi.modules.modules.player.*;
 import cn.hanabi.modules.modules.render.*;
 import cn.hanabi.modules.modules.world.*;
 import cn.hanabi.modules.modules.world.Disabler.Disabler;
+import cn.hanabi.utils.RotationComponent;
 import cn.hanabi.utils.fontmanager.UnicodeFontRenderer;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
@@ -29,6 +30,7 @@ public class ModManager {
     public static List<Mod> modules = new ArrayList<>();
     public static boolean needsort = true;
     public static ArrayList<Mod> sortedModList = new ArrayList();
+    public static final RotationComponent rotationComponent = new RotationComponent();
 
     public ModManager() {
         EventManager.register(this);
@@ -224,6 +226,7 @@ public class ModManager {
             int char1 = mod1.getName().charAt(0);
             return -Integer.compare(char1, char0);
         });
+        EventManager.register(rotationComponent);
     }
 
     public void addModule(@NotNull Mod module) {

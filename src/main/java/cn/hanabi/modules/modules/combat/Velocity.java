@@ -5,6 +5,7 @@ import cn.hanabi.Wrapper;
 import cn.hanabi.events.EventJump;
 import cn.hanabi.events.EventPacket;
 import cn.hanabi.events.EventPreMotion;
+import cn.hanabi.events.EventStrafe;
 import cn.hanabi.gui.classic.notifications.Notification;
 import cn.hanabi.injection.interfaces.IS12PacketEntityVelocity;
 import cn.hanabi.injection.interfaces.IS27PacketExplosion;
@@ -25,7 +26,7 @@ import net.minecraft.network.play.server.S27PacketExplosion;
 
 public class Velocity extends Mod {
     public final static Value<String> modes = new Value<String>("Velocity", "Mode", 0)
-            .LoadValue(new String[]{"Cancel", "Packet", "AAC", "AAC4.4.0", "AAC4", "Intave", "RedeSky", "RedeSkyHVH", "RedeSkyPacket", "AAC5"});
+            .LoadValue(new String[]{"JumpReset","Cancel", "Packet", "AAC", "AAC4.4.0", "AAC4", "Intave", "RedeSky", "RedeSkyHVH", "RedeSkyPacket", "AAC5"});
 
     public Value<Double> x = new Value<>("Velocity", "Vertical", 0.0d, -100.0d, 100d, 1.0);
     public Value<Double> y = new Value<>("Velocity", "Horizontal", 0.0d, 0.0d, 100d, 1.0);
@@ -39,26 +40,45 @@ public class Velocity extends Mod {
         super("Velocity", Category.COMBAT);
     }
 
+    boolean reset = false;
+
+    @EventTarget
+    public void onStrafe(EventStrafe e) {
+        if (reset && mc.thePlayer.onGround){
+//            mc.thePlayer.jump();
+            reset = false;
+        }
+
+    }
+
     @EventTarget
     private void onPacket(EventPacket e) {
 
-        if (detect.getValue()) {
             if (e.getPacket() instanceof S12PacketEntityVelocity) {
                 S12PacketEntityVelocity packet = (S12PacketEntityVelocity) e.getPacket();
                 if (packet.getEntityID() != mc.thePlayer.getEntityId()) return;
-                if (knockBackTimer.isDelayComplete(250) && mc.thePlayer.ticksExisted > 60) {
-                    if (wtfBoolean && mc.thePlayer.hurtResistantTime == 0 && mc.thePlayer.velocityChanged) {
-                        ClientUtil.sendClientMessage("You may have been KB checked!", Notification.Type.WARNING);
-                        wtfBoolean = false;
-                        mc.thePlayer.addVelocity(packet.getMotionX(), packet.getMotionY(), packet.getMotionZ());
-                    } else {
+                if (modes.isCurrentMode("JumpReset")){
+                    mc.thePlayer.jump();
+
+                    reset = true;
+//                    mc.thePlayer.addVelocity(packet.getMotionX()/8000.0F, packet.getMotionY()/8000.0F, packet.getMotionZ()/8000.0F);
+//                    e.setCancelled(true);
+                }
+                if (detect.getValue()) {
+                    if (knockBackTimer.isDelayComplete(250) && mc.thePlayer.ticksExisted > 60) {
+                        if (wtfBoolean && mc.thePlayer.hurtResistantTime == 0 && mc.thePlayer.velocityChanged) {
+                            ClientUtil.sendClientMessage("You may have been KB checked!", Notification.Type.WARNING);
+                            wtfBoolean = false;
+
+                            mc.thePlayer.addVelocity(packet.getMotionX()/8000.0F, packet.getMotionY()/8000.0F, packet.getMotionZ()/8000.0F);
+                        } else {
+                            wtfBoolean = false;
+                        }
+                    } else if (wtfBoolean && mc.thePlayer.hurtResistantTime > 0) {
                         wtfBoolean = false;
                     }
-                } else if (wtfBoolean && mc.thePlayer.hurtResistantTime > 0) {
-                    wtfBoolean = false;
+                    e.setCancelled(true);
                 }
-                e.setCancelled(true);
-            }
         }
 
 

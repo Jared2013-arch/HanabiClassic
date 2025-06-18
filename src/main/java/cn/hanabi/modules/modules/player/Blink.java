@@ -28,16 +28,9 @@ public class Blink extends Mod {
     @EventTarget
     public void onPacket(EventPacket event) {
         if (event.getEventType() == EventType.SEND) {
-            if (event.getPacket() instanceof C03PacketPlayer) {
+
                 packets.add(event.getPacket());
                 event.setCancelled(true);
-            } else if (event.getPacket() instanceof C08PacketPlayerBlockPlacement
-                    || event.getPacket() instanceof C07PacketPlayerDigging
-                    || event.getPacket() instanceof C09PacketHeldItemChange
-                    || event.getPacket() instanceof C02PacketUseEntity) {
-                packets.add(event.getPacket());
-                event.setCancelled(true);
-            }
 
         }
 

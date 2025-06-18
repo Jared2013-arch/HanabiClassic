@@ -45,4 +45,12 @@ public class EventStrafe extends EventCancellable {
             setFriction(friction * remainder);
         }
     }
+
+    public float getYaw() {
+        return yaw;
+    }
+
+    public void setYaw(float yaw) {
+        this.yaw = yaw;
+    }
 }
